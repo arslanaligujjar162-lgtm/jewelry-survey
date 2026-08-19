@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { LegalNotice } from "@/components/legal/LegalNotice";
 import { whatsappLink } from "@/lib/brand";
 
@@ -25,6 +26,12 @@ export default function ReturnsPolicyPage() {
           >
             Start a return on WhatsApp
           </a>
+          <Link
+            href="/request-return"
+            className="inline-flex items-center justify-center rounded-full border border-brand-umber/30 px-7 py-3 font-body text-sm font-semibold text-brand-umber-dark transition hover:bg-brand-sky-light"
+          >
+            Submit a return request online
+          </Link>
         </div>
 
         <div className="mt-8">
@@ -55,8 +62,12 @@ export default function ReturnsPolicyPage() {
           <section>
             <h2 className="font-body text-base font-semibold text-brand-umber-dark">How to start a return</h2>
             <p className="mt-2">
-              WhatsApp us your order number and the reason for return. We&apos;ll confirm pickup or drop-off and
-              next steps from there.
+              WhatsApp us or{" "}
+              <Link href="/request-return" className="text-brand-umber underline">
+                submit a return request online
+              </Link>{" "}
+              with your order number and the reason for return. We&apos;ll confirm pickup or drop-off and next steps
+              from there.
             </p>
           </section>
           <section>
