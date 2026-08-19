@@ -1,26 +1,11 @@
-"use client";
+import type { Metadata } from "next";
+import { CheckoutPageClient } from "@/components/checkout/CheckoutPageClient";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useCart } from "@/lib/cart-context";
-import { CheckoutForm } from "@/components/checkout/CheckoutForm";
+export const metadata: Metadata = {
+  title: "Checkout",
+  description: "Enter your delivery address, verify your phone, and pay with Cash on Delivery.",
+};
 
 export default function CheckoutPage() {
-  const { lines } = useCart();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (lines.length === 0) router.replace("/cart");
-  }, [lines.length, router]);
-
-  if (lines.length === 0) return null;
-
-  return (
-    <div className="container-page py-10 sm:py-14">
-      <h1 className="font-display text-3xl font-semibold text-brand-umber-dark sm:text-4xl">Checkout</h1>
-      <div className="mt-8">
-        <CheckoutForm />
-      </div>
-    </div>
-  );
+  return <CheckoutPageClient />;
 }
