@@ -26,3 +26,9 @@ body {
     @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
   }
 }
+
+@layer components {
+  .input {
+    @apply w-full rounded-lg border border-brand-umber/20 bg-brand-ivory px-3 py-2 font-body text-sm text-brand-charcoal placeholder:text-brand-charcoal/40 focus:border-brand-umber focus:outline-none focus:ring-1 focus:ring-brand-umber;
+  }
+}

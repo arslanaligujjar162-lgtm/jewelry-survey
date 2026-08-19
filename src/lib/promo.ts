@@ -1,10 +1,17 @@
 import { createAdminClient } from "@/lib/supabase/admin";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
 
 export interface PromoValidationResult {
   valid: boolean;
   discountPercent: number;
   message: string;
 }
+
+// Mirrors supabase/seed.sql — used only when Supabase isn't configured, so
+// promo codes can still be exercised end to end in local/demo environments.
+const FALLBACK_PROMO_CODES: Record<string, { discountPercent: number; active: boolean }> = {
+  WELCOME10: { discountPercent: 10, active: true },
+};
 
 /**
  * Looks up a promo/referral code against the promo_codes table.
@@ -14,6 +21,14 @@ export interface PromoValidationResult {
 export async function validatePromoCode(code: string): Promise<PromoValidationResult> {
   if (!code.trim()) {
     return { valid: false, discountPercent: 0, message: "Enter a code" };
+  }
+
+  if (!isSupabaseConfigured()) {
+    const entry = FALLBACK_PROMO_CODES[code.trim().toUpperCase()];
+    if (!entry || !entry.active) {
+      return { valid: false, discountPercent: 0, message: "That code isn't valid" };
+    }
+    return { valid: true, discountPercent: entry.discountPercent, message: `${entry.discountPercent}% off applied` };
   }
 
   const supabase = createAdminClient();
