@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 7teen2wenty (1720)
 
-## Getting Started
+Demi-fine, PVD-coated 316L stainless steel jewellery for the Pakistani market.
+**Not fast. Not a fortune. Just good jewellery.**
 
-First, run the development server:
+Next.js 14 (App Router, TypeScript) + Tailwind CSS + Supabase (Postgres, Auth, Storage), built for Vercel.
+
+## Status
+
+The site runs fully **without** a Supabase project configured — it falls back to a local seed catalog
+(`src/data/seed-products.ts`) and in-memory order/OTP/promo stores so you can browse, add to cart, check out,
+verify OTP, and land on an order confirmation page immediately after `npm install && npm run dev`.
+
+The admin dashboard (`/admin`) genuinely requires Supabase — there is no fake/insecure login fallback. Follow
+**Supabase setup** below to enable it, place real orders that persist, and manage the catalog.
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit http://localhost:3000. To exercise the full checkout flow locally, the OTP endpoint returns a `devCode` in
+non-production builds — the checkout page shows it inline under "Dev mode" so you don't need a real SMS gateway.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Copy `.env.example` to `.env.local` and fill in what you have. Every variable is optional for local browsing; the
+app degrades gracefully (see **Status** above) when Supabase, analytics, or the payment gateway aren't configured.
 
-## Learn More
+| Variable | Purpose |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase project — catalog, orders, auth |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server-only key used for checkout writes and the admin dashboard. Never expose client-side. |
+| `NEXT_PUBLIC_SITE_URL` | Canonical URL used in metadata, sitemap, robots.txt |
+| `NEXT_PUBLIC_GATEWAY_ENABLED` | Flip to `true` once a card/JazzCash/Easypaisa merchant account is approved and `src/lib/payments/gateway.ts` is wired up |
+| `NEXT_PUBLIC_GA4_ID`, `NEXT_PUBLIC_META_PIXEL_ID` | Analytics — omit to skip loading either script |
+| `WHATSAPP_CLOUD_API_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID` | Not yet consumed by code — placeholders for wiring up `src/lib/whatsapp.ts` |
 
-To learn more about Next.js, take a look at the following resources:
+## Supabase setup
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Create a project at [supabase.com](https://supabase.com).
+2. In the SQL editor, run the migrations in order: `supabase/migrations/0001_init.sql`,
+   `0002_decrement_stock.sql`, `0003_storage.sql`.
+3. Run `supabase/seed.sql` to load the placeholder catalog (replace the product photography referenced there with
+   real images before launch — see **Known placeholders**).
+4. In Authentication → Users, create a single admin user (email + password). That's the account used to sign in at
+   `/admin/login`.
+5. Copy the project URL and keys (Settings → API) into your environment: `NEXT_PUBLIC_SUPABASE_URL`,
+   `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Once set, `/admin` is auth-gated by Supabase Auth (see `src/middleware.ts` and
+`src/app/admin/(dashboard)/layout.tsx`), orders written at checkout persist to the `orders` table, and product
+photos uploaded from the admin dashboard go to the `product-images` Storage bucket.
 
-## Deploy on Vercel
+## Payments
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`src/lib/payments/` defines a `PaymentProvider` interface. `cod.ts` is the only live provider — checkout always
+succeeds with `payment_status: "pending"` and settles in cash on delivery. `gateway.ts` is a stub for card /
+JazzCash / Easypaisa: implement `charge()` with the real gateway SDK and flip `NEXT_PUBLIC_GATEWAY_ENABLED=true`
+once a merchant account is approved. No other checkout code needs to change.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## WhatsApp order confirmations
+
+`src/lib/whatsapp.ts` builds the full context an automated confirmation message needs (name, phone, order summary,
+status) on every order, and currently just logs it (`sendWhatsAppOrderConfirmation`). Wire in the WhatsApp Cloud
+API `/messages` call there once a Business phone number and access token are available.
+
+## Known placeholders (flagged for real content before launch)
+
+- **Product photography** — `public/products/*.svg` are flat-colour placeholders (solid matte backgrounds, per
+  brand rules) generated by `scripts/generate-placeholders.mjs`. Replace with real photography and re-run/update
+  `supabase/seed.sql` or the admin product editor.
+- **Business contact details** — `src/lib/brand.ts` (`CONTACT`) has a placeholder address and WhatsApp number.
+- **Legal pages** — Privacy Policy, Terms, and Return & Exchange Policy are placeholder text, flagged on-page, and
+  need review by a lawyer familiar with Pakistani consumer/e-commerce law before launch.
+- **Serviceable areas** — `src/lib/serviceable-areas.ts` is a static coverage list. Wire to a real courier API when
+  available.
+- **OTP delivery** — codes are generated and logged server-side (`src/lib/otp.ts`) but not actually sent by SMS/WhatsApp yet; wire an SMS gateway before launch.
+- **Brand colour palette** — `tailwind.config.ts` (`brand.*`) is this build's interpretation of "Retro Sky Blue /
+  Umber Brown / Pale Butter Yellow"; swap in exact brand hex values if you have them.
+
+## Deploying
+
+1. Push this repo to GitHub (already done if you're reading this from the repo).
+2. Import it into [Vercel](https://vercel.com/new), framework preset "Next.js".
+3. Add the environment variables above in Vercel's project settings.
+4. Connect your domain in Vercel → Settings → Domains.
+5. After deploy, run through the smoke test below against the production URL.
+
+## Smoke test checklist
+
+- [ ] Browse home → shop → filter by category/price/new → product detail
+- [ ] Add to cart (including a ring size selection) → view cart → adjust quantity
+- [ ] Checkout: address form validates Pakistani phone format, serviceability check, delivery fee/time shown
+- [ ] OTP: send code, verify, "Place order" blocked until verified
+- [ ] Promo code: valid code applies discount, invalid code shows an error
+- [ ] Order confirmation page shows correct totals and address
+- [ ] With Supabase configured: order appears in `/admin/orders`, status update persists
+- [ ] Product CRUD in `/admin/products`, including image upload to Storage
+- [ ] Return request from `/request-return` shows up in `/admin/returns`
+
+## Scripts
+
+- `npm run dev` / `npm run build` / `npm run start` — standard Next.js
+- `npm run lint` — ESLint
+- `node scripts/generate-placeholders.mjs` — regenerates placeholder product SVGs and
+  `src/data/seed-products.ts` / `supabase/seed.sql` from the product list in that script
