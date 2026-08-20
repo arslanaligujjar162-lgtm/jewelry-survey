@@ -5,6 +5,10 @@ Demi-fine, PVD-coated 316L stainless steel jewellery for the Pakistani market.
 
 Next.js 14 (App Router, TypeScript) + Tailwind CSS + Supabase (Postgres, Auth, Storage), built for Vercel.
 
+Ready to put it online? See **[docs/GO_LIVE_RUNBOOK.md](docs/GO_LIVE_RUNBOOK.md)** for the exact,
+click-by-click steps — Supabase, Vercel, domain, analytics, Search Console, WhatsApp Business, payment
+gateway, and a pre-launch content review.
+
 ## Status
 
 The site runs fully **without** a Supabase project configured — it falls back to a local seed catalog
@@ -83,11 +87,10 @@ API `/messages` call there once a Business phone number and access token are ava
 
 ## Deploying
 
-1. Push this repo to GitHub (already done if you're reading this from the repo).
-2. Import it into [Vercel](https://vercel.com/new), framework preset "Next.js".
-3. Add the environment variables above in Vercel's project settings.
-4. Connect your domain in Vercel → Settings → Domains.
-5. After deploy, run through the smoke test below against the production URL.
+See **[docs/GO_LIVE_RUNBOOK.md](docs/GO_LIVE_RUNBOOK.md)** for the full walkthrough. Short version: push to
+GitHub, import into [Vercel](https://vercel.com/new) (framework preset "Next.js"), add the environment
+variables above, connect your domain under Settings → Domains, then run the smoke test below against the
+production URL.
 
 ## Smoke test checklist
 
