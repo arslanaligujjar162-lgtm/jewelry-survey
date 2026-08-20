@@ -1,5 +1,6 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { Category, Order, OrderStatus, Product, ReturnRequest } from "@/lib/types";
+import type { Review } from "@/lib/reviews";
 
 export async function listOrders(status?: OrderStatus): Promise<Order[]> {
   const admin = createAdminClient();
@@ -44,4 +45,21 @@ export async function listReturnRequests(): Promise<ReturnRequest[]> {
   const { data, error } = await admin.from("return_requests").select("*").order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
   return (data ?? []) as ReturnRequest[];
+}
+
+export interface ReviewWithProduct extends Review {
+  product_name: string;
+}
+
+export async function listReviews(): Promise<ReviewWithProduct[]> {
+  const admin = createAdminClient();
+  const { data, error } = await admin
+    .from("reviews")
+    .select("*, product:products(name)")
+    .order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return (data ?? []).map((r: Review & { product: { name: string } | null }) => ({
+    ...r,
+    product_name: r.product?.name ?? "Unknown product",
+  }));
 }

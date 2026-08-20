@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Wordmark } from "@/components/brand/Logo";
 import { CartIconButton } from "@/components/layout/CartIconButton";
+import { WishlistIconButton } from "@/components/layout/WishlistIconButton";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import { CATEGORIES } from "@/lib/brand";
 
@@ -37,6 +38,7 @@ export function Header() {
 
         <div className="flex items-center gap-2">
           <WhatsAppButton className="hidden sm:inline-flex" label="WhatsApp" />
+          <WishlistIconButton />
           <CartIconButton />
           <button
             type="button"

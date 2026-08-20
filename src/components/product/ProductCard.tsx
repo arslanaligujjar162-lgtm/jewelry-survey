@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { Product } from "@/lib/types";
 import { formatPKR } from "@/lib/format";
 import { StockIndicator } from "@/components/product/StockIndicator";
+import { WishlistButton } from "@/components/product/WishlistButton";
 
 export function ProductCard({ product }: { product: Product }) {
   return (
@@ -20,6 +21,7 @@ export function ProductCard({ product }: { product: Product }) {
             New
           </span>
         )}
+        <WishlistButton product={product} className="absolute right-2 top-2" />
       </div>
       <div className="mt-3">
         <h3 className="font-body text-sm font-medium text-brand-charcoal">{product.name}</h3>

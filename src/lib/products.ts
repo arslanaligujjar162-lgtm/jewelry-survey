@@ -10,6 +10,8 @@ export interface ProductFilters {
   minPrice?: number;
   maxPrice?: number;
   isNew?: boolean;
+  /** Case-insensitive substring match against name and description. */
+  query?: string;
 }
 
 function attachFallbackCategory(product: Product): Product {
@@ -23,6 +25,11 @@ function filterFallback(filters: ProductFilters): Product[] {
     if (filters.minPrice !== undefined && p.price < filters.minPrice) return false;
     if (filters.maxPrice !== undefined && p.price > filters.maxPrice) return false;
     if (filters.isNew && !p.is_new) return false;
+    if (filters.query) {
+      const q = filters.query.trim().toLowerCase();
+      const haystack = `${p.name} ${p.description}`.toLowerCase();
+      if (q && !haystack.includes(q)) return false;
+    }
     return true;
   }).map(attachFallbackCategory);
 }
@@ -49,6 +56,10 @@ export async function getProducts(filters: ProductFilters = {}): Promise<Product
   if (filters.minPrice !== undefined) query = query.gte("price", filters.minPrice);
   if (filters.maxPrice !== undefined) query = query.lte("price", filters.maxPrice);
   if (filters.isNew) query = query.eq("is_new", true);
+  if (filters.query?.trim()) {
+    const escaped = filters.query.trim().replace(/[%_]/g, "\\$&");
+    query = query.or(`name.ilike.%${escaped}%,description.ilike.%${escaped}%`);
+  }
 
   const { data, error } = await query;
   if (error || !data) return filterFallback(filters);

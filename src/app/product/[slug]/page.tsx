@@ -8,6 +8,10 @@ import { AddToCartForm } from "@/components/product/AddToCartForm";
 import { StockIndicator } from "@/components/product/StockIndicator";
 import { ProductSchema } from "@/components/product/ProductSchema";
 import { ProductCard } from "@/components/product/ProductCard";
+import { WishlistButton } from "@/components/product/WishlistButton";
+import { RecentlyViewedTracker } from "@/components/product/RecentlyViewedTracker";
+import { RecentlyViewedSection } from "@/components/product/RecentlyViewedSection";
+import { ReviewsSection } from "@/components/product/ReviewsSection";
 import { StickyMobileCTA } from "@/components/layout/StickyMobileCTA";
 
 interface ProductPageProps {
@@ -45,6 +49,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   return (
     <div className="container-page py-10 sm:py-14">
       <ProductSchema product={product} url={productUrl} />
+      <RecentlyViewedTracker product={product} />
 
       <nav aria-label="Breadcrumb" className="font-body text-xs text-brand-charcoal/60">
         <Link href="/shop" className="hover:text-brand-umber">
@@ -66,7 +71,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <ProductGallery images={product.images} productName={product.name} />
 
         <div>
-          <h1 className="font-display text-3xl font-semibold text-brand-umber-dark sm:text-4xl">{product.name}</h1>
+          <div className="flex items-start justify-between gap-4">
+            <h1 className="font-display text-3xl font-semibold text-brand-umber-dark sm:text-4xl">{product.name}</h1>
+            <WishlistButton product={product} className="shrink-0 border border-brand-umber/15" />
+          </div>
           <p className="mt-2 font-body text-xl font-semibold text-brand-charcoal">{formatPKR(product.price)}</p>
           <div className="mt-2">
             <StockIndicator stock={product.stock_count} />
@@ -118,6 +126,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
         </section>
       )}
+
+      <ReviewsSection productId={product.id} />
+
+      <RecentlyViewedSection excludeProductId={product.id} />
 
       <StickyMobileCTA label={`Add to cart — ${formatPKR(product.price)}`} href="#add-to-cart" />
       <div className="h-16 sm:hidden" aria-hidden="true" />

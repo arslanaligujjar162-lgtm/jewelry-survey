@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 interface ShopPageProps {
-  searchParams: { category?: string; min?: string; max?: string; new?: string };
+  searchParams: { category?: string; min?: string; max?: string; new?: string; q?: string };
 }
 
 export default async function ShopPage({ searchParams }: ShopPageProps) {
@@ -19,8 +19,9 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
   const minPrice = searchParams.min ? Number(searchParams.min) : undefined;
   const maxPrice = searchParams.max ? Number(searchParams.max) : undefined;
   const isNew = searchParams.new === "true";
+  const query = searchParams.q?.trim();
 
-  const products = await getProducts({ category, minPrice, maxPrice, isNew });
+  const products = await getProducts({ category, minPrice, maxPrice, isNew, query });
   const categoryLabel = CATEGORIES.find((c) => c.slug === category)?.label;
 
   return (
@@ -29,7 +30,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
         <div>
           <p className="font-body text-sm font-semibold uppercase tracking-widest text-brand-umber">Shop</p>
           <h1 className="mt-1 font-display text-3xl font-semibold text-brand-umber-dark sm:text-4xl">
-            {categoryLabel ?? "All jewellery"}
+            {query ? `Results for "${query}"` : categoryLabel ?? "All jewellery"}
           </h1>
         </div>
       </div>

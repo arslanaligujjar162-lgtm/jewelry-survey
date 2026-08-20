@@ -76,3 +76,12 @@ export async function deleteProduct(id: string) {
   if (error) throw new Error(error.message);
   revalidatePath("/admin/products");
 }
+
+export async function updateReviewStatusAction(reviewId: string, formData: FormData) {
+  await requireAdmin();
+  const status = formData.get("status") as string;
+  const admin = createAdminClient();
+  const { error } = await admin.from("reviews").update({ status }).eq("id", reviewId);
+  if (error) throw new Error(error.message);
+  revalidatePath("/admin/reviews");
+}

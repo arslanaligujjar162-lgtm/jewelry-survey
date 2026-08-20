@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { CookieBanner } from "@/components/layout/CookieBanner";
 import { ErrorReportingInit } from "@/components/layout/ErrorReportingInit";
 import { CartProvider } from "@/lib/cart-context";
+import { WishlistProvider } from "@/lib/wishlist-context";
 import { BRAND_DESCRIPTION, BRAND_NAME, TAGLINE } from "@/lib/brand";
 import { GA4_ID, META_PIXEL_ID } from "@/lib/analytics";
 
@@ -91,10 +92,12 @@ export default function RootLayout({
         )}
 
         <CartProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <CookieBanner />
+          <WishlistProvider>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+            <CookieBanner />
+          </WishlistProvider>
         </CartProvider>
       </body>
     </html>

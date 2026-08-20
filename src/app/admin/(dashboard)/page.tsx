@@ -1,23 +1,30 @@
 import Link from "next/link";
-import { listOrders, listProducts, listReturnRequests } from "@/lib/admin/queries";
+import { listOrders, listProducts, listReturnRequests, listReviews } from "@/lib/admin/queries";
 
 const LOW_STOCK_THRESHOLD = 5;
 
 export default async function AdminOverviewPage() {
-  const [orders, products, returns] = await Promise.all([listOrders(), listProducts(), listReturnRequests()]);
+  const [orders, products, returns, reviews] = await Promise.all([
+    listOrders(),
+    listProducts(),
+    listReturnRequests(),
+    listReviews(),
+  ]);
 
   const pendingOrders = orders.filter((o) => o.status === "pending").length;
   const lowStockProducts = products.filter((p) => p.stock_count <= LOW_STOCK_THRESHOLD);
   const openReturns = returns.filter((r) => r.status === "requested").length;
+  const pendingReviews = reviews.filter((r) => r.status === "pending").length;
 
   return (
     <div>
       <h1 className="font-display text-2xl font-semibold text-brand-umber-dark">Overview</h1>
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Pending orders" value={pendingOrders} href="/admin/orders?status=pending" />
         <StatCard label="Low stock products" value={lowStockProducts.length} href="/admin/products" />
         <StatCard label="Open return requests" value={openReturns} href="/admin/returns" />
+        <StatCard label="Reviews awaiting approval" value={pendingReviews} href="/admin/reviews" />
       </div>
 
       {lowStockProducts.length > 0 && (
