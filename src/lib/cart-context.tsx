@@ -13,6 +13,11 @@ interface CartContextValue {
   clear: () => void;
   subtotal: number;
   itemCount: number;
+  /** False until the cart has finished reading localStorage on mount. Check
+   * this before treating an empty `lines` array as a genuinely empty cart —
+   * a fresh page load (not client-side nav) starts with `lines: []` for one
+   * render even when localStorage has items. */
+  hydrated: boolean;
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -82,6 +87,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     clear,
     subtotal,
     itemCount,
+    hydrated,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

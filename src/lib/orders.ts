@@ -7,6 +7,7 @@ import { validatePromoCode } from "@/lib/promo";
 import { getPaymentProvider } from "@/lib/payments";
 import { isPhoneOtpVerified } from "@/lib/otp";
 import { buildWhatsAppOrderContext, sendWhatsAppOrderConfirmation } from "@/lib/whatsapp";
+import { reportError } from "@/lib/monitoring";
 import type { Order, OrderItem, ShippingAddress } from "@/lib/types";
 
 export interface CheckoutLineInput {
@@ -161,7 +162,7 @@ export async function createOrder(payload: CheckoutPayload): Promise<CheckoutRes
       .single();
 
     if (error || !data) {
-      console.error("Failed to write order to Supabase", error);
+      reportError(error, { context: "order-write", order_number: order.order_number });
       return { success: false, error: "Could not save your order. Please try again." };
     }
 

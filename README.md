@@ -105,5 +105,22 @@ API `/messages` call there once a Business phone number and access token are ava
 
 - `npm run dev` / `npm run build` / `npm run start` — standard Next.js
 - `npm run lint` — ESLint
+- `npm test` — Vitest unit tests (`src/**/*.test.ts`) for validation, formatting, serviceability, payments, and
+  the rate limiter
+- `npx playwright test` — e2e regression test for the critical guest-checkout path (`e2e/checkout.spec.ts`).
+  Run it against `npm run dev` (the default) so the dev-only OTP code is exposed; point `E2E_BASE_URL` at another
+  server to run it elsewhere. If the pinned Playwright browser binary isn't installed, run `npx playwright install`
+  or set `PLAYWRIGHT_CHROMIUM_PATH` to an existing Chromium executable.
 - `node scripts/generate-placeholders.mjs` — regenerates placeholder product SVGs and
   `src/data/seed-products.ts` / `supabase/seed.sql` from the product list in that script
+
+## Security & reliability notes
+
+- **Rate limiting** (`src/lib/rate-limit.ts`) caps OTP sends/verifies, checkout submissions, and promo lookups per
+  phone/IP. It's in-memory and per-instance — fine for a single-region deploy, but swap it for a durable store
+  (e.g. Upstash Redis) if you scale to multiple regions/instances.
+- **Security headers** (CSP, HSTS, X-Frame-Options, etc.) are set in `next.config.mjs`. The CSP allows
+  `'unsafe-inline'` for the GA4/Meta Pixel snippets; a nonce-based CSP would tighten this further if needed.
+- **Error monitoring** (`src/lib/monitoring.ts`) logs to the console always, and POSTs to
+  `MONITORING_WEBHOOK_URL` if set — point it at a Sentry ingestion endpoint or any webhook. `global-error.tsx`
+  catches uncaught render errors with a brand-voiced fallback page.

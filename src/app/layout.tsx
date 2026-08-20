@@ -5,6 +5,7 @@ import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CookieBanner } from "@/components/layout/CookieBanner";
+import { ErrorReportingInit } from "@/components/layout/ErrorReportingInit";
 import { CartProvider } from "@/lib/cart-context";
 import { BRAND_DESCRIPTION, BRAND_NAME, TAGLINE } from "@/lib/brand";
 import { GA4_ID, META_PIXEL_ID } from "@/lib/analytics";
@@ -62,6 +63,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${cormorant.variable} ${montserrat.variable}`}>
       <body className="flex min-h-screen flex-col bg-brand-ivory font-body text-brand-charcoal antialiased">
+        <ErrorReportingInit />
         {GA4_ID && (
           <>
             <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`} strategy="afterInteractive" />

@@ -6,14 +6,17 @@ import { useCart } from "@/lib/cart-context";
 import { CheckoutForm } from "@/components/checkout/CheckoutForm";
 
 export function CheckoutPageClient() {
-  const { lines } = useCart();
+  const { lines, hydrated } = useCart();
   const router = useRouter();
 
   useEffect(() => {
-    if (lines.length === 0) router.replace("/cart");
-  }, [lines.length, router]);
+    if (hydrated && lines.length === 0) router.replace("/cart");
+  }, [hydrated, lines.length, router]);
 
-  if (lines.length === 0) return null;
+  // Wait for localStorage hydration before deciding the cart is empty — a
+  // fresh page load (e.g. a bookmark, refresh, or direct link to /checkout)
+  // otherwise bounces straight to /cart even when items are saved.
+  if (!hydrated || lines.length === 0) return null;
 
   return (
     <div className="container-page py-10 sm:py-14">

@@ -6,7 +6,11 @@ import { useCart } from "@/lib/cart-context";
 import { formatPKR } from "@/lib/format";
 
 export function CartPageClient() {
-  const { lines, removeLine, updateQuantity, subtotal } = useCart();
+  const { lines, removeLine, updateQuantity, subtotal, hydrated } = useCart();
+
+  // Avoid flashing "Your cart is empty" for the one render before
+  // localStorage hydration completes on a fresh page load.
+  if (!hydrated) return null;
 
   if (lines.length === 0) {
     return (

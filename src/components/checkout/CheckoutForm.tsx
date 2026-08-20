@@ -11,7 +11,7 @@ import { trackEvent, trackPixelEvent } from "@/lib/analytics";
 type FieldErrors = Partial<Record<"fullName" | "phone" | "addressLine1" | "city" | "postalCode" | "province", string>>;
 
 export function CheckoutForm() {
-  const { lines, subtotal, clear } = useCart();
+  const { lines, subtotal } = useCart();
   const router = useRouter();
 
   const [fullName, setFullName] = useState("");
@@ -149,7 +149,10 @@ export function CheckoutForm() {
       trackPixelEvent("Purchase", { value: data.order.total, currency: "PKR" });
 
       sessionStorage.setItem(`order:${data.order.order_number}`, JSON.stringify(data.order));
-      clear();
+      // Cart is cleared by the confirmation page once it has the order in
+      // hand, not here — clearing before navigating away would empty
+      // `lines` while this page is still mounted, racing its own
+      // redirect-if-empty effect against the navigation below.
       router.push(`/order-confirmation/${data.order.order_number}`);
     } catch (err) {
       setOrderError(err instanceof Error ? err.message : "Could not place your order");

@@ -1,11 +1,12 @@
 export function formatPKR(amount: number): string {
-  return new Intl.NumberFormat("en-PK", {
-    style: "currency",
-    currency: "PKR",
-    maximumFractionDigits: 0,
-  })
-    .format(amount)
-    .replace("PKR", "Rs.");
+  // Deliberately avoids Intl's `style: "currency"` — the PKR currency
+  // symbol/spacing that ICU renders differs across Node/runtime builds
+  // (e.g. "Rs", "PKR", or "₨" depending on the environment's ICU data), so
+  // relying on it and string-replacing risks a different label per
+  // deployment. Formatting the number and prefixing a fixed label keeps it
+  // deterministic everywhere.
+  const formatted = new Intl.NumberFormat("en-PK", { maximumFractionDigits: 0 }).format(Math.round(amount));
+  return `Rs. ${formatted}`;
 }
 
 export function formatDate(iso: string): string {

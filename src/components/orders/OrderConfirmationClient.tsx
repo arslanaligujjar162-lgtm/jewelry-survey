@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import type { Order } from "@/lib/types";
 import { formatPKR, formatDate } from "@/lib/format";
+import { useCart } from "@/lib/cart-context";
 
 export function OrderConfirmationClient() {
   const params = useParams<{ orderNumber: string }>();
@@ -12,6 +13,7 @@ export function OrderConfirmationClient() {
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const { clear } = useCart();
 
   useEffect(() => {
     let cancelled = false;
@@ -43,6 +45,15 @@ export function OrderConfirmationClient() {
       cancelled = true;
     };
   }, [orderNumber]);
+
+  // Clear the cart once the order this page is confirming is confirmed to
+  // exist — not at "place order" time, so there's no window where the cart
+  // reads as empty while /checkout is still mounted and could redirect away
+  // from this navigation. Safe to call on every order load; clear() on an
+  // already-empty cart is a no-op.
+  useEffect(() => {
+    if (order) clear();
+  }, [order, clear]);
 
   if (loading) {
     return (
