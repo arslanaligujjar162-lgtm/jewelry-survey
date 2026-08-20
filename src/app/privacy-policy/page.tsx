@@ -5,6 +5,7 @@ import { CONTACT } from "@/lib/brand";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description: "How 7teen2wenty collects, uses, and protects your personal information.",
+  alternates: { canonical: "/privacy-policy" },
 };
 
 export default function PrivacyPolicyPage() {

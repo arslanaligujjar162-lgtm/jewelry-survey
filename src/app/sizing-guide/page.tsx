@@ -4,6 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Ring Sizing Guide",
   description: "Find your ring size at home: a US size chart with diameter and circumference, plus two ways to measure.",
+  alternates: { canonical: "/sizing-guide" },
 };
 
 const SIZE_CHART = [

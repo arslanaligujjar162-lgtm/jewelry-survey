@@ -4,6 +4,7 @@ import { CONTACT, whatsappLink } from "@/lib/brand";
 export const metadata: Metadata = {
   title: "Contact",
   description: "Reach 7teen2wenty by WhatsApp, email, or visit us. We reply fastest on WhatsApp.",
+  alternates: { canonical: "/contact" },
 };
 
 export default function ContactPage() {

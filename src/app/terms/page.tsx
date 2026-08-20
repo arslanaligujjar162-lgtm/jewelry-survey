@@ -5,6 +5,7 @@ import { CONTACT } from "@/lib/brand";
 export const metadata: Metadata = {
   title: "Terms of Service",
   description: "The terms that apply when you order from 7teen2wenty.",
+  alternates: { canonical: "/terms" },
 };
 
 export default function TermsPage() {

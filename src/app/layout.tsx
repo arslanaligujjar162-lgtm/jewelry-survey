@@ -6,6 +6,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CookieBanner } from "@/components/layout/CookieBanner";
 import { ErrorReportingInit } from "@/components/layout/ErrorReportingInit";
+import { SiteSchema } from "@/components/seo/SiteSchema";
 import { CartProvider } from "@/lib/cart-context";
 import { WishlistProvider } from "@/lib/wishlist-context";
 import { BRAND_DESCRIPTION, BRAND_NAME, TAGLINE } from "@/lib/brand";
@@ -65,6 +66,7 @@ export default function RootLayout({
     <html lang="en" className={`${cormorant.variable} ${montserrat.variable}`}>
       <body className="flex min-h-screen flex-col bg-brand-ivory font-body text-brand-charcoal antialiased">
         <ErrorReportingInit />
+        <SiteSchema />
         {GA4_ID && (
           <>
             <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`} strategy="afterInteractive" />

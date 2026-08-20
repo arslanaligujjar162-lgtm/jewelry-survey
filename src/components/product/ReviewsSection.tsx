@@ -1,10 +1,9 @@
-import { getApprovedReviews, getReviewStats } from "@/lib/reviews";
+import { getReviewStats, type Review } from "@/lib/reviews";
 import { formatDate } from "@/lib/format";
 import { StarRatingDisplay } from "@/components/product/StarRating";
 import { ReviewForm } from "@/components/product/ReviewForm";
 
-export async function ReviewsSection({ productId }: { productId: string }) {
-  const reviews = await getApprovedReviews(productId);
+export function ReviewsSection({ productId, reviews }: { productId: string; reviews: Review[] }) {
   const stats = getReviewStats(reviews);
 
   return (

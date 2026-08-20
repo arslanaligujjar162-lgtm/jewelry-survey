@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "Demi-Fine PVD Jewellery for Everyday Yes",
   description:
     "Modern retro demi-fine jewellery in 316L stainless steel with real PVD gold plating. Transparent pricing, Cash on Delivery across Pakistan.",
+  alternates: { canonical: "/" },
 };
 
 const CATEGORY_TILE_COLORS: Record<string, string> = {

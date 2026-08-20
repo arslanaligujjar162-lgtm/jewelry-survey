@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProductBySlug, getProducts, getRelatedProducts } from "@/lib/products";
+import { getApprovedReviews } from "@/lib/reviews";
 import { formatPKR } from "@/lib/format";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { AddToCartForm } from "@/components/product/AddToCartForm";
@@ -13,6 +14,9 @@ import { RecentlyViewedTracker } from "@/components/product/RecentlyViewedTracke
 import { RecentlyViewedSection } from "@/components/product/RecentlyViewedSection";
 import { ReviewsSection } from "@/components/product/ReviewsSection";
 import { StickyMobileCTA } from "@/components/layout/StickyMobileCTA";
+import { BreadcrumbSchema } from "@/components/seo/BreadcrumbSchema";
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://7teen2wenty.pk";
 
 interface ProductPageProps {
   params: { slug: string };
@@ -30,6 +34,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   return {
     title: `${product.name} — ${formatPKR(product.price)}`,
     description: product.description,
+    alternates: { canonical: `${siteUrl}/product/${product.slug}` },
     openGraph: {
       title: product.name,
       description: product.description,
@@ -42,13 +47,21 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const product = await getProductBySlug(params.slug);
   if (!product) notFound();
 
-  const related = await getRelatedProducts(product);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://7teen2wenty.pk";
+  const [related, reviews] = await Promise.all([getRelatedProducts(product), getApprovedReviews(product.id)]);
   const productUrl = `${siteUrl}/product/${product.slug}`;
+
+  const breadcrumbs = [
+    { name: "Shop", url: `${siteUrl}/shop` },
+    ...(product.category
+      ? [{ name: product.category.name, url: `${siteUrl}/shop?category=${product.category.slug}` }]
+      : []),
+    { name: product.name, url: productUrl },
+  ];
 
   return (
     <div className="container-page py-10 sm:py-14">
-      <ProductSchema product={product} url={productUrl} />
+      <ProductSchema product={product} url={productUrl} reviews={reviews} />
+      <BreadcrumbSchema items={breadcrumbs} />
       <RecentlyViewedTracker product={product} />
 
       <nav aria-label="Breadcrumb" className="font-body text-xs text-brand-charcoal/60">
@@ -127,7 +140,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </section>
       )}
 
-      <ReviewsSection productId={product.id} />
+      <ReviewsSection productId={product.id} reviews={reviews} />
 
       <RecentlyViewedSection excludeProductId={product.id} />
 

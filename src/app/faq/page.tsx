@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "FAQ",
   description:
     "Answers on ring sizing, returns and exchanges, how long PVD plating lasts, Cash on Delivery, and delivery timelines across Pakistan.",
+  alternates: { canonical: "/faq" },
 };
 
 const FAQ_SECTIONS: { category: string; items: { q: string; a: React.ReactNode }[] }[] = [

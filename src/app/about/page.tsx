@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Our Story",
   description:
     "Why 7teen2wenty exists: modern retro demi-fine jewellery in 316L stainless steel with PVD gold plating, priced so saying yes to yourself doesn't need a justification.",
+  alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {

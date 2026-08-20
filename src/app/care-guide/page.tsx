@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Care Guide",
   description:
     "How to make PVD-coated 316L stainless steel jewellery last: what to avoid, how to clean it, and how to store it between wears.",
+  alternates: { canonical: "/care-guide" },
 };
 
 const CARE_ITEMS = [
