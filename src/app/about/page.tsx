@@ -10,6 +10,8 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
+  const [opening, hesitation, pullQuote, ...rest] = BRAND_STORY_PARAGRAPHS;
+
   return (
     <div className="container-page py-14 sm:py-20">
       <div className="mx-auto max-w-2xl">
@@ -17,7 +19,23 @@ export default function AboutPage() {
         <h1 className="mt-3 font-display text-3xl font-semibold text-brand-umber-dark sm:text-4xl">{TAGLINE}</h1>
 
         <div className="mt-8 space-y-5 font-body text-base leading-relaxed text-brand-charcoal/85">
-          {BRAND_STORY_PARAGRAPHS.map((paragraph, i) => (
+          <p>{opening}</p>
+          <p>{hesitation}</p>
+        </div>
+
+        <blockquote className="my-12 border-l-2 border-brand-umber/25 pl-6 sm:pl-8">
+          <p className="font-display text-2xl font-semibold leading-snug text-brand-umber-dark sm:text-3xl">
+            {pullQuote}
+          </p>
+          <div className="mt-4 flex gap-2" aria-hidden="true">
+            <span className="h-1.5 w-1.5 rounded-full bg-brand-brass/60" />
+            <span className="h-1.5 w-1.5 rounded-full bg-brand-brass/60" />
+            <span className="h-1.5 w-1.5 rounded-full bg-brand-brass/60" />
+          </div>
+        </blockquote>
+
+        <div className="space-y-5 font-body text-base leading-relaxed text-brand-charcoal/85">
+          {rest.map((paragraph, i) => (
             <p key={i}>{paragraph}</p>
           ))}
         </div>

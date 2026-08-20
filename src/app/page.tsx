@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { StickyMobileCTA } from "@/components/layout/StickyMobileCTA";
+import { HeroMark } from "@/components/brand/HeroMark";
 import { CATEGORIES, NORTH_STAR_LINE, TAGLINE } from "@/lib/brand";
 import { getProducts } from "@/lib/products";
 import { ProductCard } from "@/components/product/ProductCard";
@@ -49,7 +50,7 @@ export default async function HomePage() {
               </Link>
             </div>
           </div>
-          <div className="aspect-square w-full rounded-2xl bg-brand-butter-light" aria-hidden="true" />
+          <HeroMark />
         </div>
       </section>
 
