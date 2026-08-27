@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/public";
 import type { Category, CategorySlug, Product } from "@/lib/types";
 import { FALLBACK_CATEGORIES, FALLBACK_PRODUCTS } from "@/data/seed-products";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
@@ -37,7 +37,7 @@ function filterFallback(filters: ProductFilters): Product[] {
 export async function getCategories(): Promise<Category[]> {
   if (!isSupabaseConfigured()) return FALLBACK_CATEGORIES;
 
-  const supabase = createClient();
+  const supabase = createPublicClient();
   const { data, error } = await supabase.from("categories").select("*").order("name");
   if (error || !data) return FALLBACK_CATEGORIES;
   return data as Category[];
@@ -46,7 +46,7 @@ export async function getCategories(): Promise<Category[]> {
 export async function getProducts(filters: ProductFilters = {}): Promise<Product[]> {
   if (!isSupabaseConfigured()) return filterFallback(filters);
 
-  const supabase = createClient();
+  const supabase = createPublicClient();
   let query = supabase.from("products").select("*, category:categories(*)").order("created_at", { ascending: false });
 
   if (filters.category) {
@@ -72,7 +72,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
     return product ? attachFallbackCategory(product) : null;
   }
 
-  const supabase = createClient();
+  const supabase = createPublicClient();
   const { data, error } = await supabase
     .from("products")
     .select("*, category:categories(*)")
