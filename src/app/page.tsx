@@ -14,9 +14,9 @@ export const metadata: Metadata = {
 };
 
 const CATEGORY_TILE_COLORS: Record<string, string> = {
-  earrings: "bg-brand-sky-light",
+  earrings: "bg-brand-sky",
   rings: "bg-brand-butter-light",
-  bracelets: "bg-brand-sky-light",
+  bracelets: "bg-brand-sky",
   necklaces: "bg-brand-butter-light",
 };
 
@@ -25,10 +25,10 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="border-b border-brand-umber/10 bg-brand-sky-light">
+      <section className="border-b border-brand-umber/10 bg-brand-sky">
         <div className="container-page grid gap-8 py-14 sm:py-20 lg:grid-cols-2 lg:items-center lg:py-28">
           <div>
-            <p className="font-body text-sm font-semibold uppercase tracking-widest text-brand-umber">
+            <p className="font-body text-sm font-semibold uppercase tracking-widest text-brand-umber-dark">
               Demi-fine · Modern retro
             </p>
             <h1 className="mt-4 font-display text-4xl font-semibold leading-tight text-brand-umber-dark sm:text-5xl lg:text-6xl">
