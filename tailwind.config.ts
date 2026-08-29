@@ -11,20 +11,22 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          sky: "#8FC6DE",
-          "sky-dark": "#5FA0C2",
-          "sky-light": "#DDF0F7",
-          umber: "#5C3A21",
-          "umber-light": "#7A4F30",
-          "umber-dark": "#3E2716",
-          butter: "#F3E3A6",
-          "butter-light": "#FBF3D6",
+          // Locked primaries — print-safe (7teen2wenty brand guide)
+          sky: "#5FA8C2", // Retro Sky Blue
+          "sky-dark": "#3E6D7E",
+          "sky-light": "#E7F2F6",
+          umber: "#673C34", // Umber Brown
+          "umber-light": "#AB948F",
+          "umber-dark": "#482A24",
+          butter: "#FAE3B1", // Pale Butter Yellow
+          "butter-light": "#FDF2DC",
           ivory: "#FBF7EE",
           charcoal: "#231F1C",
-          brass: "#B8925A",
-          blush: "#D98E73",
+          // Locked accents — digital-only (never print/packaging)
+          brass: "#998731", // Olive / Mustard Gold
+          blush: "#CF5527", // Burnt Orange
           success: "#4C7A5A",
-          error: "#B23B2E",
+          error: "#7D2027", // Brick Red / Maroon
         },
       },
       fontFamily: {

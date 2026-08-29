@@ -1,18 +1,20 @@
 export const BRAND_NAME = "7teen2wenty";
 export const BRAND_MARK = "1720";
 export const TAGLINE = "Not fast. Not a fortune. Just good jewellery.";
-export const NORTH_STAR_LINE = "She didn't need a reason. She just said yes.";
+export const MANTRA = "Buy yourself the yes.";
+export const VISION =
+  "Jewellery for yourself shouldn't need a reason. 7teen2wenty exists so that saying yes — to something retro, something warm, something just for you — becomes ordinary in Pakistan, not an exception.";
+export const VISION_LINE = "Jewellery for yourself shouldn't need a reason.";
 export const AESTHETIC = "Modern retro";
 
 export const BRAND_DESCRIPTION =
-  "7teen2wenty is a modern Pakistani jewellery brand that celebrates the warmth of retro-era gold and gemstone design, while embracing durability, transparency, and everyday wearability. Working in 316L stainless steel with real PVD gold plating, it exists to give buyers pieces that feel like they already have a story — priced and built so saying yes to yourself doesn't need a justification. Not fast. Not a fortune. Just good jewellery.";
+  "7teen2wenty makes demi-fine, modern retro jewellery — PVD-coated pieces built to hold up, priced for daily wear, sold direct to Pakistan through Instagram and COD. Not fast. Not a fortune. Just good jewellery.";
 
 export const BRAND_STORY_PARAGRAPHS = [
-  "There's a small hesitation before buying jewellery for yourself. Not about the money — about whether it's worth it.",
+  "There's a hesitation before buying jewellery for yourself. You don't think twice buying it for your mother, your sister, your daughter — but somehow it's harder to say yes when it's for you. Not about the money. About whether you're worth it.",
   "I used to feel that every time I saw something from retro times — the shapes, the warm colour, jewellery that felt like it already had a story attached. I'd talk myself out of it. Save it for later. Never quite get around to it.",
   "7teen2wenty is the yes I kept putting off.",
-  "PVD-coated, built to hold up, priced so saying yes to yourself doesn't need a justification.",
-  "Not fast fashion. Not a fortune. Just good jewellery — the kind you don't have to talk yourself into.",
+  "Not fast. Not a fortune. Just good jewellery — the kind you don't have to talk yourself into.",
 ];
 
 // Placeholder contact details — flagged for real business info before launch.

@@ -1,32 +1,35 @@
-export function LogoMark({ size = 40, className = "" }: { size?: number; className?: string }) {
+import Image from "next/image";
+
+const LOCKUPS = {
+  // Retro Sky Blue textured background, Pale Butter Yellow numerals — the primary mark.
+  primary: { src: "/brand/logo-primary.png", alt: "7teen2wenty numeral mark, 1720" },
+  // Umber Brown on Pale Butter Yellow — light surfaces / packaging interior.
+  light: { src: "/brand/logo-light.png", alt: "7teen2wenty numeral mark, 1720" },
+  // Pale Butter Yellow on Umber Brown — dark surfaces.
+  dark: { src: "/brand/logo-dark.png", alt: "7teen2wenty numeral mark, 1720" },
+  // Pure black, single-ink print (thermal COD slips, engraving, stamps).
+  mono: { src: "/brand/logo-mono.png", alt: "7teen2wenty numeral mark, 1720" },
+} as const;
+
+type LockupVariant = keyof typeof LOCKUPS;
+
+export function LogoMark({
+  size = 40,
+  className = "",
+  variant = "light",
+}: {
+  size?: number;
+  className?: string;
+  variant?: LockupVariant;
+}) {
+  const lockup = LOCKUPS[variant];
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 96 96"
-      role="img"
-      aria-label="7teen2wenty numeral mark, 1720"
-      className={className}
+    <span
+      className={`inline-block shrink-0 overflow-hidden rounded-[22%] ${className}`}
+      style={{ width: size, height: size }}
     >
-      <rect x="0" y="0" width="96" height="96" rx="22" fill="#8FC6DE" />
-      <text
-        x="48"
-        y="50"
-        textAnchor="middle"
-        dominantBaseline="central"
-        fontFamily="var(--font-cormorant), Georgia, serif"
-        fontWeight={700}
-        fontSize="34"
-        fill="#5C3A21"
-      >
-        1720
-      </text>
-      <g fill="#F3E3A6">
-        <circle cx="30" cy="74" r="4" />
-        <circle cx="48" cy="74" r="4" />
-        <circle cx="66" cy="74" r="4" />
-      </g>
-    </svg>
+      <Image src={lockup.src} alt={lockup.alt} width={size} height={size} className="h-full w-full object-cover" />
+    </span>
   );
 }
 

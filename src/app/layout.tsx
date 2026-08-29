@@ -49,12 +49,6 @@ export const metadata: Metadata = {
     title: `${BRAND_NAME} — ${TAGLINE}`,
     description: BRAND_DESCRIPTION,
   },
-  icons: {
-    icon: [
-      { url: "/icon", type: "image/png" },
-    ],
-    apple: "/apple-icon",
-  },
 };
 
 export default function RootLayout({

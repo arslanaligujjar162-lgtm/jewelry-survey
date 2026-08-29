@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { StickyMobileCTA } from "@/components/layout/StickyMobileCTA";
 import { HeroMark } from "@/components/brand/HeroMark";
-import { CATEGORIES, NORTH_STAR_LINE, TAGLINE } from "@/lib/brand";
+import { CATEGORIES, MANTRA, TAGLINE, VISION_LINE } from "@/lib/brand";
 import { getProducts } from "@/lib/products";
 import { ProductCard } from "@/components/product/ProductCard";
 
@@ -29,12 +29,12 @@ export default async function HomePage() {
         <div className="container-page grid gap-8 py-14 sm:py-20 lg:grid-cols-2 lg:items-center lg:py-28">
           <div>
             <p className="font-body text-sm font-semibold uppercase tracking-widest text-brand-umber">
-              Demi-fine. Modern retro. Made to last.
+              Demi-fine · Modern retro
             </p>
             <h1 className="mt-4 font-display text-4xl font-semibold leading-tight text-brand-umber-dark sm:text-5xl lg:text-6xl">
-              {NORTH_STAR_LINE}
+              {MANTRA}
             </h1>
-            <p className="mt-5 max-w-md font-body text-base text-brand-charcoal/80">{TAGLINE}</p>
+            <p className="mt-5 max-w-md font-body text-base text-brand-charcoal/80">{VISION_LINE}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href="/shop"
@@ -55,7 +55,10 @@ export default async function HomePage() {
       </section>
 
       <section aria-label="Why 7teen2wenty" className="border-b border-brand-umber/10 bg-brand-ivory">
-        <div className="container-page grid gap-6 py-10 sm:grid-cols-3">
+        <div className="container-page py-10">
+          <p className="font-display text-xl font-semibold text-brand-umber-dark sm:text-2xl">{TAGLINE}</p>
+        </div>
+        <div className="container-page grid gap-6 pb-10 sm:grid-cols-3">
           <TrustItem
             title="Transparent pricing"
             body="No inflated tags, no fake discounts. The price on the page is the price you pay."
