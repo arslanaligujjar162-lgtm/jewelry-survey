@@ -12,9 +12,12 @@ const config: Config = {
       colors: {
         brand: {
           // Locked primaries — print-safe (7teen2wenty brand guide)
-          sky: "#5FA8C2", // Retro Sky Blue
-          "sky-dark": "#3E6D7E",
-          "sky-light": "#E7F2F6",
+          // sky is sampled directly from the real logo artwork (public/brand/logo-primary.png),
+          // not the flat swatch hex — the primary mark's background is textured/grained, so the
+          // rendered average pixel color (#63A8C0) reads truer on screen than the doc's #5FA8C2.
+          sky: "#63A8C0", // Retro Sky Blue (as rendered in the locked artwork)
+          "sky-dark": "#406D7D",
+          "sky-light": "#E8F2F6",
           umber: "#673C34", // Umber Brown
           "umber-light": "#AB948F",
           "umber-dark": "#482A24",
