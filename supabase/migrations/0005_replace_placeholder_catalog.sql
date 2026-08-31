@@ -1,10 +1,9 @@
--- Seed data: categories + placeholder catalog (replace imagery with real photography before launch)
-insert into categories (slug, name, description) values
-  ('earrings', 'Earrings', 'Hoops, studs, and drops in PVD gold.'),
-  ('rings', 'Rings', 'Signets, bands, and stone rings, true to size.'),
-  ('bracelets', 'Bracelets', 'Chains, bangles, and cuffs built to hold up.'),
-  ('necklaces', 'Necklaces', 'Chains and pendants for everyday layering.')
-on conflict (slug) do nothing;
+-- Replaces the placeholder demo catalog with the real product list + prices
+-- (Rs 1,250-3,666, matching the locked brand guide's Rs 1,500-3,000 range
+-- for the bulk of the range). Safe to run on the live database: orders
+-- store a JSON snapshot of their line items (no foreign key to products),
+-- and any reviews on the old placeholder products cascade-delete with them.
+delete from products;
 
 insert into products (sku, name, slug, category_id, price, compare_at_price, description, plating_spec, material_spec, images, stock_count, is_new, ring_size_range) values
   ('1720-EAR-001', 'Confetti Hoop', 'confetti-hoop', (select id from categories where slug = 'earrings'), 1974, null, 'Hoops with a scattered, mixed-texture finish along the band. Standard post-and-butterfly backs.', '18k gold PVD coating over 316L stainless steel', '316L stainless steel, PVD gold plated', ARRAY['/products/confetti-hoop-1.svg','/products/confetti-hoop-2.svg'], 4, true, null),
@@ -27,9 +26,4 @@ insert into products (sku, name, slug, category_id, price, compare_at_price, des
   ('1720-BRC-004', 'Channel Bangle', 'channel-bangle', (select id from categories where slug = 'bracelets'), 1770, null, 'A row of cubic zirconia set into a channel along a solid, hinged bangle.', '18k gold PVD coating over 316L stainless steel', '316L stainless steel, PVD gold plated, cubic zirconia', ARRAY['/products/channel-bangle-1.svg','/products/channel-bangle-2.svg'], 23, false, null),
   ('1720-BRC-005', 'Confetti Bangle', 'confetti-bangle', (select id from categories where slug = 'bracelets'), 3666, null, 'A textured, scattered-finish bangle, solid and hinged.', '18k gold PVD coating over 316L stainless steel', '316L stainless steel, PVD gold plated', ARRAY['/products/confetti-bangle-1.svg','/products/confetti-bangle-2.svg'], 10, false, null),
   ('1720-BRC-006', 'Vine Bangle', 'vine-bangle', (select id from categories where slug = 'bracelets'), 1564, null, 'A thin, twisting vine-textured bangle. Open style, one size.', '18k gold PVD coating over 316L stainless steel', '316L stainless steel, PVD gold plated', ARRAY['/products/vine-bangle-1.svg','/products/vine-bangle-2.svg'], 17, false, null),
-  ('1720-NCK-001', 'Clover Pendant', 'clover-pendant', (select id from categories where slug = 'necklaces'), 1488, null, 'A four-leaf clover pendant on a fine box chain, 16-18in adjustable.', '18k gold PVD coating over 316L stainless steel', '316L stainless steel, PVD gold plated', ARRAY['/products/clover-pendant-1.svg','/products/clover-pendant-2.svg'], 4, true, null)
-on conflict (sku) do nothing;
-
-insert into promo_codes (code, discount_percent, active, expires_at) values
-  ('WELCOME10', 10, true, null)
-on conflict (code) do nothing;
+  ('1720-NCK-001', 'Clover Pendant', 'clover-pendant', (select id from categories where slug = 'necklaces'), 1488, null, 'A four-leaf clover pendant on a fine box chain, 16-18in adjustable.', '18k gold PVD coating over 316L stainless steel', '316L stainless steel, PVD gold plated', ARRAY['/products/clover-pendant-1.svg','/products/clover-pendant-2.svg'], 4, true, null);
