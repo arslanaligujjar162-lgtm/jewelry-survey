@@ -25,26 +25,26 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="border-b border-brand-umber/10 bg-brand-sky">
-        <div className="container-page grid gap-8 py-14 sm:py-20 lg:grid-cols-2 lg:items-center lg:py-28">
+      <section className="bg-grain border-b-2 border-brand-umber-dark/20 bg-brand-sky">
+        <div className="container-page grid gap-8 py-16 sm:py-24 lg:grid-cols-2 lg:items-center lg:py-32">
           <div>
-            <p className="font-body text-sm font-semibold uppercase tracking-widest text-brand-umber-dark">
+            <p className="font-body text-base font-bold uppercase tracking-widest text-brand-umber-dark">
               Demi-fine · Modern retro
             </p>
-            <h1 className="mt-4 font-display text-4xl font-semibold leading-tight text-brand-umber-dark sm:text-5xl lg:text-6xl">
+            <h1 className="text-balance mt-4 font-display text-6xl font-bold leading-[0.95] tracking-tight text-brand-umber-dark sm:text-7xl lg:text-7xl">
               {MANTRA}
             </h1>
-            <p className="mt-5 max-w-md font-body text-base text-brand-charcoal/80">{VISION_LINE}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <p className="mt-6 max-w-md font-body text-lg text-brand-charcoal/80">{VISION_LINE}</p>
+            <div className="mt-9 flex flex-wrap gap-4">
               <Link
                 href="/shop"
-                className="inline-flex items-center justify-center rounded-full bg-brand-umber px-7 py-3 font-body text-sm font-semibold text-brand-ivory transition hover:bg-brand-umber-dark"
+                className="shadow-retro inline-flex items-center justify-center rounded-full bg-brand-umber px-9 py-4 font-body text-base font-bold text-brand-ivory transition hover:-translate-y-0.5 hover:shadow-[6px_6px_0_0_#482a24] active:translate-y-0 active:shadow-none"
               >
                 Shop the collection
               </Link>
               <Link
                 href="/about"
-                className="inline-flex items-center justify-center rounded-full border border-brand-umber/30 px-7 py-3 font-body text-sm font-semibold text-brand-umber-dark transition hover:bg-brand-ivory"
+                className="inline-flex items-center justify-center rounded-full border-2 border-brand-umber-dark px-9 py-4 font-body text-base font-bold text-brand-umber-dark transition hover:bg-brand-ivory"
               >
                 Our story
               </Link>
@@ -55,8 +55,8 @@ export default async function HomePage() {
       </section>
 
       <section aria-label="Why 7teen2wenty" className="border-b border-brand-umber/10 bg-brand-ivory">
-        <div className="container-page py-10">
-          <p className="font-display text-xl font-semibold text-brand-umber-dark sm:text-2xl">{TAGLINE}</p>
+        <div className="container-page py-12">
+          <p className="font-display text-2xl font-bold text-brand-umber-dark sm:text-3xl">{TAGLINE}</p>
         </div>
         <div className="container-page grid gap-6 pb-10 sm:grid-cols-3">
           <TrustItem
@@ -71,16 +71,16 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="container-page py-14">
+      <section className="container-page py-16">
         <div className="flex items-end justify-between">
-          <h2 className="font-display text-2xl font-semibold text-brand-umber-dark sm:text-3xl">Shop by category</h2>
+          <h2 className="font-display text-3xl font-bold text-brand-umber-dark sm:text-4xl">Shop by category</h2>
         </div>
-        <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <div className="mt-8 grid grid-cols-2 gap-5 sm:grid-cols-4">
           {CATEGORIES.map((c) => (
             <Link
               key={c.slug}
               href={`/shop?category=${c.slug}`}
-              className={`flex aspect-square flex-col items-center justify-center rounded-2xl ${CATEGORY_TILE_COLORS[c.slug]} font-body text-sm font-semibold text-brand-umber-dark transition hover:opacity-90`}
+              className={`shadow-retro-sm flex aspect-square flex-col items-center justify-center overflow-hidden rounded-3xl border-2 border-brand-umber-dark/15 ${CATEGORY_TILE_COLORS[c.slug]} ${c.slug === "earrings" || c.slug === "bracelets" ? "bg-grain" : ""} font-body text-base font-bold text-brand-umber-dark transition hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#482a24]`}
             >
               {c.label}
             </Link>
@@ -89,10 +89,10 @@ export default async function HomePage() {
       </section>
 
       {newArrivals.length > 0 && (
-        <section className="container-page py-14">
+        <section className="container-page py-16">
           <div className="flex items-end justify-between">
-            <h2 className="font-display text-2xl font-semibold text-brand-umber-dark sm:text-3xl">New arrivals</h2>
-            <Link href="/shop?new=true" className="font-body text-sm font-medium text-brand-umber hover:underline">
+            <h2 className="font-display text-3xl font-bold text-brand-umber-dark sm:text-4xl">New arrivals</h2>
+            <Link href="/shop?new=true" className="font-body text-sm font-semibold text-brand-umber hover:underline">
               View all
             </Link>
           </div>

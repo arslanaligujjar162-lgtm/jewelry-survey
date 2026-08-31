@@ -11,7 +11,7 @@ import Image from "next/image";
 export function HeroMark({ className = "" }: { className?: string }) {
   return (
     <div
-      className={`relative aspect-square w-full overflow-hidden rounded-2xl shadow-[0_1px_2px_rgba(72,42,36,0.15),0_16px_40px_rgba(72,42,36,0.18)] ring-1 ring-brand-umber-dark/10 ${className}`}
+      className={`relative aspect-square w-full overflow-hidden rounded-3xl border-2 border-brand-umber-dark/20 shadow-[0_1px_2px_rgba(72,42,36,0.15),0_20px_48px_rgba(72,42,36,0.22)] ${className}`}
     >
       <Image
         src="/brand/logo-primary.png"

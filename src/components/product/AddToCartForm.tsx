@@ -124,7 +124,7 @@ export function AddToCartForm({ product }: { product: Product }) {
           type="button"
           onClick={handleAddToCart}
           disabled={outOfStock}
-          className="inline-flex items-center justify-center rounded-full bg-brand-umber px-7 py-3 font-body text-sm font-semibold text-brand-ivory transition hover:bg-brand-umber-dark disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex items-center justify-center rounded-full shadow-retro-sm bg-brand-umber px-8 py-4 font-body text-base font-bold text-brand-ivory transition hover:-translate-y-0.5 hover:bg-brand-umber-dark hover:shadow-[5px_5px_0_0_#482a24] active:translate-y-0 active:shadow-none disabled:cursor-not-allowed disabled:opacity-50"
         >
           {outOfStock ? "Out of stock" : added ? "Added ✓" : "Add to cart"}
         </button>
@@ -135,7 +135,7 @@ export function AddToCartForm({ product }: { product: Product }) {
             router.push("/cart");
           }}
           disabled={outOfStock}
-          className="inline-flex items-center justify-center rounded-full border border-brand-umber/30 px-7 py-3 font-body text-sm font-semibold text-brand-umber-dark transition hover:bg-brand-sky-light disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex items-center justify-center rounded-full border-2 border-brand-umber-dark px-8 py-4 font-body text-base font-bold text-brand-umber-dark transition hover:bg-brand-sky disabled:cursor-not-allowed disabled:opacity-50"
         >
           Buy it now
         </button>

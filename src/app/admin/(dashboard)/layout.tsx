@@ -20,7 +20,7 @@ const NAV = [
 export default async function AdminDashboardLayout({ children }: { children: React.ReactNode }) {
   if (!isSupabaseConfigured()) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-brand-sky-light px-4">
+      <div className="flex min-h-screen items-center justify-center bg-brand-sky px-4">
         <div className="max-w-sm rounded-xl bg-brand-ivory p-6 text-center shadow-sm">
           <h1 className="font-display text-xl font-semibold text-brand-umber-dark">Admin dashboard not configured</h1>
           <p className="mt-3 font-body text-sm text-brand-charcoal/70">
@@ -40,7 +40,7 @@ export default async function AdminDashboardLayout({ children }: { children: Rea
   if (!user) redirect("/admin/login");
 
   return (
-    <div className="min-h-screen bg-brand-sky-light/30">
+    <div className="min-h-screen bg-brand-sky/30">
       <header className="border-b border-brand-umber/10 bg-brand-ivory">
         <div className="container-page flex h-16 items-center justify-between">
           <Wordmark />

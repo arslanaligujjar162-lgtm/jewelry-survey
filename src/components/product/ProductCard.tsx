@@ -8,7 +8,7 @@ import { WishlistButton } from "@/components/product/WishlistButton";
 export function ProductCard({ product }: { product: Product }) {
   return (
     <Link href={`/product/${product.slug}`} className="group block">
-      <div className="relative aspect-square overflow-hidden rounded-xl bg-brand-sky-light">
+      <div className="relative aspect-square overflow-hidden rounded-xl bg-brand-sky">
         <Image
           src={product.images[0]}
           alt={`${product.name} — ${product.material_spec}`}

@@ -54,7 +54,7 @@ export function ShopFilters() {
         />
         <button
           type="submit"
-          className="shrink-0 rounded-full border border-brand-umber/30 px-4 py-2 font-body text-sm font-medium text-brand-umber-dark hover:bg-brand-sky-light"
+          className="shrink-0 rounded-full border border-brand-umber/30 px-4 py-2 font-body text-sm font-medium text-brand-umber-dark hover:bg-brand-sky"
         >
           Search
         </button>
@@ -113,7 +113,7 @@ function FilterChip({
       className={`rounded-full border px-4 py-2 font-body text-sm transition ${
         active
           ? "border-brand-umber bg-brand-umber text-brand-ivory"
-          : "border-brand-umber/20 text-brand-charcoal hover:bg-brand-sky-light"
+          : "border-brand-umber/20 text-brand-charcoal hover:bg-brand-sky"
       }`}
     >
       {children}

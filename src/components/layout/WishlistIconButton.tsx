@@ -9,7 +9,7 @@ export function WishlistIconButton() {
   return (
     <Link
       href="/wishlist"
-      className="relative inline-flex items-center justify-center rounded-full p-2 text-brand-umber-dark transition hover:bg-brand-sky-light"
+      className="relative inline-flex items-center justify-center rounded-full p-2 text-brand-umber-dark transition hover:bg-brand-sky"
       aria-label={`View wishlist, ${count} item${count === 1 ? "" : "s"}`}
     >
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">

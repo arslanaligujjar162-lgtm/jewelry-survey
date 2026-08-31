@@ -330,7 +330,7 @@ export function CheckoutForm() {
             4. Payment
           </h2>
           <div className="mt-4 space-y-2">
-            <label className="flex items-center gap-3 rounded-lg border border-brand-umber bg-brand-sky-light/40 p-3 font-body text-sm">
+            <label className="flex items-center gap-3 rounded-lg border border-brand-umber bg-brand-sky/40 p-3 font-body text-sm">
               <input type="radio" name="payment" checked readOnly />
               Cash on Delivery
             </label>

@@ -15,8 +15,10 @@ export default function AboutPage() {
   return (
     <div className="container-page py-14 sm:py-20">
       <div className="mx-auto max-w-2xl">
-        <p className="font-body text-sm font-semibold uppercase tracking-widest text-brand-umber">Our story</p>
-        <h1 className="mt-3 font-display text-3xl font-semibold text-brand-umber-dark sm:text-4xl">{TAGLINE}</h1>
+        <p className="font-body text-base font-bold uppercase tracking-widest text-brand-umber">Our story</p>
+        <h1 className="mt-3 font-display text-4xl font-bold leading-[1.05] text-brand-umber-dark sm:text-5xl">
+          {TAGLINE}
+        </h1>
 
         <div className="mt-8 space-y-5 font-body text-base leading-relaxed text-brand-charcoal/85">
           <p>{opening}</p>
@@ -43,13 +45,13 @@ export default function AboutPage() {
         <div className="mt-10 flex flex-wrap gap-3">
           <Link
             href="/shop"
-            className="inline-flex items-center justify-center rounded-full bg-brand-umber px-7 py-3 font-body text-sm font-semibold text-brand-ivory transition hover:bg-brand-umber-dark"
+            className="inline-flex items-center justify-center rounded-full shadow-retro-sm bg-brand-umber px-8 py-4 font-body text-base font-bold text-brand-ivory transition hover:-translate-y-0.5 hover:bg-brand-umber-dark hover:shadow-[5px_5px_0_0_#482a24] active:translate-y-0 active:shadow-none"
           >
             Shop the collection
           </Link>
           <Link
             href="/care-guide"
-            className="inline-flex items-center justify-center rounded-full border border-brand-umber/30 px-7 py-3 font-body text-sm font-semibold text-brand-umber-dark transition hover:bg-brand-sky-light"
+            className="inline-flex items-center justify-center rounded-full border-2 border-brand-umber-dark px-8 py-4 font-body text-base font-bold text-brand-umber-dark transition hover:bg-brand-sky"
           >
             Read the care guide
           </Link>

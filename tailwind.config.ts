@@ -15,9 +15,9 @@ const config: Config = {
           // sky is sampled directly from the real logo artwork (public/brand/logo-primary.png),
           // not the flat swatch hex — the primary mark's background is textured/grained, so the
           // rendered average pixel color (#63A8C0) reads truer on screen than the doc's #5FA8C2.
+          // This is the only blue in the system — lighter/darker moments use opacity on this
+          // single value (bg-brand-sky/10, /40, etc.), never a separate tint or shade.
           sky: "#63A8C0", // Retro Sky Blue (as rendered in the locked artwork)
-          "sky-dark": "#406D7D",
-          "sky-light": "#E8F2F6",
           umber: "#673C34", // Umber Brown
           "umber-light": "#AB948F",
           "umber-dark": "#482A24",

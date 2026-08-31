@@ -25,7 +25,7 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
 
       <div className="mt-6 overflow-x-auto rounded-xl border border-brand-umber/10 bg-brand-ivory">
         <table className="w-full text-left font-body text-sm">
-          <thead className="bg-brand-sky-light/60">
+          <thead className="bg-brand-sky/60">
             <tr>
               <th className="px-4 py-3 font-semibold text-brand-umber-dark">Order</th>
               <th className="px-4 py-3 font-semibold text-brand-umber-dark">Customer</th>

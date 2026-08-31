@@ -25,6 +25,34 @@ body {
   .container-page {
     @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
   }
+
+  /*
+   * Grain texture matching the real logo artwork's textured Sky Blue
+   * background — an SVG feTurbulence noise field, blended on top of a solid
+   * brand-sky fill. Reserved for large brand-statement blue surfaces (hero,
+   * category tiles, footer band); not for small chrome (buttons, badges).
+   */
+  .bg-grain {
+    position: relative;
+    isolation: isolate;
+  }
+  .bg-grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.22;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+
+  /* Hard, offset "retro stamp" shadow — no blur, reads as a printed block. */
+  .shadow-retro {
+    box-shadow: 4px 4px 0 0 #482a24;
+  }
+  .shadow-retro-sm {
+    box-shadow: 3px 3px 0 0 #482a24;
+  }
 }
 
 @layer components {

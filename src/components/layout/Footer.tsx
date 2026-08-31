@@ -13,7 +13,7 @@ const POLICY_LINKS = [
 
 export function Footer() {
   return (
-    <footer className="mt-24 border-t border-brand-umber/10 bg-brand-sky-light/40">
+    <footer className="bg-grain mt-24 border-t-2 border-brand-umber-dark/20 bg-brand-sky">
       <div className="container-page grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <Wordmark />
@@ -72,8 +72,8 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-brand-umber/10 py-5">
-        <p className="container-page font-body text-xs text-brand-charcoal/60">
+      <div className="border-t border-brand-umber-dark/15 py-5">
+        <p className="container-page font-body text-xs text-brand-charcoal/70">
           © {new Date().getFullYear()} 7teen2wenty. Demi-fine jewellery, 316L stainless steel with PVD gold plating.
           Cash on Delivery available across Pakistan.
         </p>

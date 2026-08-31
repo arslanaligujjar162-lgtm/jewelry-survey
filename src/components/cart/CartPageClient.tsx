@@ -21,7 +21,7 @@ export function CartPageClient() {
         </p>
         <Link
           href="/shop"
-          className="mt-6 inline-flex items-center justify-center rounded-full bg-brand-umber px-7 py-3 font-body text-sm font-semibold text-brand-ivory transition hover:bg-brand-umber-dark"
+          className="mt-6 inline-flex items-center justify-center rounded-full shadow-retro-sm bg-brand-umber px-8 py-4 font-body text-base font-bold text-brand-ivory transition hover:-translate-y-0.5 hover:bg-brand-umber-dark hover:shadow-[5px_5px_0_0_#482a24] active:translate-y-0 active:shadow-none"
         >
           Shop the collection
         </Link>
@@ -40,7 +40,7 @@ export function CartPageClient() {
               key={`${line.product_id}-${line.ring_size ?? ""}`}
               className="flex gap-4 border-b border-brand-umber/10 pb-6"
             >
-              <Link href={`/product/${line.slug}`} className="h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-brand-sky-light">
+              <Link href={`/product/${line.slug}`} className="h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-brand-sky">
                 <Image src={line.image} alt={line.name} width={96} height={96} className="h-full w-full object-cover" />
               </Link>
               <div className="flex flex-1 flex-col justify-between">

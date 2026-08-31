@@ -31,7 +31,7 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-brand-sky-light px-4 py-16">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-brand-sky px-4 py-16">
       <Wordmark />
       <h1 className="mt-6 font-display text-2xl font-semibold text-brand-umber-dark">Admin sign in</h1>
 
