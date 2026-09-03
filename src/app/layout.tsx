@@ -5,6 +5,7 @@ import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CookieBanner } from "@/components/layout/CookieBanner";
+import { WhatsAppFloatingButton } from "@/components/layout/WhatsAppFloatingButton";
 import { ErrorReportingInit } from "@/components/layout/ErrorReportingInit";
 import { SiteSchema } from "@/components/seo/SiteSchema";
 import { CartProvider } from "@/lib/cart-context";
@@ -93,6 +94,7 @@ export default function RootLayout({
             <main className="flex-1">{children}</main>
             <Footer />
             <CookieBanner />
+            <WhatsAppFloatingButton />
           </WishlistProvider>
         </CartProvider>
       </body>

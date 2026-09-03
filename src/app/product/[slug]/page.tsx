@@ -7,6 +7,8 @@ import { formatPKR } from "@/lib/format";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { AddToCartForm } from "@/components/product/AddToCartForm";
 import { StockIndicator } from "@/components/product/StockIndicator";
+import { TrustBadges } from "@/components/product/TrustBadges";
+import { ProductFeatures } from "@/components/product/ProductFeatures";
 import { ProductSchema } from "@/components/product/ProductSchema";
 import { ProductCard } from "@/components/product/ProductCard";
 import { WishlistButton } from "@/components/product/WishlistButton";
@@ -81,7 +83,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
       </nav>
 
       <div className="mt-6 grid gap-10 lg:grid-cols-2">
-        <ProductGallery images={product.images} productName={product.name} />
+        <div>
+          <ProductGallery images={product.images} productName={product.name} />
+          <TrustBadges className="mt-4" />
+        </div>
 
         <div>
           <div className="flex items-start justify-between gap-4">
@@ -95,23 +100,19 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
           <p className="mt-5 font-body text-base leading-relaxed text-brand-charcoal/85">{product.description}</p>
 
-          <dl className="mt-6 space-y-2 border-t border-brand-umber/10 pt-5 font-body text-sm">
+          <AddToCartForm product={product} />
+
+          <ProductFeatures product={product} />
+
+          <dl className="mt-4 space-y-1.5 font-body text-xs text-brand-charcoal/60">
             <div className="flex gap-2">
-              <dt className="font-semibold text-brand-umber-dark">Material</dt>
-              <dd className="text-brand-charcoal/80">{product.material_spec}</dd>
-            </div>
-            <div className="flex gap-2">
-              <dt className="font-semibold text-brand-umber-dark">Plating</dt>
-              <dd className="text-brand-charcoal/80">{product.plating_spec}</dd>
-            </div>
-            <div className="flex gap-2">
-              <dt className="font-semibold text-brand-umber-dark">SKU</dt>
-              <dd className="text-brand-charcoal/80">{product.sku}</dd>
+              <dt>SKU</dt>
+              <dd>{product.sku}</dd>
             </div>
             {product.ring_size_range && (
               <div className="flex gap-2">
-                <dt className="font-semibold text-brand-umber-dark">Sizes available</dt>
-                <dd className="text-brand-charcoal/80">
+                <dt>Sizes available</dt>
+                <dd>
                   {product.ring_size_range} — see our{" "}
                   <Link href="/sizing-guide" className="text-brand-umber underline">
                     sizing guide
@@ -120,12 +121,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
             )}
           </dl>
-
-          <AddToCartForm product={product} />
-
-          <p className="mt-6 font-body text-xs text-brand-charcoal/60">
-            Cash on Delivery available. Delivery time and cost shown at checkout.
-          </p>
         </div>
       </div>
 
