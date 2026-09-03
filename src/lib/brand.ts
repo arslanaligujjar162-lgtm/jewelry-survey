@@ -17,10 +17,10 @@ export const BRAND_STORY_PARAGRAPHS = [
   "Not fast. Not a fortune. Just good jewellery — the kind you don't have to talk yourself into.",
 ];
 
-// Placeholder contact details — flagged for real business info before launch.
+// Address is still a placeholder — flagged for the real one before launch.
 export const CONTACT = {
   email: "hello@7teen2wenty.pk",
-  whatsappNumber: "923001234567", // TODO: replace with real WhatsApp Business number before launch
+  whatsappNumber: "923356389333",
   address: "Placeholder Address, Gulberg III, Lahore, Punjab, Pakistan", // TODO: confirm real business address before launch
   instagram: "https://instagram.com/7teen2wenty",
   facebook: "https://facebook.com/7teen2wenty",

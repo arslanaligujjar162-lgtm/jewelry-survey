@@ -75,7 +75,7 @@ const FAQ_SECTIONS: { category: string; items: { q: string; a: React.ReactNode }
       },
       {
         q: "Is online payment available?",
-        a: "Not yet. Card, JazzCash, and Easypaisa are coming once our payment gateway account is approved. Cash on Delivery is available across our serviceable areas now.",
+        a: "Not yet. Card, JazzCash, and Easypaisa are coming once our payment gateway account is approved. Cash on Delivery is available across Pakistan now.",
       },
     ],
   },
@@ -84,11 +84,11 @@ const FAQ_SECTIONS: { category: string; items: { q: string; a: React.ReactNode }
     items: [
       {
         q: "How long does delivery take?",
-        a: "1-2 business days in Lahore, Islamabad, and Rawalpindi; 2-3 days in most other major cities; up to 5 days in some areas. Your exact estimate shows at checkout once you enter your city.",
+        a: "2-3 business days in Central Punjab, 4-5 days elsewhere in Punjab, and 5-6 days in the rest of Pakistan. Your exact estimate shows at checkout once you enter your province and city.",
       },
       {
         q: "Do you deliver everywhere in Pakistan?",
-        a: "We currently cover major cities, checked automatically at checkout by your city and postal code. If your area isn't listed yet, WhatsApp us and we'll let you know when it's added.",
+        a: "Yes, Cash on Delivery ships nationwide. Delivery is Rs 350 within Punjab and Rs 400 to other provinces.",
       },
     ],
   },

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
 import { formatPKR } from "@/lib/format";
 import { PK_PHONE_REGEX, PAKISTAN_PROVINCES } from "@/lib/validation";
-import { checkServiceability, DEFAULT_DELIVERY_FEE, FREE_DELIVERY_THRESHOLD } from "@/lib/serviceable-areas";
+import { getDeliveryInfo } from "@/lib/serviceable-areas";
 import { trackEvent, trackPixelEvent } from "@/lib/analytics";
 
 type FieldErrors = Partial<Record<"fullName" | "phone" | "addressLine1" | "city" | "postalCode" | "province", string>>;
@@ -38,12 +38,13 @@ export function CheckoutForm() {
   const [orderError, setOrderError] = useState<string | null>(null);
 
   const phoneValid = PK_PHONE_REGEX.test(phone.replace(/\s/g, ""));
-  const area = useMemo(() => (city && postalCode ? checkServiceability(city, postalCode) : null), [city, postalCode]);
-  const serviceabilityChecked = city.trim().length > 0 && postalCode.trim().length > 0;
+  const delivery = useMemo(
+    () => (province && city.trim() ? getDeliveryInfo(province, city) : null),
+    [province, city]
+  );
 
   const discount = promoStatus?.valid ? Math.round((subtotal * promoStatus.discountPercent) / 100) : 0;
-  const deliveryFee = area ? (subtotal - discount >= FREE_DELIVERY_THRESHOLD ? 0 : area.deliveryFee) : DEFAULT_DELIVERY_FEE;
-  const total = subtotal - discount + (area ? deliveryFee : 0);
+  const total = subtotal - discount + (delivery?.fee ?? 0);
 
   function validateAddress(): boolean {
     const errors: FieldErrors = {};
@@ -121,10 +122,6 @@ export function CheckoutForm() {
   async function placeOrder() {
     setOrderError(null);
     if (!validateAddress()) return;
-    if (!area) {
-      setOrderError("We don't currently deliver to that city/postal code combination.");
-      return;
-    }
     if (!otpVerified) {
       setOrderError("Verify your phone number with the code we sent before placing your order.");
       return;
@@ -230,11 +227,9 @@ export function CheckoutForm() {
             </Field>
           </div>
 
-          {serviceabilityChecked && (
-            <div className={`mt-4 rounded-lg border p-3 font-body text-sm ${area ? "border-brand-success/30 bg-brand-success/5 text-brand-success" : "border-brand-error/30 bg-brand-error/5 text-brand-error"}`}>
-              {area
-                ? `Delivers to ${city} in ${area.deliveryDays}. Delivery fee: ${deliveryFee === 0 ? "Free" : formatPKR(area.deliveryFee)}.`
-                : "We don't currently deliver to that city/postal code combination. Try a nearby major city or WhatsApp us to check."}
+          {delivery && (
+            <div className="mt-4 rounded-lg border border-brand-success/30 bg-brand-success/5 p-3 font-body text-sm text-brand-success">
+              Delivers to {city} in {delivery.days}. Delivery fee: {formatPKR(delivery.fee)}.
             </div>
           )}
         </section>
@@ -368,7 +363,7 @@ export function CheckoutForm() {
           )}
           <div className="flex justify-between">
             <span className="text-brand-charcoal/70">Delivery</span>
-            <span>{area ? (deliveryFee === 0 ? "Free" : formatPKR(deliveryFee)) : "Calculated below"}</span>
+            <span>{delivery ? formatPKR(delivery.fee) : "Calculated below"}</span>
           </div>
           <div className="flex justify-between border-t border-brand-umber/10 pt-2 font-semibold text-brand-charcoal">
             <span>Total</span>

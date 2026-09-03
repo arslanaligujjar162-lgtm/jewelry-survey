@@ -2,7 +2,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { getProductBySlug } from "@/lib/products";
 import { shippingAddressSchema, normalizePkPhone } from "@/lib/validation";
-import { checkServiceability } from "@/lib/serviceable-areas";
+import { getDeliveryInfo } from "@/lib/serviceable-areas";
 import { validatePromoCode } from "@/lib/promo";
 import { getPaymentProvider } from "@/lib/payments";
 import { isPhoneOtpVerified } from "@/lib/otp";
@@ -55,10 +55,7 @@ export async function createOrder(payload: CheckoutPayload): Promise<CheckoutRes
     return { success: false, error: "Please verify your phone number with the code we sent before placing your order." };
   }
 
-  const area = checkServiceability(address.city, address.postalCode);
-  if (!area) {
-    return { success: false, error: "We don't currently deliver to that city/postal code combination." };
-  }
+  const delivery = getDeliveryInfo(address.province, address.city);
 
   if (!payload.items.length) {
     return { success: false, error: "Your cart is empty." };
@@ -97,7 +94,7 @@ export async function createOrder(payload: CheckoutPayload): Promise<CheckoutRes
     }
   }
 
-  const deliveryFee = subtotal - discount >= 6000 ? 0 : area.deliveryFee;
+  const deliveryFee = delivery.fee;
   const total = subtotal - discount + deliveryFee;
 
   const provider = getPaymentProvider(payload.paymentMethod);
