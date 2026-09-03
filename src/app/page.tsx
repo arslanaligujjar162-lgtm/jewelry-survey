@@ -14,10 +14,10 @@ export const metadata: Metadata = {
 };
 
 const CATEGORY_TILE_COLORS: Record<string, string> = {
-  earrings: "bg-brand-sky",
-  rings: "bg-brand-butter-light",
-  bracelets: "bg-brand-sky",
-  necklaces: "bg-brand-butter-light",
+  earrings: "bg-brand-sky/10 border-brand-sky",
+  rings: "bg-brand-butter-light border-brand-butter",
+  bracelets: "bg-brand-sky/10 border-brand-sky",
+  necklaces: "bg-brand-butter-light border-brand-butter",
 };
 
 export default async function HomePage() {
@@ -25,16 +25,16 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="bg-grain border-b-2 border-brand-umber-dark/20 bg-brand-sky">
+      <section className="border-b border-brand-umber/10 bg-brand-ivory">
         <div className="container-page grid gap-8 py-16 sm:py-24 lg:grid-cols-2 lg:items-center lg:py-32">
           <div>
-            <p className="font-body text-base font-bold uppercase tracking-widest text-brand-umber-dark">
+            <p className="font-body text-base font-bold uppercase tracking-widest text-brand-umber">
               Demi-fine · Modern retro
             </p>
             <h1 className="text-balance mt-4 font-display text-6xl font-bold leading-[0.95] tracking-tight text-brand-umber-dark sm:text-7xl lg:text-7xl">
               {MANTRA}
             </h1>
-            <p className="mt-6 max-w-md font-body text-lg text-brand-charcoal/80">{VISION_LINE}</p>
+            <p className="mt-6 max-w-md font-body text-lg text-brand-charcoal">{VISION_LINE}</p>
             <div className="mt-9 flex flex-wrap gap-4">
               <Link
                 href="/shop"
@@ -80,7 +80,7 @@ export default async function HomePage() {
             <Link
               key={c.slug}
               href={`/shop?category=${c.slug}`}
-              className={`shadow-retro-sm flex aspect-square flex-col items-center justify-center overflow-hidden rounded-3xl border-2 border-brand-umber-dark/15 ${CATEGORY_TILE_COLORS[c.slug]} ${c.slug === "earrings" || c.slug === "bracelets" ? "bg-grain" : ""} font-body text-base font-bold text-brand-umber-dark transition hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#482a24]`}
+              className={`shadow-retro-sm flex aspect-square flex-col items-center justify-center overflow-hidden rounded-3xl border-2 ${CATEGORY_TILE_COLORS[c.slug]} font-body text-base font-bold text-brand-umber-dark transition hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#482a24]`}
             >
               {c.label}
             </Link>
@@ -114,7 +114,7 @@ function TrustItem({ title, body }: { title: string; body: string }) {
   return (
     <div className="rounded-xl border border-brand-umber/10 p-5">
       <h3 className="font-body text-sm font-semibold text-brand-umber-dark">{title}</h3>
-      <p className="mt-2 font-body text-sm text-brand-charcoal/75">{body}</p>
+      <p className="mt-2 font-body text-sm text-brand-charcoal">{body}</p>
     </div>
   );
 }

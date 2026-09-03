@@ -13,11 +13,11 @@ const POLICY_LINKS = [
 
 export function Footer() {
   return (
-    <footer className="bg-grain mt-24 border-t-2 border-brand-umber-dark/20 bg-brand-sky">
+    <footer className="mt-24 border-t-2 border-brand-umber bg-brand-ivory">
       <div className="container-page grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <Wordmark />
-          <p className="mt-3 max-w-xs font-body text-sm text-brand-umber-dark/80">{TAGLINE}</p>
+          <p className="mt-3 max-w-xs font-body text-sm text-brand-umber-dark">{TAGLINE}</p>
         </div>
 
         <div>
@@ -25,7 +25,7 @@ export function Footer() {
           <ul className="mt-3 space-y-2 font-body text-sm">
             {POLICY_LINKS.map((link) => (
               <li key={link.href}>
-                <Link href={link.href} className="text-brand-charcoal/80 hover:text-brand-umber">
+                <Link href={link.href} className="text-brand-charcoal hover:text-brand-umber">
                   {link.label}
                 </Link>
               </li>
@@ -35,7 +35,7 @@ export function Footer() {
 
         <div>
           <h3 className="font-body text-sm font-semibold uppercase tracking-wide text-brand-umber-dark">Contact</h3>
-          <ul className="mt-3 space-y-2 font-body text-sm text-brand-charcoal/80">
+          <ul className="mt-3 space-y-2 font-body text-sm text-brand-charcoal">
             <li>{CONTACT.address}</li>
             <li>
               <a href={`mailto:${CONTACT.email}`} className="hover:text-brand-umber">
@@ -57,7 +57,7 @@ export function Footer() {
 
         <div>
           <h3 className="font-body text-sm font-semibold uppercase tracking-wide text-brand-umber-dark">Follow</h3>
-          <ul className="mt-3 space-y-2 font-body text-sm text-brand-charcoal/80">
+          <ul className="mt-3 space-y-2 font-body text-sm text-brand-charcoal">
             <li>
               <a href={CONTACT.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-brand-umber">
                 Instagram
@@ -72,7 +72,7 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-brand-umber-dark/15 py-5">
+      <div className="border-t border-brand-umber/10 py-5">
         <p className="container-page font-body text-xs text-brand-charcoal/70">
           © {new Date().getFullYear()} 7teen2wenty. Demi-fine jewellery, 316L stainless steel with PVD gold plating.
           Cash on Delivery available across Pakistan.

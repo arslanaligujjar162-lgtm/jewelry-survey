@@ -40,7 +40,7 @@ export function CartPageClient() {
               key={`${line.product_id}-${line.ring_size ?? ""}`}
               className="flex gap-4 border-b border-brand-umber/10 pb-6"
             >
-              <Link href={`/product/${line.slug}`} className="h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-brand-sky">
+              <Link href={`/product/${line.slug}`} className="h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-brand-sky/10">
                 <Image src={line.image} alt={line.name} width={96} height={96} className="h-full w-full object-cover" />
               </Link>
               <div className="flex flex-1 flex-col justify-between">

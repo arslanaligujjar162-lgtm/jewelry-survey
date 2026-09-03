@@ -36,7 +36,7 @@ export function WishlistPageClient() {
       <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item) => (
           <li key={item.id} className="flex gap-4 rounded-xl border border-brand-umber/10 p-4">
-            <Link href={`/product/${item.slug}`} className="h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-brand-sky">
+            <Link href={`/product/${item.slug}`} className="h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-brand-sky/10">
               <Image src={item.images[0]} alt={item.name} width={80} height={80} className="h-full w-full object-cover" />
             </Link>
             <div className="flex flex-1 flex-col justify-between">

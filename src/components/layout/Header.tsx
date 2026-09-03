@@ -66,7 +66,7 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className="rounded-md px-2 py-2 text-brand-charcoal hover:bg-brand-sky"
+                className="rounded-md px-2 py-2 text-brand-charcoal hover:bg-brand-sky/10"
               >
                 {link.label}
               </Link>

@@ -51,7 +51,7 @@ export default function AboutPage() {
           </Link>
           <Link
             href="/care-guide"
-            className="inline-flex items-center justify-center rounded-full border-2 border-brand-umber-dark px-8 py-4 font-body text-base font-bold text-brand-umber-dark transition hover:bg-brand-sky"
+            className="inline-flex items-center justify-center rounded-full border-2 border-brand-umber-dark px-8 py-4 font-body text-base font-bold text-brand-umber-dark transition hover:bg-brand-sky/10"
           >
             Read the care guide
           </Link>

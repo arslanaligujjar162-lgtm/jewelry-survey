@@ -135,7 +135,7 @@ export function AddToCartForm({ product }: { product: Product }) {
             router.push("/cart");
           }}
           disabled={outOfStock}
-          className="inline-flex items-center justify-center rounded-full border-2 border-brand-umber-dark px-8 py-4 font-body text-base font-bold text-brand-umber-dark transition hover:bg-brand-sky disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex items-center justify-center rounded-full border-2 border-brand-umber-dark px-8 py-4 font-body text-base font-bold text-brand-umber-dark transition hover:bg-brand-sky/10 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Buy it now
         </button>

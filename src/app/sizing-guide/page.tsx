@@ -61,7 +61,7 @@ export default function SizingGuidePage() {
         <div className="mt-10 overflow-x-auto rounded-xl border border-brand-umber/10">
           <table className="w-full text-left font-body text-sm">
             <caption className="sr-only">Ring size chart: US size to diameter and circumference in millimetres</caption>
-            <thead className="bg-brand-sky">
+            <thead className="bg-brand-sky/10">
               <tr>
                 <th scope="col" className="px-4 py-3 font-semibold text-brand-umber-dark">
                   US size

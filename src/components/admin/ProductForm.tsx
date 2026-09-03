@@ -138,7 +138,7 @@ export function ProductForm({
         <span className="block font-body text-sm font-medium text-brand-charcoal">Images</span>
         <div className="mt-2 flex flex-wrap gap-3">
           {images.map((src, i) => (
-            <div key={src} className="relative h-20 w-20 overflow-hidden rounded-lg bg-brand-sky">
+            <div key={src} className="relative h-20 w-20 overflow-hidden rounded-lg bg-brand-sky/10">
               <Image src={src} alt={`Product image ${i + 1}`} fill className="object-cover" />
               <button
                 type="button"

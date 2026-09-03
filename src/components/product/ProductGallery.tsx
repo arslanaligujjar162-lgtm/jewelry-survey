@@ -8,7 +8,7 @@ export function ProductGallery({ images, productName }: { images: string[]; prod
 
   return (
     <div>
-      <div className="aspect-square overflow-hidden rounded-2xl bg-brand-sky">
+      <div className="aspect-square overflow-hidden rounded-2xl bg-brand-sky/10">
         <Image
           src={images[active]}
           alt={`${productName}, view ${active + 1} of ${images.length}`}
@@ -27,7 +27,7 @@ export function ProductGallery({ images, productName }: { images: string[]; prod
               onClick={() => setActive(i)}
               aria-label={`Show view ${i + 1} of ${productName}`}
               aria-current={active === i}
-              className={`h-16 w-16 overflow-hidden rounded-lg border-2 bg-brand-sky transition ${
+              className={`h-16 w-16 overflow-hidden rounded-lg border-2 bg-brand-sky/10 transition ${
                 active === i ? "border-brand-umber" : "border-transparent"
               }`}
             >
