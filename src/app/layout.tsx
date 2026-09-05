@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Montserrat } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
@@ -50,6 +50,14 @@ export const metadata: Metadata = {
     title: `${BRAND_NAME} — ${TAGLINE}`,
     description: BRAND_DESCRIPTION,
   },
+};
+
+// Light-only brand: without this, some Android Chrome builds auto-invert the
+// page (dark background, wrong text colors) since it assumes an unmarked
+// site might support dark mode. This tells the browser it doesn't.
+export const viewport: Viewport = {
+  colorScheme: "light",
+  themeColor: "#fbf7ee",
 };
 
 export default function RootLayout({

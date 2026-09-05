@@ -5,6 +5,9 @@
 :root {
   --background: #fbf7ee;
   --foreground: #231f1c;
+  /* Light-only brand: stops Android Chrome / browser "force dark" auto-theming
+     from repainting the page (inverted backgrounds, wrong text colors). */
+  color-scheme: light;
 }
 
 body {
