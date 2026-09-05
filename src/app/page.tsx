@@ -31,8 +31,13 @@ export default async function HomePage() {
             <p className="font-body text-base font-bold uppercase tracking-widest text-brand-umber">
               Demi-fine · Modern retro
             </p>
-            <h1 className="text-balance mt-4 font-display text-5xl font-bold leading-[1.05] tracking-tight text-brand-umber-dark sm:text-6xl lg:text-6xl">
-              {HERO_HEADLINE}
+            <h1 className="mt-4 font-display text-4xl font-bold leading-[1.08] tracking-tight text-brand-umber-dark sm:text-6xl lg:text-7xl">
+              {HERO_HEADLINE.split(". ").map((line, i, arr) => (
+                <span key={line} className="block">
+                  {line}
+                  {i < arr.length - 1 ? "." : ""}
+                </span>
+              ))}
             </h1>
             <p className="mt-6 max-w-md font-body text-lg text-brand-charcoal">{HERO_SUBHEAD}</p>
             <div className="mt-9 flex flex-wrap gap-4">
@@ -40,7 +45,7 @@ export default async function HomePage() {
                 href="/shop"
                 className="shadow-retro inline-flex items-center justify-center rounded-full bg-brand-umber px-9 py-4 font-body text-base font-bold text-brand-ivory transition hover:-translate-y-0.5 hover:shadow-[6px_6px_0_0_#482a24] active:translate-y-0 active:shadow-none"
               >
-                Explore 1720
+                Explore the World of 1720
               </Link>
               <Link
                 href="/shop?new=true"
@@ -109,7 +114,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      <StickyMobileCTA label="Explore 1720" href="/shop" />
+      <StickyMobileCTA label="Explore the World of 1720" href="/shop" />
       <div className="h-16 sm:hidden" aria-hidden="true" />
     </>
   );

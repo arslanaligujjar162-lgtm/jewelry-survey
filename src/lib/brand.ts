@@ -5,9 +5,13 @@ export const MANTRA = "Not to complete you. To express you.";
 export const POSITIONING = "1720 is a modern-retro jewellery brand for women with a taste of their own.";
 export const AESTHETIC = "Modern retro";
 
-export const HERO_HEADLINE = "Jewellery for a taste of your own.";
-export const HERO_SUBHEAD =
-  "Modern-retro pieces with character, thoughtfully chosen for women who don't need to follow the crowd.";
+// The core brand idea — the single most prominent line on the site.
+export const HERO_HEADLINE = MANTRA;
+export const HERO_SUBHEAD = "Distinctive modern-retro jewellery for women who already know who they are.";
+
+// The other hero option, kept for reuse elsewhere (e.g. secondary sections,
+// meta copy) now that MANTRA has taken the primary hero slot.
+export const COLLECTION_LINE = "Jewellery for a taste of your own.";
 
 export const BRAND_DESCRIPTION =
   "1720 is a modern-retro jewellery brand for women with a taste of their own — demi-fine, PVD-coated pieces with character, sold direct to Pakistan through Instagram and COD. Not to complete you. To express you.";
