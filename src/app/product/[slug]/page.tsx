@@ -17,8 +17,9 @@ import { RecentlyViewedSection } from "@/components/product/RecentlyViewedSectio
 import { ReviewsSection } from "@/components/product/ReviewsSection";
 import { StickyMobileCTA } from "@/components/layout/StickyMobileCTA";
 import { BreadcrumbSchema } from "@/components/seo/BreadcrumbSchema";
+import { getProductTagline } from "@/data/product-taglines";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://7teen2wenty.pk";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://1720.pk";
 
 interface ProductPageProps {
   params: { slug: string };
@@ -98,7 +99,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <StockIndicator stock={product.stock_count} />
           </div>
 
-          <p className="mt-5 font-body text-base leading-relaxed text-brand-charcoal/85">{product.description}</p>
+          <p className="mt-5 font-display text-lg italic text-brand-umber-dark">{getProductTagline(product.slug)}</p>
+          <p className="mt-2 font-body text-base leading-relaxed text-brand-charcoal/85">{product.description}</p>
 
           <AddToCartForm product={product} />
 

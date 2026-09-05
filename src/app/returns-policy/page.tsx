@@ -5,7 +5,7 @@ import { whatsappLink } from "@/lib/brand";
 
 export const metadata: Metadata = {
   title: "Return & Exchange Policy",
-  description: "How returns and exchanges work at 7teen2wenty: timelines, condition requirements, and what's excluded.",
+  description: "How returns and exchanges work at 1720: timelines, condition requirements, and what's excluded.",
   alternates: { canonical: "/returns-policy" },
 };
 

@@ -5,7 +5,7 @@ import { ProductCard } from "@/components/product/ProductCard";
 import { ShopFilters } from "@/components/shop/ShopFilters";
 import { CATEGORIES, type CategorySlug } from "@/lib/brand";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://7teen2wenty.pk";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://1720.pk";
 
 interface ShopPageProps {
   searchParams: { category?: string; min?: string; max?: string; new?: string; q?: string };

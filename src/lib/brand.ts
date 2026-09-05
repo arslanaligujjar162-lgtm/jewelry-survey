@@ -1,29 +1,69 @@
-export const BRAND_NAME = "7teen2wenty";
+export const BRAND_NAME = "1720";
 export const BRAND_MARK = "1720";
 export const TAGLINE = "Not fast. Not a fortune. Just good jewellery.";
-export const MANTRA = "Buy yourself the yes.";
-export const VISION =
-  "Jewellery for yourself shouldn't need a reason. 7teen2wenty exists so that saying yes — to something retro, something warm, something just for you — becomes ordinary in Pakistan, not an exception.";
-export const VISION_LINE = "Jewellery for yourself shouldn't need a reason.";
+export const MANTRA = "Not to complete you. To express you.";
+export const POSITIONING = "1720 is a modern-retro jewellery brand for women with a taste of their own.";
 export const AESTHETIC = "Modern retro";
 
-export const BRAND_DESCRIPTION =
-  "7teen2wenty makes demi-fine, modern retro jewellery — PVD-coated pieces built to hold up, priced for daily wear, sold direct to Pakistan through Instagram and COD. Not fast. Not a fortune. Just good jewellery.";
+export const HERO_HEADLINE = "Jewellery for a taste of your own.";
+export const HERO_SUBHEAD =
+  "Modern-retro pieces with character, thoughtfully chosen for women who don't need to follow the crowd.";
 
+export const BRAND_DESCRIPTION =
+  "1720 is a modern-retro jewellery brand for women with a taste of their own — demi-fine, PVD-coated pieces with character, sold direct to Pakistan through Instagram and COD. Not to complete you. To express you.";
+
+// Opening line, then the pull-quote (MANTRA) is rendered separately, then
+// these closing paragraphs — see the About page for the exact assembly.
 export const BRAND_STORY_PARAGRAPHS = [
-  "There's a hesitation before buying jewellery for yourself. You don't think twice buying it for your mother, your sister, your daughter — but somehow it's harder to say yes when it's for you. Not about the money. About whether you're worth it.",
-  "I used to feel that every time I saw something from retro times — the shapes, the warm colour, jewellery that felt like it already had a story attached. I'd talk myself out of it. Save it for later. Never quite get around to it.",
-  "7teen2wenty is the yes I kept putting off.",
-  "Not fast. Not a fortune. Just good jewellery — the kind you don't have to talk yourself into.",
+  "We believe the most personal pieces aren't necessarily the loudest. They're the ones that feel unmistakably yours.",
+  "1720 was created around a simple idea: jewellery doesn't have to complete you. It can simply be something you chose because it feels like you.",
+  "We are drawn to the shapes, colours and character of another era, but we don't want to recreate the past. We reinterpret it for now.",
+  "The result is modern-retro jewellery for women with a taste of their own — selective, distinctive and made to be worn your way.",
 ];
 
-// Address is still a placeholder — flagged for the real one before launch.
+export const WHY_1720 = [
+  {
+    title: "A Taste of Our Own",
+    body: "We don't try to be everything for everyone. We curate a distinct modern-retro aesthetic.",
+  },
+  {
+    title: "Designed With Character",
+    body: "Pieces chosen for their form, detail and personality — not simply because they're trending.",
+  },
+  {
+    title: "Made to Be Worn",
+    body: "Distinctive enough to stand out. Versatile enough to become part of your everyday.",
+  },
+  {
+    title: "Worth What You Pay For",
+    body: "We focus on thoughtful materials, finishing and design at an accessible price.",
+  },
+] as const;
+
+export const COLLECTION_INTRO_HEADING = "For the ones who choose differently.";
+export const COLLECTION_INTRO_BODY =
+  "A collection of modern-retro jewellery with character, designed for women who know what they like.";
+
+export const QUALITY_HEADING = "See what you're actually buying.";
+export const QUALITY_BODY =
+  "We believe you shouldn't have to guess what arrives at your door. That's why we show our pieces as they are — clearly, closely and from different angles.";
+
+export const SOCIAL_PROOF_HEADING = "Chosen by women with a taste of their own.";
+
+export const NEWSLETTER_HEADING = "Come into the 1720 world.";
+export const NEWSLETTER_SUBHEAD = "New pieces, stories, inspiration and first access — without the noise.";
+
+export const FOOTER_CLOSING = "Not to complete you. To express you.";
+
+// Address, email, and social handles are still placeholders — flagged for
+// the real ones before launch. Renamed to the 1720 pattern for consistency,
+// but the actual domain/handles need to be registered and confirmed.
 export const CONTACT = {
-  email: "hello@7teen2wenty.pk",
+  email: "hello@1720.pk", // TODO: confirm real domain before launch
   whatsappNumber: "923356389333",
   address: "Placeholder Address, Gulberg III, Lahore, Punjab, Pakistan", // TODO: confirm real business address before launch
-  instagram: "https://instagram.com/7teen2wenty",
-  facebook: "https://facebook.com/7teen2wenty",
+  instagram: "https://instagram.com/1720", // TODO: confirm real handle before launch
+  facebook: "https://facebook.com/1720", // TODO: confirm real handle before launch
 };
 
 export function whatsappLink(message?: string) {

@@ -3,7 +3,7 @@ import { OrderConfirmationClient } from "@/components/orders/OrderConfirmationCl
 
 export const metadata: Metadata = {
   title: "Order Confirmed",
-  description: "Your 7teen2wenty order is confirmed. Pay by Cash on Delivery when it arrives.",
+  description: "Your 1720 order is confirmed. Pay by Cash on Delivery when it arrives.",
   robots: { index: false },
 };
 

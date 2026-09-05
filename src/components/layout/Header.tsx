@@ -20,7 +20,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-brand-umber/10 bg-brand-ivory/95 backdrop-blur supports-[backdrop-filter]:bg-brand-ivory/80">
       <div className="container-page flex h-16 items-center justify-between gap-4">
-        <Link href="/" aria-label="7teen2wenty home" onClick={() => setMenuOpen(false)}>
+        <Link href="/" aria-label="1720 home" onClick={() => setMenuOpen(false)}>
           <Wordmark />
         </Link>
 

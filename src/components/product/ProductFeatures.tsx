@@ -1,4 +1,5 @@
 import type { Product } from "@/lib/types";
+import { QUALITY_HEADING } from "@/lib/brand";
 
 function CheckIcon() {
   return (
@@ -17,7 +18,7 @@ export function ProductFeatures({ product }: { product: Product }) {
   return (
     <div className="mt-6 border-t border-brand-umber/10 pt-5">
       <h2 className="font-body text-sm font-semibold uppercase tracking-wide text-brand-umber-dark">
-        Why 7teen2wenty
+        {QUALITY_HEADING}
       </h2>
       <ul className="mt-3 space-y-2.5">
         {facts.map((fact) => (

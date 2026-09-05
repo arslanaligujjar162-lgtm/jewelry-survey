@@ -2,14 +2,14 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { StickyMobileCTA } from "@/components/layout/StickyMobileCTA";
 import { HeroMark } from "@/components/brand/HeroMark";
-import { CATEGORIES, MANTRA, TAGLINE, VISION_LINE } from "@/lib/brand";
+import { CATEGORIES, COLLECTION_INTRO_BODY, COLLECTION_INTRO_HEADING, HERO_HEADLINE, HERO_SUBHEAD, TAGLINE, WHY_1720 } from "@/lib/brand";
 import { getProducts } from "@/lib/products";
 import { ProductCard } from "@/components/product/ProductCard";
 
 export const metadata: Metadata = {
-  title: "Demi-Fine PVD Jewellery for Everyday Yes",
+  title: "Modern-Retro Jewellery for a Taste of Your Own",
   description:
-    "Modern retro demi-fine jewellery in 316L stainless steel with real PVD gold plating. Transparent pricing, Cash on Delivery across Pakistan.",
+    "Modern-retro demi-fine jewellery in 316L stainless steel with real PVD gold plating. Distinctive, not excessive — priced for everyday wear, shipped Cash on Delivery across Pakistan.",
   alternates: { canonical: "/" },
 };
 
@@ -31,22 +31,22 @@ export default async function HomePage() {
             <p className="font-body text-base font-bold uppercase tracking-widest text-brand-umber">
               Demi-fine · Modern retro
             </p>
-            <h1 className="text-balance mt-4 font-display text-6xl font-bold leading-[0.95] tracking-tight text-brand-umber-dark sm:text-7xl lg:text-7xl">
-              {MANTRA}
+            <h1 className="text-balance mt-4 font-display text-5xl font-bold leading-[1.05] tracking-tight text-brand-umber-dark sm:text-6xl lg:text-6xl">
+              {HERO_HEADLINE}
             </h1>
-            <p className="mt-6 max-w-md font-body text-lg text-brand-charcoal">{VISION_LINE}</p>
+            <p className="mt-6 max-w-md font-body text-lg text-brand-charcoal">{HERO_SUBHEAD}</p>
             <div className="mt-9 flex flex-wrap gap-4">
               <Link
                 href="/shop"
                 className="shadow-retro inline-flex items-center justify-center rounded-full bg-brand-umber px-9 py-4 font-body text-base font-bold text-brand-ivory transition hover:-translate-y-0.5 hover:shadow-[6px_6px_0_0_#482a24] active:translate-y-0 active:shadow-none"
               >
-                Shop the collection
+                Explore 1720
               </Link>
               <Link
-                href="/about"
+                href="/shop?new=true"
                 className="inline-flex items-center justify-center rounded-full border-2 border-brand-umber-dark px-9 py-4 font-body text-base font-bold text-brand-umber-dark transition hover:bg-brand-ivory"
               >
-                Our story
+                Discover the Collection
               </Link>
             </div>
           </div>
@@ -54,26 +54,31 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section aria-label="Why 7teen2wenty" className="border-b border-brand-umber/10 bg-brand-ivory">
+      <section aria-label="Why 1720" className="border-b border-brand-umber/10 bg-brand-ivory">
         <div className="container-page py-12">
-          <p className="font-display text-2xl font-bold text-brand-umber-dark sm:text-3xl">{TAGLINE}</p>
+          <h2 className="font-display text-3xl font-bold text-brand-umber-dark sm:text-4xl">Why 1720?</h2>
         </div>
-        <div className="container-page grid gap-6 pb-10 sm:grid-cols-3">
-          <TrustItem
-            title="Transparent pricing"
-            body="No inflated tags, no fake discounts. The price on the page is the price you pay."
-          />
-          <TrustItem
-            title="Real PVD gold plating"
-            body="316L stainless steel base with PVD coating — built to resist everyday wear, sweat, and water."
-          />
-          <TrustItem title="Cash on Delivery" body="Available across Pakistan. Pay when your order arrives." />
+        <div className="container-page grid gap-6 pb-8 sm:grid-cols-2 lg:grid-cols-4">
+          {WHY_1720.map((item) => (
+            <TrustItem key={item.title} title={item.title} body={item.body} />
+          ))}
+        </div>
+        <div className="container-page pb-10">
+          <p className="font-body text-sm text-brand-charcoal/70">
+            {TAGLINE} Cash on Delivery across Pakistan · 7-day returns.
+          </p>
         </div>
       </section>
 
       <section className="container-page py-16">
-        <div className="flex items-end justify-between">
-          <h2 className="font-display text-3xl font-bold text-brand-umber-dark sm:text-4xl">Shop by category</h2>
+        <h2 className="font-display text-3xl font-bold text-brand-umber-dark sm:text-4xl">
+          {COLLECTION_INTRO_HEADING}
+        </h2>
+        <div className="mt-3 flex flex-wrap items-end justify-between gap-3">
+          <p className="max-w-md font-body text-base text-brand-charcoal">{COLLECTION_INTRO_BODY}</p>
+          <Link href="/shop" className="font-body text-sm font-semibold text-brand-umber hover:underline">
+            Explore the Collection
+          </Link>
         </div>
         <div className="mt-8 grid grid-cols-2 gap-5 sm:grid-cols-4">
           {CATEGORIES.map((c) => (
@@ -91,7 +96,7 @@ export default async function HomePage() {
       {newArrivals.length > 0 && (
         <section className="container-page py-16">
           <div className="flex items-end justify-between">
-            <h2 className="font-display text-3xl font-bold text-brand-umber-dark sm:text-4xl">New arrivals</h2>
+            <h2 className="font-display text-2xl font-semibold text-brand-umber-dark sm:text-3xl">New arrivals</h2>
             <Link href="/shop?new=true" className="font-body text-sm font-semibold text-brand-umber hover:underline">
               View all
             </Link>
@@ -104,7 +109,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      <StickyMobileCTA label="Shop the collection" href="/shop" />
+      <StickyMobileCTA label="Explore 1720" href="/shop" />
       <div className="h-16 sm:hidden" aria-hidden="true" />
     </>
   );

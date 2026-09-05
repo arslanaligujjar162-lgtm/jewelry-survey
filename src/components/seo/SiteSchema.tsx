@@ -1,6 +1,6 @@
 import { BRAND_DESCRIPTION, BRAND_NAME, CONTACT } from "@/lib/brand";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://7teen2wenty.pk";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://1720.pk";
 
 export function SiteSchema() {
   const organization = {

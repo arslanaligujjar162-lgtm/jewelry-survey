@@ -27,7 +27,7 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://7teen2wenty.pk";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://1720.pk";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

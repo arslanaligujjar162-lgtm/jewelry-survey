@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Wordmark } from "@/components/brand/Logo";
-import { CONTACT, TAGLINE, whatsappLink } from "@/lib/brand";
+import { BRAND_NAME, CONTACT, FOOTER_CLOSING, whatsappLink } from "@/lib/brand";
 
 const POLICY_LINKS = [
   { href: "/faq", label: "FAQ" },
@@ -17,7 +17,7 @@ export function Footer() {
       <div className="container-page grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <Wordmark />
-          <p className="mt-3 max-w-xs font-body text-sm text-brand-umber-dark">{TAGLINE}</p>
+          <p className="mt-3 max-w-xs font-body text-sm text-brand-umber-dark">{FOOTER_CLOSING}</p>
         </div>
 
         <div>
@@ -74,7 +74,7 @@ export function Footer() {
 
       <div className="border-t border-brand-umber/10 py-5">
         <p className="container-page font-body text-xs text-brand-charcoal/70">
-          © {new Date().getFullYear()} 7teen2wenty. Demi-fine jewellery, 316L stainless steel with PVD gold plating.
+          © {new Date().getFullYear()} {BRAND_NAME}. Demi-fine jewellery, 316L stainless steel with PVD gold plating.
           Cash on Delivery available across Pakistan.
         </p>
       </div>

@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getProducts } from "@/lib/products";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://7teen2wenty.pk";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://1720.pk";
 
 const STATIC_ROUTES = [
   "",

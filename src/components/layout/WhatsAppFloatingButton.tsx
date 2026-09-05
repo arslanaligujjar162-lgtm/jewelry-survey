@@ -8,10 +8,10 @@ import { whatsappLink } from "@/lib/brand";
 export function WhatsAppFloatingButton() {
   return (
     <a
-      href={whatsappLink("Hi! I have a question about 7teen2wenty.")}
+      href={whatsappLink("Hi! I have a question about 1720.")}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Chat with 7teen2wenty on WhatsApp"
+      aria-label="Chat with 1720 on WhatsApp"
       className="fixed bottom-20 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-brand-umber text-brand-ivory shadow-[0_4px_16px_rgba(72,42,36,0.35)] transition hover:-translate-y-0.5 hover:bg-brand-umber-dark sm:bottom-6 sm:right-6"
     >
       <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">

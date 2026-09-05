@@ -3,7 +3,7 @@ import { CONTACT, whatsappLink } from "@/lib/brand";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Reach 7teen2wenty by WhatsApp, email, or visit us. We reply fastest on WhatsApp.",
+  description: "Reach 1720 by WhatsApp, email, or visit us. We reply fastest on WhatsApp.",
   alternates: { canonical: "/contact" },
 };
 
@@ -19,7 +19,7 @@ export default function ContactPage() {
 
         <div className="mt-8 flex flex-wrap gap-3">
           <a
-            href={whatsappLink("Hi! I have a question about 7teen2wenty.")}
+            href={whatsappLink("Hi! I have a question about 1720.")}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center rounded-full shadow-retro-sm bg-brand-umber px-8 py-4 font-body text-base font-bold text-brand-ivory transition hover:-translate-y-0.5 hover:bg-brand-umber-dark hover:shadow-[5px_5px_0_0_#482a24] active:translate-y-0 active:shadow-none"

@@ -15,7 +15,7 @@ export function HeroMark({ className = "" }: { className?: string }) {
     >
       <Image
         src="/brand/logo-primary.png"
-        alt="7teen2wenty — demi-fine jewellery numeral mark, 1720"
+        alt="1720 — demi-fine jewellery numeral mark"
         fill
         sizes="(min-width: 1024px) 50vw, 100vw"
         className="object-cover"

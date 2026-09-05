@@ -2,6 +2,7 @@ import { getReviewStats, type Review } from "@/lib/reviews";
 import { formatDate } from "@/lib/format";
 import { StarRatingDisplay } from "@/components/product/StarRating";
 import { ReviewForm } from "@/components/product/ReviewForm";
+import { SOCIAL_PROOF_HEADING } from "@/lib/brand";
 
 export function ReviewsSection({ productId, reviews }: { productId: string; reviews: Review[] }) {
   const stats = getReviewStats(reviews);
@@ -10,7 +11,7 @@ export function ReviewsSection({ productId, reviews }: { productId: string; revi
     <section className="mt-16 border-t border-brand-umber/10 pt-10" id="reviews">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="font-display text-2xl font-semibold text-brand-umber-dark">Reviews</h2>
+          <h2 className="font-display text-2xl font-semibold text-brand-umber-dark">{SOCIAL_PROOF_HEADING}</h2>
           {stats.count > 0 ? (
             <div className="mt-2 flex items-center gap-2">
               <StarRatingDisplay rating={stats.average} />

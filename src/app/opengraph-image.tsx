@@ -34,7 +34,7 @@ export default function OpengraphImage() {
           alt=""
         />
         <div style={{ marginTop: 32, fontSize: 48, fontWeight: 600, color: "#482A24", fontFamily: "Georgia, serif" }}>
-          7teen2wenty
+          1720
         </div>
         <div style={{ marginTop: 12, fontSize: 26, color: "#673C34" }}>{TAGLINE}</div>
       </div>
