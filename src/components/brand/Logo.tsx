@@ -34,10 +34,10 @@ export function LogoMark({
   );
 }
 
-export function Wordmark({ className = "" }: { className?: string }) {
+export function Wordmark({ className = "", variant = "primary" }: { className?: string; variant?: LockupVariant }) {
   return (
     <span className={`flex items-center gap-2.5 ${className}`}>
-      <LogoMark size={44} />
+      <LogoMark size={44} variant={variant} />
       <span className="font-display text-3xl font-bold tracking-tight text-brand-umber-dark">{BRAND_NAME}</span>
     </span>
   );
