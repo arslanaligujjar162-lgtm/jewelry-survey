@@ -37,8 +37,12 @@ export const metadata: Metadata = {
   },
   description: BRAND_DESCRIPTION,
   openGraph: {
-    title: `${BRAND_NAME} — ${TAGLINE}`,
-    description: BRAND_DESCRIPTION,
+    // Title/description kept short on purpose: link previews (WhatsApp,
+    // iMessage, etc.) should show just the logo image and the tagline —
+    // "1720" is already in the image, so it isn't repeated in the title,
+    // and no separate description paragraph is set.
+    title: TAGLINE,
+    description: " ",
     url: siteUrl,
     siteName: BRAND_NAME,
     images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
@@ -47,8 +51,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${BRAND_NAME} — ${TAGLINE}`,
-    description: BRAND_DESCRIPTION,
+    title: TAGLINE,
+    description: " ",
   },
 };
 
