@@ -9,7 +9,10 @@ const MATTE_BACKGROUNDS = ["#FBF7EE", "#F3E3A6", "#DDF0F7", "#EFE3D8"];
 
 const products = [
   // Earrings
-  { sku: "1720-EAR-001", name: "Confetti Hoop", category: "earrings", price: 1974, plating: "18k gold PVD coating over 316L stainless steel", material: "316L stainless steel, PVD gold plated", desc: "Hoops with a scattered, mixed-texture finish along the band. Standard post-and-butterfly backs." },
+  // Price kept in sync with the real listing (Rs 2,200) -- note this product now
+  // has a real photo (public/products/confetti-hoop-1.jpg) checked in by hand;
+  // re-running this script would overwrite it with a generated placeholder SVG.
+  { sku: "1720-EAR-001", name: "Confetti Hoop", category: "earrings", price: 2200, plating: "18k gold PVD coating over 316L stainless steel", material: "316L stainless steel, PVD gold plated", desc: "Hoops with a scattered, mixed-texture finish along the band. Standard post-and-butterfly backs." },
   { sku: "1720-EAR-002", name: "Moon Drop", category: "earrings", price: 1728, plating: "18k gold PVD coating over 316L stainless steel", material: "316L stainless steel, PVD gold plated", desc: "A crescent-shaped drop on a fine post. Light enough for all-day wear." },
   { sku: "1720-EAR-003", name: "Vogue Hoop", category: "earrings", price: 2402, plating: "18k gold PVD coating over 316L stainless steel", material: "316L stainless steel, PVD gold plated", desc: "A wide, flat-profile hoop with a brushed finish. Secure hinge closure." },
   { sku: "1720-EAR-004", name: "Ribbon Hoop", category: "earrings", price: 1352, plating: "18k gold PVD coating over 316L stainless steel", material: "316L stainless steel, PVD gold plated", desc: "A slim hoop with a twisted, ribbon-like silhouette. Everyday size, easy to sleep in." },

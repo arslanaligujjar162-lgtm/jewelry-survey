@@ -10,7 +10,7 @@ import { ErrorReportingInit } from "@/components/layout/ErrorReportingInit";
 import { SiteSchema } from "@/components/seo/SiteSchema";
 import { CartProvider } from "@/lib/cart-context";
 import { WishlistProvider } from "@/lib/wishlist-context";
-import { BRAND_DESCRIPTION, BRAND_NAME, TAGLINE } from "@/lib/brand";
+import { BRAND_DESCRIPTION, BRAND_NAME, SHARE_HOOK, TAGLINE } from "@/lib/brand";
 import { GA4_ID, META_PIXEL_ID } from "@/lib/analytics";
 
 const cormorant = Cormorant_Garamond({
@@ -37,12 +37,11 @@ export const metadata: Metadata = {
   },
   description: BRAND_DESCRIPTION,
   openGraph: {
-    // Title/description kept short on purpose: link previews (WhatsApp,
-    // iMessage, etc.) should show just the logo image and the tagline —
-    // "1720" is already in the image, so it isn't repeated in the title,
-    // and no separate description paragraph is set.
+    // Link-preview title stays short — "1720" is already in the image, so
+    // it isn't repeated here. Description is a concrete hook, not the
+    // on-site mission-statement copy (that belongs on the page itself).
     title: TAGLINE,
-    description: " ",
+    description: SHARE_HOOK,
     url: siteUrl,
     siteName: BRAND_NAME,
     images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
@@ -52,7 +51,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: TAGLINE,
-    description: " ",
+    description: SHARE_HOOK,
   },
 };
 

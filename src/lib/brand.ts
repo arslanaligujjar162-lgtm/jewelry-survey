@@ -5,6 +5,10 @@ export const MANTRA = "Not to complete you. To express you.";
 export const POSITIONING = "1720 is a modern-retro jewellery brand for women with a taste of their own.";
 export const AESTHETIC = "Modern retro";
 
+// Link-preview hook (WhatsApp/social og:description) — short, concrete,
+// leads with a real fact rather than the on-site mission-statement copy.
+export const SHARE_HOOK = "Demi-fine PVD jewellery, Rs 1,250–3,666. Cash on Delivery across Pakistan.";
+
 // The core brand idea — the single most prominent line on the site.
 export const HERO_HEADLINE = MANTRA;
 export const HERO_SUBHEAD = "Distinctive modern-retro jewellery for women who already know who they are.";

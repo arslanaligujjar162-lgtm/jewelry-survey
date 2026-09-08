@@ -37,16 +37,16 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "name": "Confetti Hoop",
     "slug": "confetti-hoop",
     "category_id": "earrings",
-    "price": 1974,
+    "price": 2200,
     "compare_at_price": null,
     "description": "Hoops with a scattered, mixed-texture finish along the band. Standard post-and-butterfly backs.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated",
     "images": [
-      "/products/confetti-hoop-1.svg",
+      "/products/confetti-hoop-1.jpg",
       "/products/confetti-hoop-2.svg"
     ],
-    "stock_count": 4,
+    "stock_count": 20,
     "is_new": true,
     "ring_size_range": null,
     "created_at": "2026-07-01T00:00:00.000Z"
