@@ -1,6 +1,6 @@
 export const BRAND_NAME = "1720";
 export const BRAND_MARK = "1720";
-export const TAGLINE = "Not fast. Not a fortune. Just good jewellery.";
+export const TAGLINE = "Not fast fashion. Not a fortune. Just good jewellery.";
 export const MANTRA = "Not to complete you. To express you.";
 export const POSITIONING = "1720 is a modern-retro jewellery brand for women with a taste of their own.";
 export const AESTHETIC = "Modern retro";
