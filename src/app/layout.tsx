@@ -60,7 +60,7 @@ export const metadata: Metadata = {
 // site might support dark mode. This tells the browser it doesn't.
 export const viewport: Viewport = {
   colorScheme: "light",
-  themeColor: "#fae3b1",
+  themeColor: "#fdf2dc",
 };
 
 export default function RootLayout({

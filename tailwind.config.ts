@@ -23,7 +23,7 @@ const config: Config = {
           "umber-dark": "#482A24",
           butter: "#FAE3B1", // Pale Butter Yellow
           "butter-light": "#FDF2DC",
-          ivory: "#FAE3B1", // Site background (named "ivory" historically; now Pale Butter Yellow, matches `butter`)
+          ivory: "#FDF2DC", // Site background (named "ivory" historically; a lighter tint of butter, matches `butter-light`)
           charcoal: "#231F1C",
           // Locked accents — digital-only (never print/packaging)
           brass: "#998731", // Olive / Mustard Gold
