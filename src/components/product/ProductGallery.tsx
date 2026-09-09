@@ -15,7 +15,7 @@ export function ProductGallery({ images, productName }: { images: string[]; prod
           width={900}
           height={900}
           priority
-          className="h-full w-full object-cover"
+          className="h-full w-full object-contain"
         />
       </div>
       {images.length > 1 && (
@@ -31,7 +31,7 @@ export function ProductGallery({ images, productName }: { images: string[]; prod
                 active === i ? "border-brand-umber" : "border-transparent"
               }`}
             >
-              <Image src={img} alt="" width={64} height={64} className="h-full w-full object-cover" />
+              <Image src={img} alt="" width={64} height={64} className="h-full w-full object-contain" />
             </button>
           ))}
         </div>
