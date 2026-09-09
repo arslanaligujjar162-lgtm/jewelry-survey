@@ -122,7 +122,7 @@ export default async function HomePage() {
 
 function TrustItem({ title, body }: { title: string; body: string }) {
   return (
-    <div className="rounded-xl border border-brand-umber/10 p-5">
+    <div className="rounded-xl border border-brand-sky/30 p-5">
       <h3 className="font-body text-sm font-semibold text-brand-umber-dark">{title}</h3>
       <p className="mt-2 font-body text-sm text-brand-charcoal">{body}</p>
     </div>
