@@ -43,7 +43,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated",
     "images": [
-      "/products/confetti-hoop-1.jpg",
+      "/products/confetti-hoop-1.png",
       "/products/confetti-hoop-2.svg"
     ],
     "stock_count": 20,

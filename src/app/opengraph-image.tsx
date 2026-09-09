@@ -13,7 +13,7 @@ function toDataUri(relativePath: string, mime: string) {
 }
 
 export default function OpengraphImage() {
-  const productSrc = toDataUri("products/confetti-hoop-1.jpg", "image/jpeg");
+  const productSrc = toDataUri("products/confetti-hoop-1.png", "image/png");
   const logoSrc = toDataUri("brand/logo-light.png", "image/png");
 
   return new ImageResponse(
