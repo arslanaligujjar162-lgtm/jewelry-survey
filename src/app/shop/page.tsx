@@ -38,34 +38,52 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
   const products = await getProducts({ category, minPrice, maxPrice, isNew, query });
   const categoryLabel = CATEGORIES.find((c) => c.slug === category)?.label;
 
+  // Remounts the grid whenever the filters change, so the staggered entrance
+  // animation replays instead of only firing once on first page load.
+  const gridKey = `${category ?? "all"}|${minPrice ?? ""}|${maxPrice ?? ""}|${isNew}|${query ?? ""}`;
+
   return (
-    <div className="container-page py-10 sm:py-14">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="font-body text-sm font-semibold uppercase tracking-widest text-brand-umber">Shop</p>
-          <h1 className="mt-1 font-display text-3xl font-semibold text-brand-umber-dark sm:text-4xl">
-            {query ? `Results for "${query}"` : categoryLabel ?? "All jewellery"}
-          </h1>
+    <div className="pb-10 sm:pb-14">
+      {/* Editorial masthead strip, matching the product page's archive treatment */}
+      <div className="border-b border-brand-umber/15 bg-brand-butter-light/70">
+        <div className="container-page flex flex-wrap items-center justify-between gap-2 py-3">
+          <p className="font-body text-[11px] uppercase tracking-[0.2em] text-brand-charcoal/60">1720 · Shop</p>
+          <p className="font-display text-[11px] italic tracking-[0.25em] text-brand-umber-dark/70">
+            {products.length} {products.length === 1 ? "PIECE" : "PIECES"} — 1720 ARCHIVE
+          </p>
         </div>
       </div>
 
-      <div className="mt-6">
-        <Suspense fallback={null}>
-          <ShopFilters />
-        </Suspense>
-      </div>
-
-      {products.length === 0 ? (
-        <p className="mt-14 font-body text-sm text-brand-charcoal/70">
-          Nothing matches those filters yet. Try widening your search.
-        </p>
-      ) : (
-        <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+      <div className="container-page pt-8 sm:pt-12">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="font-body text-sm font-semibold uppercase tracking-widest text-brand-umber">Shop</p>
+            <h1 className="mt-1 font-display text-3xl font-semibold text-brand-umber-dark sm:text-4xl">
+              {query ? `Results for "${query}"` : categoryLabel ?? "All jewellery"}
+            </h1>
+          </div>
         </div>
-      )}
+
+        <div className="mt-6">
+          <Suspense fallback={null}>
+            <ShopFilters />
+          </Suspense>
+        </div>
+
+        {products.length === 0 ? (
+          <p className="mt-14 font-body text-sm text-brand-charcoal/70">
+            Nothing matches those filters yet. Try widening your search.
+          </p>
+        ) : (
+          <div key={gridKey} className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+            {products.map((product, i) => (
+              <div key={product.id} className="animate-rise" style={{ animationDelay: `${Math.min(i, 7) * 60}ms` }}>
+                <ProductCard product={product} />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

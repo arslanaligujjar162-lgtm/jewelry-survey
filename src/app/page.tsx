@@ -86,11 +86,12 @@ export default async function HomePage() {
           </Link>
         </div>
         <div className="mt-8 grid grid-cols-2 gap-5 sm:grid-cols-4">
-          {CATEGORIES.map((c) => (
+          {CATEGORIES.map((c, i) => (
             <Link
               key={c.slug}
               href={`/shop?category=${c.slug}`}
-              className={`shadow-retro-sm flex aspect-square flex-col items-center justify-center overflow-hidden rounded-3xl border-2 ${CATEGORY_TILE_COLORS[c.slug]} font-body text-base font-bold text-brand-umber-dark transition hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#482a24]`}
+              className={`animate-rise shadow-retro-sm flex aspect-square flex-col items-center justify-center overflow-hidden rounded-3xl border-2 ${CATEGORY_TILE_COLORS[c.slug]} font-body text-base font-bold text-brand-umber-dark transition hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#482a24]`}
+              style={{ animationDelay: `${i * 70}ms` }}
             >
               {c.label}
             </Link>
@@ -107,8 +108,10 @@ export default async function HomePage() {
             </Link>
           </div>
           <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {newArrivals.map((product) => (
-              <ProductCard key={product.id} product={product} />
+            {newArrivals.map((product, i) => (
+              <div key={product.id} className="animate-rise" style={{ animationDelay: `${i * 70}ms` }}>
+                <ProductCard product={product} />
+              </div>
             ))}
           </div>
         </section>
