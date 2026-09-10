@@ -1,10 +1,17 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { StickyMobileCTA } from "@/components/layout/StickyMobileCTA";
+import { ScallopDivider } from "@/components/layout/ScallopDivider";
 import { HeroMark } from "@/components/brand/HeroMark";
 import { CATEGORIES, COLLECTION_INTRO_BODY, COLLECTION_INTRO_HEADING, HERO_HEADLINE, HERO_SUBHEAD, TAGLINE, WHY_1720 } from "@/lib/brand";
 import { getProducts } from "@/lib/products";
 import { ProductCard } from "@/components/product/ProductCard";
+
+// Matches the `ivory` and `butter` tokens in tailwind.config.ts — kept as
+// literal hex here because the scalloped divider needs real color values to
+// punch its bumps, not a Tailwind class.
+const BAND_IVORY = "#FDF2DC";
+const BAND_BUTTER = "#FAE3B1";
 
 export const metadata: Metadata = {
   title: "Modern-Retro Jewellery for a Taste of Your Own",
@@ -25,7 +32,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="border-b border-brand-umber/10 bg-brand-ivory">
+      <section className="bg-brand-ivory">
         <div className="container-page grid gap-8 py-16 sm:py-24 lg:grid-cols-2 lg:items-center lg:py-32">
           <div>
             <p className="font-body text-base font-bold uppercase tracking-widest text-brand-umber">
@@ -59,7 +66,9 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section aria-label="Why 1720" className="border-b border-brand-umber/10 bg-brand-ivory">
+      <ScallopDivider fromColor={BAND_IVORY} toColor={BAND_BUTTER} />
+
+      <section aria-label="Why 1720" className="bg-brand-butter">
         <div className="container-page py-12">
           <h2 className="font-display text-3xl font-bold text-brand-umber-dark sm:text-4xl">Why 1720?</h2>
         </div>
@@ -75,46 +84,58 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="container-page py-16">
-        <h2 className="font-display text-3xl font-bold text-brand-umber-dark sm:text-4xl">
-          {COLLECTION_INTRO_HEADING}
-        </h2>
-        <div className="mt-3 flex flex-wrap items-end justify-between gap-3">
-          <p className="max-w-md font-body text-base text-brand-charcoal">{COLLECTION_INTRO_BODY}</p>
-          <Link href="/shop" className="font-body text-sm font-semibold text-brand-umber hover:underline">
-            Explore the Collection
-          </Link>
-        </div>
-        <div className="mt-8 grid grid-cols-2 gap-5 sm:grid-cols-4">
-          {CATEGORIES.map((c, i) => (
-            <Link
-              key={c.slug}
-              href={`/shop?category=${c.slug}`}
-              className={`animate-rise shadow-retro-sm flex aspect-square flex-col items-center justify-center overflow-hidden rounded-3xl border-2 ${CATEGORY_TILE_COLORS[c.slug]} font-body text-base font-bold text-brand-umber-dark transition hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#482a24]`}
-              style={{ animationDelay: `${i * 70}ms` }}
-            >
-              {c.label}
+      <ScallopDivider fromColor={BAND_BUTTER} toColor={BAND_IVORY} />
+
+      <section className="bg-brand-ivory">
+        <div className="container-page py-16">
+          <h2 className="font-display text-3xl font-bold text-brand-umber-dark sm:text-4xl">
+            {COLLECTION_INTRO_HEADING}
+          </h2>
+          <div className="mt-3 flex flex-wrap items-end justify-between gap-3">
+            <p className="max-w-md font-body text-base text-brand-charcoal">{COLLECTION_INTRO_BODY}</p>
+            <Link href="/shop" className="font-body text-sm font-semibold text-brand-umber hover:underline">
+              Explore the Collection
             </Link>
-          ))}
+          </div>
+          <div className="mt-8 grid grid-cols-2 gap-5 sm:grid-cols-4">
+            {CATEGORIES.map((c, i) => (
+              <Link
+                key={c.slug}
+                href={`/shop?category=${c.slug}`}
+                className={`animate-rise shadow-retro-sm flex aspect-square flex-col items-center justify-center overflow-hidden rounded-3xl border-2 ${CATEGORY_TILE_COLORS[c.slug]} font-body text-base font-bold text-brand-umber-dark transition hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#482a24]`}
+                style={{ animationDelay: `${i * 70}ms` }}
+              >
+                {c.label}
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
       {newArrivals.length > 0 && (
-        <section className="container-page py-16">
-          <div className="flex items-end justify-between">
-            <h2 className="font-display text-2xl font-semibold text-brand-umber-dark sm:text-3xl">New arrivals</h2>
-            <Link href="/shop?new=true" className="font-body text-sm font-semibold text-brand-umber hover:underline">
-              View all
-            </Link>
-          </div>
-          <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {newArrivals.map((product, i) => (
-              <div key={product.id} className="animate-rise" style={{ animationDelay: `${i * 70}ms` }}>
-                <ProductCard product={product} />
+        <>
+          <ScallopDivider fromColor={BAND_IVORY} toColor={BAND_BUTTER} />
+          <section className="bg-brand-butter">
+            <div className="container-page py-16">
+              <div className="flex items-end justify-between">
+                <h2 className="font-display text-2xl font-semibold text-brand-umber-dark sm:text-3xl">
+                  New arrivals
+                </h2>
+                <Link href="/shop?new=true" className="font-body text-sm font-semibold text-brand-umber hover:underline">
+                  View all
+                </Link>
               </div>
-            ))}
-          </div>
-        </section>
+              <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+                {newArrivals.map((product, i) => (
+                  <div key={product.id} className="animate-rise" style={{ animationDelay: `${i * 70}ms` }}>
+                    <ProductCard product={product} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+          <ScallopDivider fromColor={BAND_BUTTER} toColor={BAND_IVORY} />
+        </>
       )}
 
       <StickyMobileCTA label="Explore the World of 1720" href="/shop" />
@@ -125,7 +146,7 @@ export default async function HomePage() {
 
 function TrustItem({ title, body }: { title: string; body: string }) {
   return (
-    <div className="rounded-xl border border-brand-sky/30 p-5">
+    <div className="rounded-xl border border-brand-sky/30 bg-brand-ivory p-5">
       <h3 className="font-body text-sm font-semibold text-brand-umber-dark">{title}</h3>
       <p className="mt-2 font-body text-sm text-brand-charcoal">{body}</p>
     </div>
