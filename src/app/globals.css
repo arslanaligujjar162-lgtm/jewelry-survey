@@ -56,6 +56,62 @@ body {
   .shadow-retro-sm {
     box-shadow: 3px 3px 0 0 #482a24;
   }
+
+  /* Editorial drop cap — first letter of a lede paragraph set large, like a
+     magazine feature opener. */
+  .drop-cap::first-letter {
+    float: left;
+    font-family: var(--font-cormorant), serif;
+    font-size: 3.4em;
+    line-height: 0.78;
+    padding-right: 0.09em;
+    padding-top: 0.05em;
+    font-weight: 600;
+    color: #482a24;
+  }
+
+  /* Scroll-reveal: paired with the RevealOnScroll client component, which
+     toggles .is-visible once the element enters the viewport. Reserved for
+     below-the-fold, non-essential content — never the buy path — since it
+     depends on JS running. */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+  [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* CSS-only entrance for above-the-fold content that must never depend on
+     JS to become visible (product hero, headline, price, add-to-cart). */
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .animate-rise {
+    animation: rise-in 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .animate-rise {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 @layer components {

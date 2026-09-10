@@ -71,6 +71,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${cormorant.variable} ${montserrat.variable}`}>
       <body className="flex min-h-screen flex-col bg-brand-ivory font-body text-brand-charcoal antialiased">
+        {/* Scroll-reveal content depends on an IntersectionObserver attaching via JS;
+            without scripts it would otherwise stay permanently invisible. */}
+        <noscript>
+          <style>{`[data-reveal] { opacity: 1 !important; transform: none !important; }`}</style>
+        </noscript>
         <ErrorReportingInit />
         <SiteSchema />
         {GA4_ID && (
