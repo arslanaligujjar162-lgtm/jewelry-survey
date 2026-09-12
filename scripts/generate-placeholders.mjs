@@ -7,18 +7,18 @@ import { join } from "path";
 
 const MATTE_BACKGROUNDS = ["#FBF7EE", "#F3E3A6", "#DDF0F7", "#EFE3D8"];
 
+// A `photos` array means the product has real photography checked in; the
+// script leaves those files alone and uses the given paths instead of
+// generating placeholder SVGs over the top of them.
 const products = [
-  // Earrings
-  // Price kept in sync with the real listing (Rs 2,200) -- note this product now
-  // has a real photo (public/products/confetti-hoop-1.jpg) checked in by hand;
-  // re-running this script would overwrite it with a generated placeholder SVG.
-  { sku: "1720-EAR-001", name: "Confetti Hoop", category: "earrings", price: 2200, plating: "18k gold PVD coating over 316L stainless steel", material: "316L stainless steel, PVD gold plated", desc: "Hoops with a scattered, mixed-texture finish along the band. Standard post-and-butterfly backs." },
-  { sku: "1720-EAR-002", name: "Moon Drop", category: "earrings", price: 1728, plating: "18k gold PVD coating over 316L stainless steel", material: "316L stainless steel, PVD gold plated", desc: "A crescent-shaped drop on a fine post. Light enough for all-day wear." },
-  { sku: "1720-EAR-003", name: "Vogue Hoop", category: "earrings", price: 2402, plating: "18k gold PVD coating over 316L stainless steel", material: "316L stainless steel, PVD gold plated", desc: "A wide, flat-profile hoop with a brushed finish. Secure hinge closure." },
-  { sku: "1720-EAR-004", name: "Ribbon Hoop", category: "earrings", price: 1352, plating: "18k gold PVD coating over 316L stainless steel", material: "316L stainless steel, PVD gold plated", desc: "A slim hoop with a twisted, ribbon-like silhouette. Everyday size, easy to sleep in." },
-  { sku: "1720-EAR-005", name: "Cascade Drop", category: "earrings", price: 2076, plating: "18k gold PVD coating over 316L stainless steel", material: "316L stainless steel, PVD gold plated", desc: "Three graduated links falling from the post for movement without extra weight." },
-  { sku: "1720-EAR-006", name: "Gala Stud", category: "earrings", price: 1612, plating: "18k gold PVD coating over 316L stainless steel", material: "316L stainless steel, PVD gold plated, cubic zirconia", desc: "A cluster of cubic zirconia in a rounded stud setting. Secure push backs." },
-  { sku: "1720-EAR-007", name: "Jet Hoop", category: "earrings", price: 2216, plating: "18k gold PVD coating over 316L stainless steel", material: "316L stainless steel, PVD gold plated", desc: "A bold, chunky hoop with a matte-brushed texture. Hinge closure." },
+  // Earrings — all seven shot, no placeholders
+  { sku: "1720-EAR-001", name: "Mermaid Tear", category: "earrings", price: 2200, plating: "18k gold PVD coating over 316L stainless steel", material: "316L stainless steel, PVD gold plated, crystal", desc: "A smooth teardrop dome scattered with flush-set crystals. Post-and-butterfly backs. Shown in multicolour and clear crystal.", photos: ["/products/mermaid-tear-1.jpg", "/products/mermaid-tear-2.jpg", "/products/mermaid-tear-3.jpg"] },
+  { sku: "1720-EAR-002", name: "Moon Drop", category: "earrings", price: 1728, plating: "18k gold PVD coating over 316L stainless steel", material: "316L stainless steel, PVD gold plated, shell pearl", desc: "A round shell pearl suspended from a polished lever-back fitting. Weighted enough to hang straight, light enough for all day.", photos: ["/products/moon-drop-1.jpg", "/products/moon-drop-2.jpg"] },
+  { sku: "1720-EAR-003", name: "Vogue Hoop", category: "earrings", price: 2402, plating: "18k gold PVD coating over 316L stainless steel", material: "316L stainless steel, PVD gold plated", desc: "A squared-off hoop in high-polish tubing, open at the base. Post-and-butterfly backs. Shown in gold and bare steel.", photos: ["/products/vogue-hoop-1.jpg", "/products/vogue-hoop-2.jpg"] },
+  { sku: "1720-EAR-004", name: "Ribbon Hoop", category: "earrings", price: 1352, plating: "18k gold PVD coating over 316L stainless steel", material: "316L stainless steel, PVD gold plated", desc: "An open hoop that tapers from a fine post to a broad, rounded base. High-polish throughout. Everyday size.", photos: ["/products/ribbon-hoop-1.jpg", "/products/ribbon-hoop-2.jpg"] },
+  { sku: "1720-EAR-005", name: "Cascade Drop", category: "earrings", price: 2076, plating: "18k gold PVD coating over 316L stainless steel", material: "316L stainless steel, PVD gold plated, cubic zirconia", desc: "Three graduated crystals — round, pear and oval — bezel-set and falling from the post for movement without extra weight.", photos: ["/products/cascade-drop-1.jpg", "/products/cascade-drop-2.jpg"] },
+  { sku: "1720-EAR-006", name: "Gala Stud", category: "earrings", price: 1612, plating: "18k gold PVD coating over 316L stainless steel", material: "316L stainless steel, PVD gold plated", desc: "Three slim polished bars curving together into a single sculptural stud. Secure push backs.", photos: ["/products/gala-stud-1.jpg"] },
+  { sku: "1720-EAR-007", name: "Jet Hoop", category: "earrings", price: 2216, plating: "18k gold PVD coating over 316L stainless steel", material: "316L stainless steel, PVD gold plated, enamel", desc: "A chunky open hoop, half high-polish gold and half glossy black enamel. Post-and-butterfly backs.", photos: ["/products/jet-hoop-1.jpg", "/products/jet-hoop-2.jpg"] },
   // Rings
   { sku: "1720-RNG-001", name: "Hammered Band", category: "rings", price: 1650, plating: "18k gold PVD coating over 316L stainless steel", material: "316L stainless steel, PVD gold plated", desc: "A hand-hammered texture across a simple band. Runs true to size.", ring: "US 5-9" },
   { sku: "1720-RNG-002", name: "Dewdrop Ring", category: "rings", price: 2100, plating: "18k gold PVD coating over 316L stainless steel", material: "316L stainless steel, PVD gold plated, cubic zirconia", desc: "A single round-cut cubic zirconia set low on a slim band, so it sits close to the finger.", ring: "US 5-9" },
@@ -63,17 +63,21 @@ products.forEach((p, i) => {
   const slug = p.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
   const bg1 = MATTE_BACKGROUNDS[i % MATTE_BACKGROUNDS.length];
   const bg2 = MATTE_BACKGROUNDS[(i + 1) % MATTE_BACKGROUNDS.length];
-  const img1 = `/products/${slug}-1.svg`;
-  const img2 = `/products/${slug}-2.svg`;
-  writeFileSync(join(outDir, `${slug}-1.svg`), svgFor(p.name, p.sku, bg1));
-  writeFileSync(join(outDir, `${slug}-2.svg`), svgFor(p.name, p.sku, bg2));
+  let images;
+  if (p.photos) {
+    images = p.photos;
+  } else {
+    images = [`/products/${slug}-1.svg`, `/products/${slug}-2.svg`];
+    writeFileSync(join(outDir, `${slug}-1.svg`), svgFor(p.name, p.sku, bg1));
+    writeFileSync(join(outDir, `${slug}-2.svg`), svgFor(p.name, p.sku, bg2));
+  }
 
   const isNew = i % 5 < 2; // first two per category flagged "new"
   const stock = 4 + ((i * 7) % 20); // varied stock, some low for the low-stock indicator
   const ringSize = p.ring ? `'${p.ring}'` : "null";
 
   seedRows.push(
-    `  ('${p.sku}', '${p.name.replace(/'/g, "''")}', '${slug}', (select id from categories where slug = '${p.category}'), ${p.price}, null, '${p.desc.replace(/'/g, "''")}', '${p.plating.replace(/'/g, "''")}', '${p.material.replace(/'/g, "''")}', ARRAY['${img1}','${img2}'], ${stock}, ${isNew}, ${ringSize})`
+    `  ('${p.sku}', '${p.name.replace(/'/g, "''")}', '${slug}', (select id from categories where slug = '${p.category}'), ${p.price}, null, '${p.desc.replace(/'/g, "''")}', '${p.plating.replace(/'/g, "''")}', '${p.material.replace(/'/g, "''")}', ARRAY[${images.map((i) => `'${i}'`).join(",")}], ${stock}, ${isNew}, ${ringSize})`
   );
 
   catCounter[p.category] = (catCounter[p.category] ?? 0) + 1;
@@ -89,7 +93,7 @@ products.forEach((p, i) => {
     description: p.desc,
     plating_spec: p.plating,
     material_spec: p.material,
-    images: [img1, img2],
+    images,
     stock_count: stock,
     is_new: isNew,
     ring_size_range: p.ring ?? null,

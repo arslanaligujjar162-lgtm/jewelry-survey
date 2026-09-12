@@ -2,7 +2,7 @@
 // the product page — one sentence about what the piece feels like, not a
 // generic "elevate your style" line. Keyed by product slug.
 export const PRODUCT_TAGLINES: Record<string, string> = {
-  "confetti-hoop": "A little playful. A little scattered. Completely 1720.",
+  "mermaid-tear": "A little playful. A little scattered. Completely 1720.",
   "moon-drop": "A little quiet. A little nocturnal. Completely 1720.",
   "vogue-hoop": "A little bold. A little unbothered. Completely 1720.",
   "ribbon-hoop": "A little twisted. A little playful. Completely 1720.",

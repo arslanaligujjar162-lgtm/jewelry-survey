@@ -54,6 +54,13 @@ const nextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      // 1720-EAR-001 was listed as "Confetti Hoop" before its real photography
+      // identified it as the Mermaid Tear; keep old shared links working.
+      { source: "/product/confetti-hoop", destination: "/product/mermaid-tear", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;
