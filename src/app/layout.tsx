@@ -5,6 +5,7 @@ import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CookieBanner } from "@/components/layout/CookieBanner";
+import { CartDrawer } from "@/components/cart/CartDrawer";
 import { WhatsAppFloatingButton } from "@/components/layout/WhatsAppFloatingButton";
 import { ErrorReportingInit } from "@/components/layout/ErrorReportingInit";
 import { SiteSchema } from "@/components/seo/SiteSchema";
@@ -109,6 +110,7 @@ export default function RootLayout({
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
+            <CartDrawer />
             <CookieBanner />
             <WhatsAppFloatingButton />
           </WishlistProvider>

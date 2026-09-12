@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { getProducts } from "@/lib/products";
+import { parseProductSort } from "@/lib/product-sort";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ShopFilters } from "@/components/shop/ShopFilters";
 import { CATEGORIES, type CategorySlug } from "@/lib/brand";
@@ -8,7 +9,7 @@ import { CATEGORIES, type CategorySlug } from "@/lib/brand";
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://1720.pk";
 
 interface ShopPageProps {
-  searchParams: { category?: string; min?: string; max?: string; new?: string; q?: string };
+  searchParams: { category?: string; min?: string; max?: string; new?: string; q?: string; sort?: string };
 }
 
 export function generateMetadata({ searchParams }: ShopPageProps): Metadata {
@@ -34,13 +35,14 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
   const maxPrice = searchParams.max ? Number(searchParams.max) : undefined;
   const isNew = searchParams.new === "true";
   const query = searchParams.q?.trim();
+  const sort = parseProductSort(searchParams.sort);
 
-  const products = await getProducts({ category, minPrice, maxPrice, isNew, query });
+  const products = await getProducts({ category, minPrice, maxPrice, isNew, query, sort });
   const categoryLabel = CATEGORIES.find((c) => c.slug === category)?.label;
 
   // Remounts the grid whenever the filters change, so the staggered entrance
   // animation replays instead of only firing once on first page load.
-  const gridKey = `${category ?? "all"}|${minPrice ?? ""}|${maxPrice ?? ""}|${isNew}|${query ?? ""}`;
+  const gridKey = `${category ?? "all"}|${minPrice ?? ""}|${maxPrice ?? ""}|${isNew}|${query ?? ""}|${sort}`;
 
   return (
     <div className="pb-10 sm:pb-14">

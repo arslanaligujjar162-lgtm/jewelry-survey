@@ -1,16 +1,16 @@
 "use client";
 
-import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 
 export function CartIconButton() {
-  const { itemCount } = useCart();
+  const { itemCount, openDrawer } = useCart();
 
   return (
-    <Link
-      href="/cart"
+    <button
+      type="button"
+      onClick={openDrawer}
       className="relative inline-flex items-center justify-center rounded-full p-2 text-brand-umber-dark transition hover:bg-brand-sky/10"
-      aria-label={`View cart, ${itemCount} item${itemCount === 1 ? "" : "s"}`}
+      aria-label={`Open cart, ${itemCount} item${itemCount === 1 ? "" : "s"}`}
     >
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
         <circle cx="9" cy="21" r="1" />
@@ -22,6 +22,6 @@ export function CartIconButton() {
           {itemCount}
         </span>
       )}
-    </Link>
+    </button>
   );
 }

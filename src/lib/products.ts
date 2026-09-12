@@ -2,6 +2,7 @@ import { createPublicClient } from "@/lib/supabase/public";
 import type { Category, CategorySlug, Product } from "@/lib/types";
 import { FALLBACK_CATEGORIES, FALLBACK_PRODUCTS } from "@/data/seed-products";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import type { ProductSort } from "@/lib/product-sort";
 
 export { isSupabaseConfigured };
 
@@ -12,6 +13,14 @@ export interface ProductFilters {
   isNew?: boolean;
   /** Case-insensitive substring match against name and description. */
   query?: string;
+  sort?: ProductSort;
+}
+
+function sortProducts(products: Product[], sort: ProductSort): Product[] {
+  const sorted = [...products];
+  if (sort === "price-asc") return sorted.sort((a, b) => a.price - b.price);
+  if (sort === "price-desc") return sorted.sort((a, b) => b.price - a.price);
+  return sorted.sort((a, b) => b.created_at.localeCompare(a.created_at));
 }
 
 function attachFallbackCategory(product: Product): Product {
@@ -20,7 +29,7 @@ function attachFallbackCategory(product: Product): Product {
 }
 
 function filterFallback(filters: ProductFilters): Product[] {
-  return FALLBACK_PRODUCTS.filter((p) => {
+  const matched = FALLBACK_PRODUCTS.filter((p) => {
     if (filters.category && p.category_id !== filters.category) return false;
     if (filters.minPrice !== undefined && p.price < filters.minPrice) return false;
     if (filters.maxPrice !== undefined && p.price > filters.maxPrice) return false;
@@ -32,6 +41,8 @@ function filterFallback(filters: ProductFilters): Product[] {
     }
     return true;
   }).map(attachFallbackCategory);
+
+  return sortProducts(matched, filters.sort ?? "newest");
 }
 
 export async function getCategories(): Promise<Category[]> {
@@ -46,8 +57,12 @@ export async function getCategories(): Promise<Category[]> {
 export async function getProducts(filters: ProductFilters = {}): Promise<Product[]> {
   if (!isSupabaseConfigured()) return filterFallback(filters);
 
+  const sort = filters.sort ?? "newest";
+  const orderColumn = sort === "newest" ? "created_at" : "price";
+  const ascending = sort === "price-asc";
+
   const supabase = createPublicClient();
-  let query = supabase.from("products").select("*, category:categories(*)").order("created_at", { ascending: false });
+  let query = supabase.from("products").select("*, category:categories(*)").order(orderColumn, { ascending });
 
   if (filters.category) {
     const { data: cat } = await supabase.from("categories").select("id").eq("slug", filters.category).maybeSingle();

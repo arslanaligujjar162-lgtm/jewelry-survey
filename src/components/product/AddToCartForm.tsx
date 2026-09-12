@@ -19,7 +19,7 @@ function parseRingSizes(range: string): string[] {
 }
 
 export function AddToCartForm({ product }: { product: Product }) {
-  const { addLine, lines } = useCart();
+  const { addLine, lines, openDrawer } = useCart();
   const router = useRouter();
   const ringSizes = product.ring_size_range ? parseRingSizes(product.ring_size_range) : [];
   const [ringSize, setRingSize] = useState(ringSizes[0] ?? "");
@@ -34,15 +34,17 @@ export function AddToCartForm({ product }: { product: Product }) {
 
   const outOfStock = product.stock_count <= 0;
 
-  function handleAddToCart() {
+  /** Returns false when validation blocked the add, so callers don't navigate
+   * away (or open the cart) as though the item went in. */
+  function handleAddToCart(): boolean {
     setError(null);
     if (ringSizes.length && !ringSize) {
       setError("Select a ring size");
-      return;
+      return false;
     }
     if (quantity > remaining) {
       setError(`Only ${Math.max(remaining, 0)} left in stock`);
-      return;
+      return false;
     }
 
     addLine({
@@ -62,6 +64,7 @@ export function AddToCartForm({ product }: { product: Product }) {
 
     setAdded(true);
     setTimeout(() => setAdded(false), 2500);
+    return true;
   }
 
   return (
@@ -122,7 +125,9 @@ export function AddToCartForm({ product }: { product: Product }) {
       <div className="flex flex-wrap gap-3">
         <button
           type="button"
-          onClick={handleAddToCart}
+          onClick={() => {
+            if (handleAddToCart()) openDrawer();
+          }}
           disabled={outOfStock}
           className="inline-flex items-center justify-center rounded-full shadow-retro-sm bg-brand-umber px-8 py-4 font-body text-base font-bold text-brand-ivory transition hover:-translate-y-0.5 hover:bg-brand-umber-dark hover:shadow-[5px_5px_0_0_#482a24] active:translate-y-0 active:shadow-none disabled:cursor-not-allowed disabled:opacity-50"
         >
@@ -131,8 +136,7 @@ export function AddToCartForm({ product }: { product: Product }) {
         <button
           type="button"
           onClick={() => {
-            handleAddToCart();
-            router.push("/cart");
+            if (handleAddToCart()) router.push("/cart");
           }}
           disabled={outOfStock}
           className="inline-flex items-center justify-center rounded-full border-2 border-brand-umber-dark px-8 py-4 font-body text-base font-bold text-brand-umber-dark transition hover:bg-brand-sky/10 disabled:cursor-not-allowed disabled:opacity-50"

@@ -18,6 +18,9 @@ interface CartContextValue {
    * a fresh page load (not client-side nav) starts with `lines: []` for one
    * render even when localStorage has items. */
   hydrated: boolean;
+  drawerOpen: boolean;
+  openDrawer: () => void;
+  closeDrawer: () => void;
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -29,6 +32,7 @@ function lineKey(productId: string, ringSize?: string | null) {
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>([]);
   const [hydrated, setHydrated] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     try {
@@ -75,6 +79,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const clear = useCallback(() => setLines([]), []);
+  const openDrawer = useCallback(() => setDrawerOpen(true), []);
+  const closeDrawer = useCallback(() => setDrawerOpen(false), []);
 
   const subtotal = useMemo(() => lines.reduce((sum, l) => sum + l.price * l.quantity, 0), [lines]);
   const itemCount = useMemo(() => lines.reduce((sum, l) => sum + l.quantity, 0), [lines]);
@@ -88,6 +94,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     subtotal,
     itemCount,
     hydrated,
+    drawerOpen,
+    openDrawer,
+    closeDrawer,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
