@@ -1,7 +1,11 @@
 import type { MetadataRoute } from "next";
 import { getProducts } from "@/lib/products";
+import { SITE_URL } from "@/lib/site-url";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://1720.pk";
+// Pick up newly photographed products without a redeploy.
+export const revalidate = 3600;
+
+const siteUrl = SITE_URL;
 
 const STATIC_ROUTES = [
   "",

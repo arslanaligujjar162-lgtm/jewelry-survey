@@ -18,15 +18,16 @@ export function QuickAddButton({ product }: { product: Product }) {
     );
   }
 
-  // Sized pieces go to the product page to choose a size — quick-add must
-  // never silently pick one on the customer's behalf.
-  if (product.ring_size_range) {
+  // Pieces with a size or colour to choose go to the product page — quick-add
+  // must never silently pick one on the customer's behalf.
+  const needsColour = Boolean(product.colour_options?.length);
+  if (product.ring_size_range || needsColour) {
     return (
       <Link
         href={`/product/${product.slug}`}
         className={`${BASE} border-2 border-brand-umber-dark text-brand-umber-dark hover:bg-brand-sky/10`}
       >
-        Choose size
+        {needsColour ? "Choose colour" : "Choose size"}
       </Link>
     );
   }

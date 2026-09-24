@@ -37,16 +37,17 @@ app degrades gracefully (see **Status** above) when Supabase, analytics, or the 
 |---|---|
 | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase project — catalog, orders, auth |
 | `SUPABASE_SERVICE_ROLE_KEY` | Server-only key used for checkout writes and the admin dashboard. Never expose client-side. |
-| `NEXT_PUBLIC_SITE_URL` | Canonical URL used in metadata, sitemap, robots.txt |
+| `NEXT_PUBLIC_SITE_URL` | Canonical URL used in metadata, sitemap, robots.txt and link previews. Falls back to Vercel's production domain when unset |
 | `NEXT_PUBLIC_GATEWAY_ENABLED` | Flip to `true` once a card/JazzCash/Easypaisa merchant account is approved and `src/lib/payments/gateway.ts` is wired up |
 | `NEXT_PUBLIC_GA4_ID`, `NEXT_PUBLIC_META_PIXEL_ID` | Analytics — omit to skip loading either script |
-| `WHATSAPP_CLOUD_API_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID` | Not yet consumed by code — placeholders for wiring up `src/lib/whatsapp.ts` |
+| `RESEND_API_KEY`, `ORDER_ALERT_EMAIL`, `ORDER_ALERT_FROM` | New-order email alerts to the owner via Resend — omit to skip |
+| `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM_NUMBER` | Optional SMS phone verification at checkout. Unset: COD orders go through without a code and are confirmed on WhatsApp |
 
 ## Supabase setup
 
 1. Create a project at [supabase.com](https://supabase.com).
-2. In the SQL editor, run the migrations in order: `supabase/migrations/0001_init.sql`,
-   `0002_decrement_stock.sql`, `0003_storage.sql`.
+2. In the SQL editor, run every file in `supabase/migrations/` in numeric order (`0001` onwards). An existing
+   project that predates the real catalogue can instead run `supabase/RUN_THIS_IN_SUPABASE.sql` once.
 3. Run `supabase/seed.sql` to load the placeholder catalog (replace the product photography referenced there with
    real images before launch — see **Known placeholders**).
 4. In Authentication → Users, create a single admin user (email + password). That's the account used to sign in at

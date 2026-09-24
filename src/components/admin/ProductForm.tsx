@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
-import type { Category, Product } from "@/lib/types";
+import type { Category, ColourOption, Product } from "@/lib/types";
 
 interface ProductFormValues {
   sku: string;
@@ -20,6 +20,7 @@ interface ProductFormValues {
   stock_count: number;
   is_new: boolean;
   ring_size_range: string | null;
+  colour_options?: ColourOption[] | null;
 }
 
 export function ProductForm({
@@ -46,6 +47,10 @@ export function ProductForm({
   const [stockCount, setStockCount] = useState(product?.stock_count?.toString() ?? "0");
   const [isNew, setIsNew] = useState(product?.is_new ?? false);
   const [ringSizeRange, setRingSizeRange] = useState(product?.ring_size_range ?? "");
+  // A colourway is one of the product's photos with a colour name on it.
+  const [colourNames, setColourNames] = useState<Record<string, string>>(() =>
+    Object.fromEntries((product?.colour_options ?? []).map((o) => [o.image, o.name]))
+  );
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -73,6 +78,17 @@ export function ProductForm({
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    const colourOptions = images
+      .filter((src) => colourNames[src]?.trim())
+      .map((src) => ({ name: colourNames[src].trim(), image: src }));
+    if (colourOptions.length === 1) {
+      setError("Name at least two photos to offer a colour choice, or clear the one colour name.");
+      return;
+    }
+    if (new Set(colourOptions.map((o) => o.name.toLowerCase())).size !== colourOptions.length) {
+      setError("Each colour needs a different name.");
+      return;
+    }
     setSaving(true);
     try {
       await onSubmit({
@@ -89,6 +105,9 @@ export function ProductForm({
         stock_count: Number(stockCount),
         is_new: isNew,
         ring_size_range: ringSizeRange.trim() || null,
+        // Only sent when relevant, so saving a single-colour product still
+        // works on a database that hasn't had the colour_options column added.
+        ...(colourOptions.length || product?.colour_options?.length ? { colour_options: colourOptions.length ? colourOptions : null } : {}),
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not save product");
@@ -138,15 +157,25 @@ export function ProductForm({
         <span className="block font-body text-sm font-medium text-brand-charcoal">Images</span>
         <div className="mt-2 flex flex-wrap gap-3">
           {images.map((src, i) => (
-            <div key={src} className="relative h-20 w-20 overflow-hidden rounded-lg bg-brand-sky/10">
-              <Image src={src} alt={`Product image ${i + 1}`} fill className="object-cover" />
-              <button
-                type="button"
-                onClick={() => setImages((prev) => prev.filter((_, idx) => idx !== i))}
-                className="absolute right-0 top-0 rounded-bl bg-brand-error px-1.5 py-0.5 text-[10px] text-white"
-              >
-                ×
-              </button>
+            <div key={src} className="w-24">
+              <div className="relative h-24 w-24 overflow-hidden rounded-lg bg-brand-sky/10">
+                <Image src={src} alt={`Product image ${i + 1}`} fill className="object-cover" />
+                <button
+                  type="button"
+                  onClick={() => setImages((prev) => prev.filter((_, idx) => idx !== i))}
+                  className="absolute right-0 top-0 rounded-bl bg-brand-error px-1.5 py-0.5 text-[10px] text-white"
+                >
+                  ×
+                </button>
+              </div>
+              <input
+                type="text"
+                value={colourNames[src] ?? ""}
+                onChange={(e) => setColourNames((prev) => ({ ...prev, [src]: e.target.value }))}
+                placeholder="Colour name"
+                aria-label={`Colour name for image ${i + 1}`}
+                className="input mt-1 px-2 py-1 text-xs"
+              />
             </div>
           ))}
         </div>
@@ -155,7 +184,8 @@ export function ProductForm({
           <input type="file" accept="image/*" onChange={handleUpload} disabled={uploading} className="hidden" />
         </label>
         <p className="mt-1 font-body text-xs text-brand-charcoal/50">
-          Uploads to Supabase Storage (product-images bucket).
+          The first photo leads in the shop. To sell a piece in more than one colour, type a colour name under the
+          photo of each colourway (e.g. Gold, Steel) — customers then pick one. Leave blank for single-colour pieces.
         </p>
       </div>
 

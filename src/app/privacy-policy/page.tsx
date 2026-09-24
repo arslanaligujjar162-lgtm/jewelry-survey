@@ -52,14 +52,14 @@ export default function PrivacyPolicyPage() {
           <section>
             <h2 className="font-body text-base font-semibold text-brand-umber-dark">5. Your rights</h2>
             <p className="mt-2">
-              You can request a copy of the data we hold about you, or ask us to delete it, by emailing{" "}
-              {CONTACT.email}.
+              You can request a copy of the data we hold about you, or ask us to delete it, by{" "}
+              {CONTACT.email ? `emailing ${CONTACT.email}` : "messaging us on WhatsApp"}.
             </p>
           </section>
           <section>
             <h2 className="font-body text-base font-semibold text-brand-umber-dark">6. Contact</h2>
             <p className="mt-2">
-              Questions about this policy: {CONTACT.email} or WhatsApp us.
+              Questions about this policy: {CONTACT.email ? `${CONTACT.email} or WhatsApp us` : "WhatsApp us"}.
             </p>
           </section>
         </div>

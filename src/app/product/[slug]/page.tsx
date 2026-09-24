@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getProductBySlug, getProducts, getRelatedProducts } from "@/lib/products";
+import { getProductBySlug, getProducts, getRelatedProducts, hasRealPhotography } from "@/lib/products";
 import { getApprovedReviews } from "@/lib/reviews";
 import { formatPKR } from "@/lib/format";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { AddToCartForm } from "@/components/product/AddToCartForm";
+import { SelectedColourProvider } from "@/components/product/SelectedColour";
 import { StockIndicator } from "@/components/product/StockIndicator";
 import { TrustBadges } from "@/components/product/TrustBadges";
 import { ProductFeatures } from "@/components/product/ProductFeatures";
@@ -19,8 +20,12 @@ import { StickyMobileCTA } from "@/components/layout/StickyMobileCTA";
 import { BreadcrumbSchema } from "@/components/seo/BreadcrumbSchema";
 import { RevealOnScroll } from "@/components/motion/RevealOnScroll";
 import { getProductTagline } from "@/data/product-taglines";
+import { SITE_URL } from "@/lib/site-url";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://1720.pk";
+// Re-render at most once a minute so stock levels stay current as orders come in.
+export const revalidate = 60;
+
+const siteUrl = SITE_URL;
 
 interface ProductPageProps {
   params: { slug: string };
@@ -39,7 +44,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const product = await getProductBySlug(params.slug);
-  if (!product) return { title: "Product Not Found" };
+  if (!product || !hasRealPhotography(product)) return { title: "Product Not Found" };
 
   return {
     title: `${product.name} — ${formatPKR(product.price)}`,
@@ -55,7 +60,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const product = await getProductBySlug(params.slug);
-  if (!product) notFound();
+  if (!product || !hasRealPhotography(product)) notFound();
 
   const [related, reviews] = await Promise.all([getRelatedProducts(product), getApprovedReviews(product.id)]);
   const productUrl = `${siteUrl}/product/${product.slug}`;
@@ -99,6 +104,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       </div>
 
       <div className="container-page pt-8 sm:pt-12">
+        <SelectedColourProvider initial={product.colour_options?.[0]?.name ?? null}>
         <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
           {/* Image column — CSS-only entrance; this is the buy path, so it must
               never depend on JS/IntersectionObserver to become visible. */}
@@ -109,7 +115,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   New Arrival
                 </span>
               )}
-              <ProductGallery images={product.images} productName={product.name} />
+              <ProductGallery images={product.images} productName={product.name} colourOptions={product.colour_options} />
             </div>
             <p className="mt-3 border-t border-brand-umber/10 pt-3 font-display text-sm italic text-brand-charcoal/60">
               Fig. 1 — {product.material_spec}. {product.plating_spec}.
@@ -172,6 +178,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </dl>
           </div>
         </div>
+        </SelectedColourProvider>
       </div>
 
       {related.length > 0 && (

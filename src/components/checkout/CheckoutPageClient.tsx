@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
 import { CheckoutForm } from "@/components/checkout/CheckoutForm";
 
-export function CheckoutPageClient() {
+export function CheckoutPageClient({ otpRequired }: { otpRequired: boolean }) {
   const { lines, hydrated } = useCart();
   const router = useRouter();
 
@@ -22,7 +22,7 @@ export function CheckoutPageClient() {
     <div className="container-page py-10 sm:py-14">
       <h1 className="font-display text-3xl font-semibold text-brand-umber-dark sm:text-4xl">Checkout</h1>
       <div className="mt-8">
-        <CheckoutForm />
+        <CheckoutForm otpRequired={otpRequired} />
       </div>
     </div>
   );

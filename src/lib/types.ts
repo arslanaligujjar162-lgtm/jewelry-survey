@@ -7,6 +7,12 @@ export interface Category {
   description: string | null;
 }
 
+/** A colourway of a product, shown by one of the product's own photos. */
+export interface ColourOption {
+  name: string;
+  image: string;
+}
+
 export interface Product {
   id: string;
   sku: string;
@@ -23,6 +29,8 @@ export interface Product {
   stock_count: number;
   is_new: boolean;
   ring_size_range: string | null;
+  /** Null/empty when the piece comes in one colour. Stock is shared across colours. */
+  colour_options?: ColourOption[] | null;
   created_at: string;
 }
 
@@ -42,6 +50,7 @@ export interface OrderItem {
   price: number;
   quantity: number;
   ring_size?: string | null;
+  colour?: string | null;
 }
 
 export interface ShippingAddress {
@@ -52,18 +61,6 @@ export interface ShippingAddress {
   city: string;
   postalCode: string;
   province: string;
-}
-
-/**
- * Fields an automated WhatsApp confirmation message needs.
- * Populated at order-write time; actual send is stubbed until Cloud API wiring lands.
- */
-export interface WhatsAppOrderContext {
-  customerName: string;
-  customerPhone: string;
-  orderNumber: string;
-  orderSummary: string;
-  status: OrderStatus;
 }
 
 export interface Order {
@@ -114,5 +111,6 @@ export interface CartLine {
   price: number;
   quantity: number;
   ring_size?: string | null;
+  colour?: string | null;
   max_stock: number;
 }

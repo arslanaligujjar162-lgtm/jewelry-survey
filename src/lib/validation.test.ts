@@ -54,4 +54,11 @@ describe("shippingAddressSchema", () => {
     const result = shippingAddressSchema.safeParse({ ...validAddress, phone: "123" });
     expect(result.success).toBe(false);
   });
+
+  it("accepts an address with no postal code", () => {
+    const { postalCode: _omit, ...withoutPostal } = validAddress;
+    const result = shippingAddressSchema.safeParse(withoutPostal);
+    expect(result.success).toBe(true);
+    expect(result.success && result.data.postalCode).toBe("");
+  });
 });

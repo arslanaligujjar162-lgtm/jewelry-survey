@@ -19,7 +19,8 @@ export const shippingAddressSchema = z.object({
   addressLine1: z.string().trim().min(5, "Enter your street address"),
   addressLine2: z.string().trim().optional(),
   city: z.string().trim().min(2, "Enter your city"),
-  postalCode: z.string().trim().min(4, "Enter a valid postal code"),
+  // Optional: most customers don't know theirs and delivery pricing doesn't use it.
+  postalCode: z.string().trim().max(10).default(""),
   province: z.string().trim().min(2, "Select your province"),
 });
 

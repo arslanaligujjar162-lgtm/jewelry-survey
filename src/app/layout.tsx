@@ -13,6 +13,7 @@ import { CartProvider } from "@/lib/cart-context";
 import { WishlistProvider } from "@/lib/wishlist-context";
 import { BRAND_DESCRIPTION, BRAND_NAME, SHARE_HOOK, TAGLINE } from "@/lib/brand";
 import { GA4_ID, META_PIXEL_ID } from "@/lib/analytics";
+import { SITE_URL } from "@/lib/site-url";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -28,7 +29,7 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://1720.pk";
+const siteUrl = SITE_URL;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

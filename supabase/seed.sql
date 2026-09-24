@@ -7,9 +7,9 @@ insert into categories (slug, name, description) values
 on conflict (slug) do nothing;
 
 insert into products (sku, name, slug, category_id, price, compare_at_price, description, plating_spec, material_spec, images, stock_count, is_new, ring_size_range) values
-  ('1720-EAR-001', 'Mermaid Tear', 'mermaid-tear', (select id from categories where slug = 'earrings'), 2200, null, 'A smooth teardrop dome scattered with flush-set crystals. Post-and-butterfly backs. Shown in multicolour and clear crystal.', '18k gold PVD coating over 316L stainless steel', '316L stainless steel, PVD gold plated, crystal', ARRAY['/products/mermaid-tear-1.jpg','/products/mermaid-tear-2.jpg','/products/mermaid-tear-3.jpg'], 20, true, null),
+  ('1720-EAR-001', 'Mermaid Tear', 'mermaid-tear', (select id from categories where slug = 'earrings'), 2200, null, 'A smooth teardrop dome scattered with flush-set crystals. Post-and-butterfly backs. In multicolour or clear crystal.', '18k gold PVD coating over 316L stainless steel', '316L stainless steel, PVD gold plated, crystal', ARRAY['/products/mermaid-tear-1.jpg','/products/mermaid-tear-2.jpg','/products/mermaid-tear-3.jpg'], 20, true, null),
   ('1720-EAR-002', 'Moon Drop', 'moon-drop', (select id from categories where slug = 'earrings'), 1728, null, 'A round shell pearl suspended from a polished lever-back fitting. Weighted enough to hang straight, light enough for all day.', '18k gold PVD coating over 316L stainless steel', '316L stainless steel, PVD gold plated, shell pearl', ARRAY['/products/moon-drop-1.jpg','/products/moon-drop-2.jpg'], 11, true, null),
-  ('1720-EAR-003', 'Vogue Hoop', 'vogue-hoop', (select id from categories where slug = 'earrings'), 2402, null, 'A squared-off hoop in high-polish tubing, open at the base. Post-and-butterfly backs. Shown in gold and bare steel.', '18k gold PVD coating over 316L stainless steel', '316L stainless steel, PVD gold plated', ARRAY['/products/vogue-hoop-1.jpg','/products/vogue-hoop-2.jpg'], 18, false, null),
+  ('1720-EAR-003', 'Vogue Hoop', 'vogue-hoop', (select id from categories where slug = 'earrings'), 2402, null, 'A squared-off hoop in high-polish tubing, open at the base. Post-and-butterfly backs. In gold or bare polished steel.', '18k gold PVD coating over 316L stainless steel', '316L stainless steel — PVD gold plated, or bare polished steel', ARRAY['/products/vogue-hoop-1.jpg','/products/vogue-hoop-2.jpg'], 18, false, null),
   ('1720-EAR-004', 'Ribbon Hoop', 'ribbon-hoop', (select id from categories where slug = 'earrings'), 1352, null, 'An open hoop that tapers from a fine post to a broad, rounded base. High-polish throughout. Everyday size.', '18k gold PVD coating over 316L stainless steel', '316L stainless steel, PVD gold plated', ARRAY['/products/ribbon-hoop-1.jpg','/products/ribbon-hoop-2.jpg'], 5, false, null),
   ('1720-EAR-005', 'Cascade Drop', 'cascade-drop', (select id from categories where slug = 'earrings'), 2076, null, 'Three graduated crystals — round, pear and oval — bezel-set and falling from the post for movement without extra weight.', '18k gold PVD coating over 316L stainless steel', '316L stainless steel, PVD gold plated, cubic zirconia', ARRAY['/products/cascade-drop-1.jpg','/products/cascade-drop-2.jpg'], 12, false, null),
   ('1720-EAR-006', 'Gala Stud', 'gala-stud', (select id from categories where slug = 'earrings'), 1612, null, 'Three slim polished bars curving together into a single sculptural stud. Secure push backs.', '18k gold PVD coating over 316L stainless steel', '316L stainless steel, PVD gold plated', ARRAY['/products/gala-stud-1.jpg'], 19, true, null),
@@ -29,6 +29,20 @@ insert into products (sku, name, slug, category_id, price, compare_at_price, des
   ('1720-BRC-006', 'Vine Bangle', 'vine-bangle', (select id from categories where slug = 'bracelets'), 1564, null, 'A thin, twisting vine-textured bangle. Open style, one size.', '18k gold PVD coating over 316L stainless steel', '316L stainless steel, PVD gold plated', ARRAY['/products/vine-bangle-1.svg','/products/vine-bangle-2.svg'], 17, false, null),
   ('1720-NCK-001', 'Clover Pendant', 'clover-pendant', (select id from categories where slug = 'necklaces'), 1488, null, 'A four-leaf clover pendant on a fine box chain, 16-18in adjustable.', '18k gold PVD coating over 316L stainless steel', '316L stainless steel, PVD gold plated', ARRAY['/products/clover-pendant-1.svg','/products/clover-pendant-2.svg'], 4, true, null)
 on conflict (sku) do nothing;
+
+-- Colourways (see migration 0008)
+update products
+set
+  colour_options = '[{"name": "Multicolour", "image": "/products/mermaid-tear-1.jpg"}, {"name": "Clear crystal", "image": "/products/mermaid-tear-2.jpg"}]'::jsonb,
+  description = 'A smooth teardrop dome scattered with flush-set crystals. Post-and-butterfly backs. In multicolour or clear crystal.'
+where sku = '1720-EAR-001';
+
+update products
+set
+  colour_options = '[{"name": "Gold", "image": "/products/vogue-hoop-1.jpg"}, {"name": "Steel", "image": "/products/vogue-hoop-2.jpg"}]'::jsonb,
+  description = 'A squared-off hoop in high-polish tubing, open at the base. Post-and-butterfly backs. In gold or bare polished steel.',
+  material_spec = '316L stainless steel — PVD gold plated, or bare polished steel'
+where sku = '1720-EAR-003';
 
 insert into promo_codes (code, discount_percent, active, expires_at) values
   ('WELCOME10', 10, true, null)

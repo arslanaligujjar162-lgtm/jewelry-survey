@@ -36,12 +36,14 @@ export function Footer() {
         <div>
           <h3 className="font-body text-sm font-semibold uppercase tracking-wide text-brand-umber-dark">Contact</h3>
           <ul className="mt-3 space-y-2 font-body text-sm text-brand-charcoal">
-            <li>{CONTACT.address}</li>
-            <li>
-              <a href={`mailto:${CONTACT.email}`} className="hover:text-brand-umber">
-                {CONTACT.email}
-              </a>
-            </li>
+            {CONTACT.address && <li>{CONTACT.address}</li>}
+            {CONTACT.email && (
+              <li>
+                <a href={`mailto:${CONTACT.email}`} className="hover:text-brand-umber">
+                  {CONTACT.email}
+                </a>
+              </li>
+            )}
             <li>
               <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="hover:text-brand-umber">
                 WhatsApp us
@@ -55,21 +57,27 @@ export function Footer() {
           </ul>
         </div>
 
-        <div>
-          <h3 className="font-body text-sm font-semibold uppercase tracking-wide text-brand-umber-dark">Follow</h3>
-          <ul className="mt-3 space-y-2 font-body text-sm text-brand-charcoal">
-            <li>
-              <a href={CONTACT.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-brand-umber">
-                Instagram
-              </a>
-            </li>
-            <li>
-              <a href={CONTACT.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-brand-umber">
-                Facebook
-              </a>
-            </li>
-          </ul>
-        </div>
+        {(CONTACT.instagram || CONTACT.facebook) && (
+          <div>
+            <h3 className="font-body text-sm font-semibold uppercase tracking-wide text-brand-umber-dark">Follow</h3>
+            <ul className="mt-3 space-y-2 font-body text-sm text-brand-charcoal">
+              {CONTACT.instagram && (
+                <li>
+                  <a href={CONTACT.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-brand-umber">
+                    Instagram
+                  </a>
+                </li>
+              )}
+              {CONTACT.facebook && (
+                <li>
+                  <a href={CONTACT.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-brand-umber">
+                    Facebook
+                  </a>
+                </li>
+              )}
+            </ul>
+          </div>
+        )}
       </div>
 
       <div className="border-t border-brand-umber/10 py-5">

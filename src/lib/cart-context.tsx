@@ -8,8 +8,8 @@ const STORAGE_KEY = "1720_cart_v1";
 interface CartContextValue {
   lines: CartLine[];
   addLine: (line: CartLine) => void;
-  removeLine: (productId: string, ringSize?: string | null) => void;
-  updateQuantity: (productId: string, quantity: number, ringSize?: string | null) => void;
+  removeLine: (key: string) => void;
+  updateQuantity: (key: string, quantity: number) => void;
   clear: () => void;
   subtotal: number;
   itemCount: number;
@@ -25,8 +25,20 @@ interface CartContextValue {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
-function lineKey(productId: string, ringSize?: string | null) {
-  return `${productId}::${ringSize ?? ""}`;
+/** One cart line per product + ring size + colour. */
+export function lineKey(line: Pick<CartLine, "product_id" | "ring_size" | "colour">) {
+  return `${line.product_id}::${line.ring_size ?? ""}::${line.colour ?? ""}`;
+}
+
+/**
+ * Stock is held per product, not per size or colour, so a line may only grow
+ * to what the product's other lines leave free.
+ */
+function clampToStock(lines: CartLine[], key: string, productId: string, maxStock: number, quantity: number) {
+  const elsewhere = lines
+    .filter((l) => l.product_id === productId && lineKey(l) !== key)
+    .reduce((sum, l) => sum + l.quantity, 0);
+  return Math.max(0, Math.min(quantity, maxStock - elsewhere));
 }
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
@@ -51,28 +63,25 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const addLine = useCallback((line: CartLine) => {
     setLines((prev) => {
-      const key = lineKey(line.product_id, line.ring_size);
-      const existing = prev.find((l) => lineKey(l.product_id, l.ring_size) === key);
-      if (existing) {
-        return prev.map((l) =>
-          lineKey(l.product_id, l.ring_size) === key
-            ? { ...l, quantity: Math.min(l.quantity + line.quantity, l.max_stock) }
-            : l
-        );
-      }
-      return [...prev, line];
+      const key = lineKey(line);
+      const existing = prev.find((l) => lineKey(l) === key);
+      const wanted = (existing?.quantity ?? 0) + line.quantity;
+      const quantity = clampToStock(prev, key, line.product_id, line.max_stock, wanted);
+      if (quantity === 0) return prev;
+      if (existing) return prev.map((l) => (lineKey(l) === key ? { ...l, quantity } : l));
+      return [...prev, { ...line, quantity }];
     });
   }, []);
 
-  const removeLine = useCallback((productId: string, ringSize?: string | null) => {
-    setLines((prev) => prev.filter((l) => lineKey(l.product_id, l.ring_size) !== lineKey(productId, ringSize)));
+  const removeLine = useCallback((key: string) => {
+    setLines((prev) => prev.filter((l) => lineKey(l) !== key));
   }, []);
 
-  const updateQuantity = useCallback((productId: string, quantity: number, ringSize?: string | null) => {
+  const updateQuantity = useCallback((key: string, quantity: number) => {
     setLines((prev) =>
       prev.map((l) =>
-        lineKey(l.product_id, l.ring_size) === lineKey(productId, ringSize)
-          ? { ...l, quantity: Math.max(1, Math.min(quantity, l.max_stock)) }
+        lineKey(l) === key
+          ? { ...l, quantity: Math.max(1, clampToStock(prev, key, l.product_id, l.max_stock, quantity)) }
           : l
       )
     );

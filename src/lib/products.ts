@@ -23,6 +23,28 @@ function sortProducts(products: Product[], sort: ProductSort): Product[] {
   return sorted.sort((a, b) => b.created_at.localeCompare(a.created_at));
 }
 
+const isPlaceholderImage = (src: string) => src.endsWith(".svg");
+
+/**
+ * True once a product has at least one real photograph. Products still on
+ * generated placeholder art (the SVG letter tiles) stay off the storefront,
+ * and appear automatically as soon as a photo is uploaded in admin.
+ */
+export function hasRealPhotography(product: Product): boolean {
+  return product.images.some((src) => !isPlaceholderImage(src));
+}
+
+/**
+ * Drops placeholder art from a photographed product's gallery. The admin
+ * upload appends to the image list, so without this a newly photographed
+ * product would keep leading with its old letter tile.
+ */
+function withoutPlaceholders(product: Product): Product {
+  return hasRealPhotography(product)
+    ? { ...product, images: product.images.filter((src) => !isPlaceholderImage(src)) }
+    : product;
+}
+
 function attachFallbackCategory(product: Product): Product {
   const category = FALLBACK_CATEGORIES.find((c) => c.id === product.category_id);
   return { ...product, category };
@@ -54,7 +76,13 @@ export async function getCategories(): Promise<Category[]> {
   return data as Category[];
 }
 
+/** Storefront products: only those with real photography. */
 export async function getProducts(filters: ProductFilters = {}): Promise<Product[]> {
+  const products = await queryProducts(filters);
+  return products.filter(hasRealPhotography).map(withoutPlaceholders);
+}
+
+async function queryProducts(filters: ProductFilters): Promise<Product[]> {
   if (!isSupabaseConfigured()) return filterFallback(filters);
 
   const sort = filters.sort ?? "newest";
@@ -84,7 +112,7 @@ export async function getProducts(filters: ProductFilters = {}): Promise<Product
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   if (!isSupabaseConfigured()) {
     const product = FALLBACK_PRODUCTS.find((p) => p.slug === slug);
-    return product ? attachFallbackCategory(product) : null;
+    return product ? withoutPlaceholders(attachFallbackCategory(product)) : null;
   }
 
   const supabase = createPublicClient();
@@ -96,9 +124,9 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
 
   if (error || !data) {
     const fallback = FALLBACK_PRODUCTS.find((p) => p.slug === slug);
-    return fallback ? attachFallbackCategory(fallback) : null;
+    return fallback ? withoutPlaceholders(attachFallbackCategory(fallback)) : null;
   }
-  return data as Product;
+  return withoutPlaceholders(data as Product);
 }
 
 export async function getRelatedProducts(product: Product, limit = 4): Promise<Product[]> {

@@ -66,12 +66,21 @@ export const FOOTER_CLOSING = "Not to complete you. To express you.";
 // Address, email, and social handles are still placeholders — flagged for
 // the real ones before launch. Renamed to the 1720 pattern for consistency,
 // but the actual domain/handles need to be registered and confirmed.
-export const CONTACT = {
-  email: "hello@1720.pk", // TODO: confirm real domain before launch
+// Anything left null is hidden across the site (footer, contact page,
+// structured data) rather than shown as a placeholder. WhatsApp is the one
+// channel that's live, so it's the fallback wherever email would appear.
+export const CONTACT: {
+  email: string | null;
+  whatsappNumber: string;
+  address: string | null;
+  instagram: string | null;
+  facebook: string | null;
+} = {
+  email: null,
   whatsappNumber: "923356389333",
-  address: "Placeholder Address, Gulberg III, Lahore, Punjab, Pakistan", // TODO: confirm real business address before launch
-  instagram: "https://instagram.com/1720", // TODO: confirm real handle before launch
-  facebook: "https://facebook.com/1720", // TODO: confirm real handle before launch
+  address: null,
+  instagram: null,
+  facebook: null,
 };
 
 export function whatsappLink(message?: string) {

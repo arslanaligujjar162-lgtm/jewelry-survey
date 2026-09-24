@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
+import { useSelectedColour } from "@/components/product/SelectedColour";
 import type { Product } from "@/lib/types";
 import { trackEvent, trackPixelEvent } from "@/lib/analytics";
 
@@ -26,10 +28,13 @@ export function AddToCartForm({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const colourOptions = product.colour_options ?? [];
+  const selection = useSelectedColour();
+  const colour = selection?.colour ?? null;
+  const colourOption = colourOptions.find((o) => o.name === colour);
 
-  const inCartQty = lines
-    .filter((l) => l.product_id === product.id && (!ringSizes.length || l.ring_size === ringSize))
-    .reduce((sum, l) => sum + l.quantity, 0);
+  // Stock is shared across sizes and colours, so count every line of this product.
+  const inCartQty = lines.filter((l) => l.product_id === product.id).reduce((sum, l) => sum + l.quantity, 0);
   const remaining = product.stock_count - inCartQty;
 
   const outOfStock = product.stock_count <= 0;
@@ -38,6 +43,10 @@ export function AddToCartForm({ product }: { product: Product }) {
    * away (or open the cart) as though the item went in. */
   function handleAddToCart(): boolean {
     setError(null);
+    if (colourOptions.length && !colourOption) {
+      setError("Choose a colour");
+      return false;
+    }
     if (ringSizes.length && !ringSize) {
       setError("Select a ring size");
       return false;
@@ -52,10 +61,11 @@ export function AddToCartForm({ product }: { product: Product }) {
       sku: product.sku,
       name: product.name,
       slug: product.slug,
-      image: product.images[0],
+      image: colourOption?.image ?? product.images[0],
       price: product.price,
       quantity,
       ring_size: ringSizes.length ? ringSize : null,
+      colour: colourOption?.name ?? null,
       max_stock: product.stock_count,
     });
 
@@ -69,6 +79,37 @@ export function AddToCartForm({ product }: { product: Product }) {
 
   return (
     <div className="mt-6" id="add-to-cart">
+      {colourOptions.length > 0 && (
+        <fieldset className="mb-5">
+          <legend className="font-body text-sm font-medium text-brand-charcoal">
+            Colour: <span className="font-semibold text-brand-umber-dark">{colour ?? "choose one"}</span>
+          </legend>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {colourOptions.map((option) => {
+              const selected = option.name === colour;
+              return (
+                <button
+                  key={option.name}
+                  type="button"
+                  onClick={() => selection?.setColour(option.name)}
+                  aria-pressed={selected}
+                  className={`flex items-center gap-2 rounded-full border-2 bg-brand-ivory py-1 pl-1 pr-4 font-body text-sm transition ${
+                    selected
+                      ? "border-brand-umber-dark text-brand-umber-dark shadow-retro-sm"
+                      : "border-brand-umber/20 text-brand-charcoal hover:border-brand-umber/50"
+                  }`}
+                >
+                  <span className="relative h-9 w-9 overflow-hidden rounded-full bg-white">
+                    <Image src={option.image} alt="" fill sizes="36px" className="object-contain" />
+                  </span>
+                  {option.name}
+                </button>
+              );
+            })}
+          </div>
+        </fieldset>
+      )}
+
       {ringSizes.length > 0 && (
         <div className="mb-4">
           <label htmlFor="ring-size" className="block font-body text-sm font-medium text-brand-charcoal">

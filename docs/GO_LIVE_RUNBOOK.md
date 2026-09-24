@@ -78,22 +78,18 @@ The GA4/Meta Pixel loading code already exists — it just checks whether these 
 3. Set up a Google Business Profile (business.google.com) with category "Jewelry store" and the real address —
    this is what surfaces the shop in local "jewellery near me" searches and Google Maps.
 
-## 6. WhatsApp Business
+## 6. Order confirmation and alerts
 
-`src/lib/whatsapp.ts` already builds the full order-confirmation payload (name, phone, order summary, status)
-on every order — the send itself is stubbed pending your Business account.
+Every order is confirmed over WhatsApp before dispatch — no API account needed:
 
-1. Register a dedicated business number at business.facebook.com → WhatsApp. Requires Meta Business
-   verification (can take days — start early).
-2. Once approved, generate a permanent access token and note the phone number ID.
-3. Add credentials:
-   ```
-   WHATSAPP_CLOUD_API_TOKEN    = your permanent token
-   WHATSAPP_PHONE_NUMBER_ID    = your number's ID
-   ```
-4. **Follow-up build needed:** `sendWhatsAppOrderConfirmation()` in `src/lib/whatsapp.ts` currently only logs
-   what it would send — it needs the actual Cloud API `/messages` call added once you have credentials to
-   test against.
+- The order confirmation page asks the customer to tap **Confirm on WhatsApp**, which opens a chat with the
+  store number pre-filled with their order.
+- Each order in the admin dashboard has **WhatsApp customer to confirm** (pre-filled message) and **Call**.
+
+For an email the moment an order lands, create a free account at resend.com and set `RESEND_API_KEY` and
+`ORDER_ALERT_EMAIL` (the address you signed up to Resend with). Redeploy after changing environment variables.
+
+Phone verification by SMS at checkout is optional: setting the three `TWILIO_*` variables turns it on.
 
 ## 7. Payment gateway
 

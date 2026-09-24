@@ -4,6 +4,7 @@ import { getOrder } from "@/lib/admin/queries";
 import { updateOrderStatusAction } from "@/lib/admin/actions";
 import { StatusUpdateForm } from "@/components/admin/StatusUpdateForm";
 import { formatPKR, formatDate } from "@/lib/format";
+import { ownerConfirmLink } from "@/lib/whatsapp";
 import type { OrderStatus } from "@/lib/types";
 
 const STATUSES: OrderStatus[] = ["pending", "confirmed", "dispatched", "delivered", "returned", "cancelled"];
@@ -32,6 +33,7 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
                 <li key={i} className="flex justify-between py-2">
                   <span>
                     {item.name} × {item.quantity}
+                    {item.colour ? ` · ${item.colour}` : ""}
                     {item.ring_size ? ` (US ${item.ring_size})` : ""} — SKU {item.sku}
                   </span>
                   <span>{formatPKR(item.price * item.quantity)}</span>
@@ -74,13 +76,29 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
         </div>
 
         <section className="h-fit rounded-xl border border-brand-umber/10 bg-brand-ivory p-5 font-body text-sm">
+          <div className="mb-5 space-y-2">
+            <a
+              href={ownerConfirmLink(order)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex w-full items-center justify-center rounded-full bg-brand-umber py-2.5 font-semibold text-brand-ivory transition hover:bg-brand-umber-dark"
+            >
+              WhatsApp customer to confirm
+            </a>
+            <a
+              href={`tel:${order.customer_phone}`}
+              className="flex w-full items-center justify-center rounded-full border border-brand-umber/30 py-2.5 font-semibold text-brand-umber-dark transition hover:bg-brand-sky/10"
+            >
+              Call {order.customer_phone}
+            </a>
+          </div>
           <h2 className="font-body text-sm font-semibold uppercase tracking-wide text-brand-umber-dark">Details</h2>
           <dl className="mt-3 space-y-2">
             <Row label="Placed" value={formatDate(order.created_at)} />
             <Row label="Phone" value={order.customer_phone} />
             <Row label="Payment method" value={order.payment_method === "cod" ? "Cash on Delivery" : "Online gateway"} />
             <Row label="Payment status" value={order.payment_status} />
-            <Row label="OTP verified" value={order.otp_verified ? "Yes" : "No"} />
+            <Row label="Phone verified by SMS" value={order.otp_verified ? "Yes" : "No"} />
             <Row label="Promo code" value={order.promo_code ?? "—"} />
           </dl>
         </section>

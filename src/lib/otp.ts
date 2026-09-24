@@ -2,6 +2,30 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 
 const OTP_TTL_MINUTES = 5;
+// How long a verified phone stays good for placing an order.
+const VERIFIED_WINDOW_MINUTES = 30;
+
+/**
+ * Phone verification only runs once an SMS gateway is configured. Without
+ * one a code can never reach the customer, so demanding it would block every
+ * order; COD orders are confirmed over WhatsApp instead.
+ */
+export function isOtpRequired(): boolean {
+  return Boolean(
+    process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN && process.env.TWILIO_FROM_NUMBER
+  );
+}
+
+async function sendSms(to: string, body: string): Promise<void> {
+  const sid = process.env.TWILIO_ACCOUNT_SID!;
+  const auth = Buffer.from(`${sid}:${process.env.TWILIO_AUTH_TOKEN}`).toString("base64");
+  const res = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`, {
+    method: "POST",
+    headers: { Authorization: `Basic ${auth}`, "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ To: to, From: process.env.TWILIO_FROM_NUMBER!, Body: body }),
+  });
+  if (!res.ok) throw new Error(`SMS send failed (${res.status}): ${await res.text()}`);
+}
 
 function generateCode(): string {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -23,13 +47,7 @@ const globalForOtp = globalThis as unknown as { __otpFallbackStore?: Map<string,
 const fallbackOtps = globalForOtp.__otpFallbackStore ?? new Map<string, FallbackOtp>();
 globalForOtp.__otpFallbackStore = fallbackOtps;
 
-/**
- * Generates and "sends" a one-time code for the given phone number before an
- * order can confirm — the digital equivalent of a pre-dispatch confirmation
- * call. The actual SMS/WhatsApp OTP send is stubbed (console.log) until an
- * SMS gateway is wired up; the code is persisted so /api/otp/verify can
- * check it.
- */
+/** Generates, stores and SMSes a one-time code for the given phone number. */
 export async function requestOtp(phone: string): Promise<{ devCode?: string }> {
   const code = generateCode();
   const expires_at = new Date(Date.now() + OTP_TTL_MINUTES * 60 * 1000).toISOString();
@@ -41,7 +59,9 @@ export async function requestOtp(phone: string): Promise<{ devCode?: string }> {
     fallbackOtps.set(phone, { code, expiresAt: Date.now() + OTP_TTL_MINUTES * 60 * 1000, verified: false });
   }
 
-  console.log(`[otp:stub] would SMS ${phone} the code ${code}`);
+  if (isOtpRequired()) {
+    await sendSms(phone, `Your 1720 verification code is ${code}. It expires in ${OTP_TTL_MINUTES} minutes.`);
+  }
 
   // Expose the code outside production so checkout can be smoke-tested
   // without a live SMS gateway.
@@ -82,6 +102,7 @@ export async function isPhoneOtpVerified(phone: string): Promise<boolean> {
       .select("id")
       .eq("phone", phone)
       .eq("verified", true)
+      .gte("created_at", new Date(Date.now() - VERIFIED_WINDOW_MINUTES * 60 * 1000).toISOString())
       .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle();

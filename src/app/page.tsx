@@ -6,6 +6,11 @@ import { HeroMark } from "@/components/brand/HeroMark";
 import { CATEGORIES, COLLECTION_INTRO_BODY, COLLECTION_INTRO_HEADING, HERO_HEADLINE, HERO_SUBHEAD, TAGLINE, WHY_1720 } from "@/lib/brand";
 import { getProducts } from "@/lib/products";
 import { ProductCard } from "@/components/product/ProductCard";
+import Image from "next/image";
+import type { Product } from "@/lib/types";
+
+// Re-render at most once a minute so stock and new pieces stay current without a redeploy.
+export const revalidate = 60;
 
 // Matches the `ivory` and `butter` tokens in tailwind.config.ts — kept as
 // literal hex here because the scalloped divider needs real color values to
@@ -27,13 +32,20 @@ const CATEGORY_TILE_COLORS: Record<string, string> = {
   necklaces: "bg-brand-butter-light border-brand-butter",
 };
 
+// The signature piece pinned in the hero; also the link-preview image.
+const HERO_PRODUCT_SLUG = "mermaid-tear";
+
+const categoryOf = (p: Product) => p.category?.slug ?? p.category_id;
+
 export default async function HomePage() {
-  const newArrivals = (await getProducts({ isNew: true })).slice(0, 4);
+  const products = await getProducts();
+  const newArrivals = products.filter((p) => p.is_new).slice(0, 4);
+  const featured = products.find((p) => p.slug === HERO_PRODUCT_SLUG) ?? products[0];
 
   return (
     <>
       <section className="bg-brand-ivory">
-        <div className="container-page grid gap-8 py-16 sm:py-24 lg:grid-cols-2 lg:items-center lg:py-32">
+        <div className="container-page grid gap-8 py-12 sm:py-16 lg:grid-cols-2 lg:items-center lg:py-16">
           <div>
             <p className="font-body text-base font-bold uppercase tracking-widest text-brand-umber">
               Demi-fine · Modern retro
@@ -62,7 +74,7 @@ export default async function HomePage() {
               </Link>
             </div>
           </div>
-          <HeroMark />
+          <HeroMark featured={featured} />
         </div>
       </section>
 
@@ -98,16 +110,38 @@ export default async function HomePage() {
             </Link>
           </div>
           <div className="mt-8 grid grid-cols-2 gap-5 sm:grid-cols-4">
-            {CATEGORIES.map((c, i) => (
-              <Link
-                key={c.slug}
-                href={`/shop?category=${c.slug}`}
-                className={`animate-rise shadow-retro-sm flex aspect-square flex-col items-center justify-center overflow-hidden rounded-3xl border-2 ${CATEGORY_TILE_COLORS[c.slug]} font-body text-base font-bold text-brand-umber-dark transition hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#482a24]`}
-                style={{ animationDelay: `${i * 70}ms` }}
-              >
-                {c.label}
-              </Link>
-            ))}
+            {CATEGORIES.map((c, i) => {
+              const cover = products.find((p) => categoryOf(p) === c.slug);
+              return cover ? (
+                <Link
+                  key={c.slug}
+                  href={`/shop?category=${c.slug}`}
+                  className="animate-rise group relative block aspect-square overflow-hidden rounded-3xl border-2 border-brand-umber-dark bg-white shadow-retro-sm transition hover:-translate-y-1 hover:shadow-[5px_5px_0_0_#482a24]"
+                  style={{ animationDelay: `${i * 70}ms` }}
+                >
+                  <Image
+                    src={cover.images[0]}
+                    alt=""
+                    fill
+                    sizes="(min-width: 640px) 25vw, 50vw"
+                    className="object-contain transition duration-500 group-hover:scale-105"
+                  />
+                  <span className="absolute inset-x-3 bottom-3 rounded-full border border-brand-umber-dark/20 bg-brand-ivory/95 py-2 text-center font-body text-sm font-bold text-brand-umber-dark">
+                    {c.label}
+                  </span>
+                </Link>
+              ) : (
+                <Link
+                  key={c.slug}
+                  href={`/shop?category=${c.slug}`}
+                  className={`animate-rise flex aspect-square flex-col items-center justify-center gap-1 overflow-hidden rounded-3xl border-2 border-dashed ${CATEGORY_TILE_COLORS[c.slug]} font-body text-base font-bold text-brand-umber-dark/70 transition hover:-translate-y-1`}
+                  style={{ animationDelay: `${i * 70}ms` }}
+                >
+                  {c.label}
+                  <span className="font-display text-sm font-normal italic">Coming soon</span>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>

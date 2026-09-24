@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useCart } from "@/lib/cart-context";
+import { lineKey, useCart } from "@/lib/cart-context";
 import { formatPKR } from "@/lib/format";
 
 export function CartPageClient() {
@@ -37,7 +37,7 @@ export function CartPageClient() {
         <ul className="space-y-6 lg:col-span-2">
           {lines.map((line) => (
             <li
-              key={`${line.product_id}-${line.ring_size ?? ""}`}
+              key={lineKey(line)}
               className="flex gap-4 border-b border-brand-umber/10 pb-6"
             >
               <Link href={`/product/${line.slug}`} className="h-24 w-24 shrink-0 overflow-hidden rounded-lg bg-brand-sky/10">
@@ -49,6 +49,9 @@ export function CartPageClient() {
                     <Link href={`/product/${line.slug}`} className="font-body text-sm font-medium text-brand-charcoal hover:text-brand-umber">
                       {line.name}
                     </Link>
+                    {line.colour && (
+                      <p className="mt-0.5 font-body text-xs text-brand-charcoal/60">{line.colour}</p>
+                    )}
                     {line.ring_size && (
                       <p className="mt-1 font-body text-xs text-brand-charcoal/60">Size US {line.ring_size}</p>
                     )}
@@ -56,7 +59,7 @@ export function CartPageClient() {
                   </div>
                   <button
                     type="button"
-                    onClick={() => removeLine(line.product_id, line.ring_size)}
+                    onClick={() => removeLine(lineKey(line))}
                     className="font-body text-xs text-brand-charcoal/50 underline hover:text-brand-error"
                   >
                     Remove
@@ -65,7 +68,7 @@ export function CartPageClient() {
                 <div className="mt-3 flex items-center rounded-lg border border-brand-umber/20 w-fit">
                   <button
                     type="button"
-                    onClick={() => updateQuantity(line.product_id, line.quantity - 1, line.ring_size)}
+                    onClick={() => updateQuantity(lineKey(line), line.quantity - 1)}
                     className="px-3 py-1.5 font-body text-sm"
                     aria-label={`Decrease quantity of ${line.name}`}
                   >
@@ -74,7 +77,7 @@ export function CartPageClient() {
                   <span className="px-3 font-body text-sm">{line.quantity}</span>
                   <button
                     type="button"
-                    onClick={() => updateQuantity(line.product_id, line.quantity + 1, line.ring_size)}
+                    onClick={() => updateQuantity(lineKey(line), line.quantity + 1)}
                     className="px-3 py-1.5 font-body text-sm"
                     aria-label={`Increase quantity of ${line.name}`}
                     disabled={line.quantity >= line.max_stock}

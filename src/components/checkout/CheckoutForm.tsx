@@ -2,15 +2,15 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useCart } from "@/lib/cart-context";
+import { lineKey, useCart } from "@/lib/cart-context";
 import { formatPKR } from "@/lib/format";
 import { PK_PHONE_REGEX, PAKISTAN_PROVINCES } from "@/lib/validation";
 import { getDeliveryInfo } from "@/lib/serviceable-areas";
 import { trackEvent, trackPixelEvent } from "@/lib/analytics";
 
-type FieldErrors = Partial<Record<"fullName" | "phone" | "addressLine1" | "city" | "postalCode" | "province", string>>;
+type FieldErrors = Partial<Record<"fullName" | "phone" | "addressLine1" | "city" | "province", string>>;
 
-export function CheckoutForm() {
+export function CheckoutForm({ otpRequired }: { otpRequired: boolean }) {
   const { lines, subtotal } = useCart();
   const router = useRouter();
 
@@ -52,7 +52,6 @@ export function CheckoutForm() {
     if (!phoneValid) errors.phone = "Enter a valid Pakistani mobile number, e.g. 03001234567";
     if (addressLine1.trim().length < 5) errors.addressLine1 = "Enter your street address";
     if (!city.trim()) errors.city = "Enter your city";
-    if (!postalCode.trim()) errors.postalCode = "Enter your postal code";
     if (!province) errors.province = "Select your province";
     setFieldErrors(errors);
     return Object.keys(errors).length === 0;
@@ -122,7 +121,7 @@ export function CheckoutForm() {
   async function placeOrder() {
     setOrderError(null);
     if (!validateAddress()) return;
-    if (!otpVerified) {
+    if (otpRequired && !otpVerified) {
       setOrderError("Verify your phone number with the code we sent before placing your order.");
       return;
     }
@@ -134,7 +133,12 @@ export function CheckoutForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           address: { fullName, phone, addressLine1, addressLine2, city, postalCode, province },
-          items: lines.map((l) => ({ slug: l.slug, quantity: l.quantity, ring_size: l.ring_size ?? null })),
+          items: lines.map((l) => ({
+            slug: l.slug,
+            quantity: l.quantity,
+            ring_size: l.ring_size ?? null,
+            colour: l.colour ?? null,
+          })),
           promoCode: promoStatus?.valid ? promoInput : undefined,
           paymentMethod: "cod",
         }),
@@ -216,7 +220,7 @@ export function CheckoutForm() {
             <Field label="City" error={fieldErrors.city}>
               <input type="text" value={city} onChange={(e) => setCity(e.target.value)} className="input" autoComplete="address-level2" />
             </Field>
-            <Field label="Postal code" error={fieldErrors.postalCode}>
+            <Field label="Postal code (optional)">
               <input
                 type="text"
                 value={postalCode}
@@ -262,6 +266,7 @@ export function CheckoutForm() {
           )}
         </section>
 
+        {otpRequired && (
         <section>
           <h2 className="font-body text-sm font-semibold uppercase tracking-wide text-brand-umber-dark">
             3. Verify your phone number
@@ -319,13 +324,14 @@ export function CheckoutForm() {
             <p className="mt-4 font-body text-sm font-medium text-brand-success">Phone number verified ✓</p>
           )}
         </section>
+        )}
 
         <section>
           <h2 className="font-body text-sm font-semibold uppercase tracking-wide text-brand-umber-dark">
-            4. Payment
+            {otpRequired ? 4 : 3}. Payment
           </h2>
           <div className="mt-4 space-y-2">
-            <label className="flex items-center gap-3 rounded-lg border border-brand-umber bg-brand-sky/40 p-3 font-body text-sm">
+            <label className="flex items-center gap-3 rounded-lg border border-brand-umber bg-brand-butter p-3 font-body text-sm">
               <input type="radio" name="payment" checked readOnly />
               Cash on Delivery
             </label>
@@ -334,6 +340,11 @@ export function CheckoutForm() {
               Card / JazzCash / Easypaisa — coming soon
             </label>
           </div>
+          {!otpRequired && (
+            <p className="mt-3 font-body text-sm text-brand-charcoal/70">
+              We confirm every order with you on WhatsApp before it&apos;s dispatched.
+            </p>
+          )}
         </section>
       </div>
 
@@ -341,9 +352,10 @@ export function CheckoutForm() {
         <h2 className="font-body text-sm font-semibold uppercase tracking-wide text-brand-umber-dark">Order summary</h2>
         <ul className="mt-4 space-y-2 font-body text-sm text-brand-charcoal/80">
           {lines.map((l) => (
-            <li key={`${l.product_id}-${l.ring_size ?? ""}`} className="flex justify-between gap-2">
+            <li key={lineKey(l)} className="flex justify-between gap-2">
               <span>
                 {l.name} × {l.quantity}
+                {l.colour ? ` · ${l.colour}` : ""}
                 {l.ring_size ? ` (US ${l.ring_size})` : ""}
               </span>
               <span>{formatPKR(l.price * l.quantity)}</span>

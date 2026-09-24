@@ -1,6 +1,7 @@
 import { BRAND_DESCRIPTION, BRAND_NAME, CONTACT } from "@/lib/brand";
+import { SITE_URL } from "@/lib/site-url";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://1720.pk";
+const siteUrl = SITE_URL;
 
 export function SiteSchema() {
   const organization = {
@@ -11,13 +12,13 @@ export function SiteSchema() {
     url: siteUrl,
     logo: `${siteUrl}/icon`,
     description: BRAND_DESCRIPTION,
-    email: CONTACT.email,
+    ...(CONTACT.email && { email: CONTACT.email }),
     address: {
       "@type": "PostalAddress",
-      streetAddress: CONTACT.address,
+      ...(CONTACT.address && { streetAddress: CONTACT.address }),
       addressCountry: "PK",
     },
-    sameAs: [CONTACT.instagram, CONTACT.facebook],
+    sameAs: [CONTACT.instagram, CONTACT.facebook].filter(Boolean),
   };
 
   const website = {

@@ -26,27 +26,33 @@ export default function ContactPage() {
           >
             Chat on WhatsApp
           </a>
-          <a
-            href={`mailto:${CONTACT.email}`}
-            className="inline-flex items-center justify-center rounded-full border-2 border-brand-umber-dark px-8 py-4 font-body text-base font-bold text-brand-umber-dark transition hover:bg-brand-sky/10"
-          >
-            Email us
-          </a>
+          {CONTACT.email && (
+            <a
+              href={`mailto:${CONTACT.email}`}
+              className="inline-flex items-center justify-center rounded-full border-2 border-brand-umber-dark px-8 py-4 font-body text-base font-bold text-brand-umber-dark transition hover:bg-brand-sky/10"
+            >
+              Email us
+            </a>
+          )}
         </div>
 
         <dl className="mt-12 space-y-6 border-t border-brand-umber/10 pt-8">
-          <div>
-            <dt className="font-body text-sm font-semibold uppercase tracking-wide text-brand-umber">Email</dt>
-            <dd className="mt-1 font-body text-base text-brand-charcoal">{CONTACT.email}</dd>
-          </div>
+          {CONTACT.email && (
+            <div>
+              <dt className="font-body text-sm font-semibold uppercase tracking-wide text-brand-umber">Email</dt>
+              <dd className="mt-1 font-body text-base text-brand-charcoal">{CONTACT.email}</dd>
+            </div>
+          )}
           <div>
             <dt className="font-body text-sm font-semibold uppercase tracking-wide text-brand-umber">WhatsApp</dt>
             <dd className="mt-1 font-body text-base text-brand-charcoal">+{CONTACT.whatsappNumber}</dd>
           </div>
-          <div>
-            <dt className="font-body text-sm font-semibold uppercase tracking-wide text-brand-umber">Address</dt>
-            <dd className="mt-1 font-body text-base text-brand-charcoal">{CONTACT.address}</dd>
-          </div>
+          {CONTACT.address && (
+            <div>
+              <dt className="font-body text-sm font-semibold uppercase tracking-wide text-brand-umber">Address</dt>
+              <dd className="mt-1 font-body text-base text-brand-charcoal">{CONTACT.address}</dd>
+            </div>
+          )}
           <div>
             <dt className="font-body text-sm font-semibold uppercase tracking-wide text-brand-umber">Hours</dt>
             <dd className="mt-1 font-body text-base text-brand-charcoal">Monday - Saturday, 11am - 7pm PKT</dd>

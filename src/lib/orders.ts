@@ -5,8 +5,8 @@ import { shippingAddressSchema, normalizePkPhone } from "@/lib/validation";
 import { getDeliveryInfo } from "@/lib/serviceable-areas";
 import { validatePromoCode } from "@/lib/promo";
 import { getPaymentProvider } from "@/lib/payments";
-import { isPhoneOtpVerified } from "@/lib/otp";
-import { buildWhatsAppOrderContext, sendWhatsAppOrderConfirmation } from "@/lib/whatsapp";
+import { isOtpRequired, isPhoneOtpVerified } from "@/lib/otp";
+import { notifyNewOrder } from "@/lib/notify";
 import { reportError } from "@/lib/monitoring";
 import type { Order, OrderItem, ShippingAddress } from "@/lib/types";
 
@@ -14,6 +14,7 @@ export interface CheckoutLineInput {
   slug: string;
   quantity: number;
   ring_size?: string | null;
+  colour?: string | null;
 }
 
 export interface CheckoutPayload {
@@ -50,8 +51,8 @@ export async function createOrder(payload: CheckoutPayload): Promise<CheckoutRes
   const address = addressResult.data;
   const normalizedPhone = normalizePkPhone(address.phone);
 
-  const otpVerified = await isPhoneOtpVerified(normalizedPhone);
-  if (!otpVerified) {
+  const otpRequired = isOtpRequired();
+  if (otpRequired && !(await isPhoneOtpVerified(normalizedPhone))) {
     return { success: false, error: "Please verify your phone number with the code we sent before placing your order." };
   }
 
@@ -63,23 +64,36 @@ export async function createOrder(payload: CheckoutPayload): Promise<CheckoutRes
 
   const items: OrderItem[] = [];
   let subtotal = 0;
+  // Stock is per product, shared across sizes and colours, so it's checked
+  // against the total ordered of each product rather than line by line.
+  const orderedPerProduct = new Map<string, number>();
 
   for (const line of payload.items) {
     const product = await getProductBySlug(line.slug);
     if (!product) return { success: false, error: `Product not found: ${line.slug}` };
-    if (line.quantity < 1) return { success: false, error: "Invalid quantity" };
-    if (product.stock_count < line.quantity) {
+    if (!Number.isInteger(line.quantity) || line.quantity < 1) return { success: false, error: "Invalid quantity" };
+
+    const ordered = (orderedPerProduct.get(product.id) ?? 0) + line.quantity;
+    orderedPerProduct.set(product.id, ordered);
+    if (product.stock_count < ordered) {
       return { success: false, error: `${product.name} only has ${product.stock_count} left in stock.` };
+    }
+
+    const colourOptions = product.colour_options ?? [];
+    const colourOption = colourOptions.find((o) => o.name === line.colour);
+    if (colourOptions.length && !colourOption) {
+      return { success: false, error: `Please choose a colour for ${product.name}.` };
     }
 
     items.push({
       product_id: product.id,
       sku: product.sku,
       name: product.name,
-      image: product.images[0],
+      image: colourOption?.image ?? product.images[0],
       price: product.price,
       quantity: line.quantity,
       ring_size: line.ring_size ?? null,
+      colour: colourOption?.name ?? null,
     });
     subtotal += product.price * line.quantity;
   }
@@ -128,7 +142,7 @@ export async function createOrder(payload: CheckoutPayload): Promise<CheckoutRes
     payment_method: payload.paymentMethod,
     payment_status: chargeResult.payment_status,
     status: "pending",
-    otp_verified: true,
+    otp_verified: otpRequired,
     notes: null,
     created_at: now,
     updated_at: now,
@@ -175,8 +189,7 @@ export async function createOrder(payload: CheckoutPayload): Promise<CheckoutRes
     fallbackOrders.set(order.order_number, order);
   }
 
-  const whatsappContext = buildWhatsAppOrderContext(order);
-  await sendWhatsAppOrderConfirmation(whatsappContext);
+  await notifyNewOrder(order);
 
   return { success: true, order };
 }

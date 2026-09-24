@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import type { Order } from "@/lib/types";
 import { formatPKR, formatDate } from "@/lib/format";
 import { useCart } from "@/lib/cart-context";
+import { customerConfirmLink } from "@/lib/whatsapp";
 
 export function OrderConfirmationClient() {
   const params = useParams<{ orderNumber: string }>();
@@ -19,6 +20,15 @@ export function OrderConfirmationClient() {
     let cancelled = false;
 
     async function load() {
+      // The browser that placed the order keeps its own full copy. The API
+      // only serves a redacted view (no street address or full phone), so
+      // it's the fallback for opening this link on another device.
+      const stored = sessionStorage.getItem(`order:${orderNumber}`);
+      if (stored) {
+        if (!cancelled) setOrder(JSON.parse(stored));
+        return;
+      }
+
       try {
         const res = await fetch(`/api/orders/${orderNumber}`);
         if (res.ok) {
@@ -27,14 +37,9 @@ export function OrderConfirmationClient() {
           return;
         }
       } catch {
-        // fall through to session storage
+        // fall through to not-found
       }
-
-      const stored = sessionStorage.getItem(`order:${orderNumber}`);
-      if (!cancelled) {
-        if (stored) setOrder(JSON.parse(stored));
-        else setNotFound(true);
-      }
+      if (!cancelled) setNotFound(true);
     }
 
     load().finally(() => {
@@ -83,15 +88,33 @@ export function OrderConfirmationClient() {
           </svg>
         </div>
         <h1 className="mt-5 font-display text-3xl font-semibold text-brand-umber-dark sm:text-4xl">
-          Order confirmed
+          Order placed
         </h1>
         <p className="mt-2 font-body text-sm text-brand-charcoal/70">
           Order {order.order_number} · placed {formatDate(order.created_at)}
         </p>
         <p className="mt-4 font-body text-sm text-brand-charcoal/80">
-          We&apos;ll send updates to {order.customer_phone} as your order moves. Pay {formatPKR(order.total)} in cash
-          when it arrives.
+          Pay {formatPKR(order.total)} in cash when it arrives.
         </p>
+      </div>
+
+      <div className="mx-auto mt-8 max-w-xl rounded-xl border-2 border-brand-umber-dark bg-brand-butter p-6 text-center shadow-retro">
+        <p className="font-body text-[11px] font-bold uppercase tracking-[0.2em] text-brand-umber">One last step</p>
+        <p className="mt-2 font-display text-2xl font-semibold text-brand-umber-dark">Confirm your order on WhatsApp</p>
+        <p className="mt-2 font-body text-sm text-brand-charcoal/80">
+          We dispatch as soon as you confirm. Your order details are already filled in — just press send.
+        </p>
+        <a
+          href={customerConfirmLink(order)}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="shadow-retro-sm mt-5 inline-flex items-center justify-center gap-2 rounded-full bg-brand-umber px-7 py-3.5 font-body text-base font-bold text-brand-ivory transition hover:-translate-y-0.5 hover:bg-brand-umber-dark hover:shadow-[5px_5px_0_0_#482a24]"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.5-.3z" />
+          </svg>
+          Confirm on WhatsApp
+        </a>
       </div>
 
       <div className="mx-auto mt-10 max-w-xl rounded-xl border border-brand-umber/10 p-6">
@@ -101,6 +124,7 @@ export function OrderConfirmationClient() {
             <li key={i} className="flex justify-between gap-2">
               <span>
                 {item.name} × {item.quantity}
+                {item.colour ? ` · ${item.colour}` : ""}
                 {item.ring_size ? ` (US ${item.ring_size})` : ""}
               </span>
               <span>{formatPKR(item.price * item.quantity)}</span>
@@ -133,9 +157,13 @@ export function OrderConfirmationClient() {
           <p className="mt-1">
             {order.shipping_address.fullName}
             <br />
-            {order.shipping_address.addressLine1}
-            {order.shipping_address.addressLine2 ? `, ${order.shipping_address.addressLine2}` : ""}
-            <br />
+            {order.shipping_address.addressLine1 && (
+              <>
+                {order.shipping_address.addressLine1}
+                {order.shipping_address.addressLine2 ? `, ${order.shipping_address.addressLine2}` : ""}
+                <br />
+              </>
+            )}
             {order.shipping_address.city}, {order.shipping_address.province} {order.shipping_address.postalCode}
           </p>
         </div>

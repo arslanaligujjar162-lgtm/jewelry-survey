@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import type { OrderStatus } from "@/lib/types";
+import type { ColourOption, OrderStatus } from "@/lib/types";
 
 async function requireAdmin() {
   const supabase = createClient();
@@ -48,6 +48,14 @@ interface ProductFormValues {
   stock_count: number;
   is_new: boolean;
   ring_size_range: string | null;
+  colour_options?: ColourOption[] | null;
+}
+
+// Product edits must reach the storefront straight away: the homepage and
+// product pages are pre-rendered, so without this a new photo or price would
+// only appear after the next deploy.
+function revalidateStorefront() {
+  revalidatePath("/", "layout");
 }
 
 export async function createProduct(values: ProductFormValues) {
@@ -55,7 +63,7 @@ export async function createProduct(values: ProductFormValues) {
   const admin = createAdminClient();
   const { error } = await admin.from("products").insert(values);
   if (error) throw new Error(error.message);
-  revalidatePath("/admin/products");
+  revalidateStorefront();
   redirect("/admin/products");
 }
 
@@ -64,8 +72,7 @@ export async function updateProduct(id: string, values: ProductFormValues) {
   const admin = createAdminClient();
   const { error } = await admin.from("products").update(values).eq("id", id);
   if (error) throw new Error(error.message);
-  revalidatePath("/admin/products");
-  revalidatePath(`/admin/products/${id}`);
+  revalidateStorefront();
   redirect("/admin/products");
 }
 
@@ -74,7 +81,7 @@ export async function deleteProduct(id: string) {
   const admin = createAdminClient();
   const { error } = await admin.from("products").delete().eq("id", id);
   if (error) throw new Error(error.message);
-  revalidatePath("/admin/products");
+  revalidateStorefront();
 }
 
 export async function updateReviewStatusAction(reviewId: string, formData: FormData) {

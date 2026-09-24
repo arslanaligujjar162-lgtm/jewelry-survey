@@ -68,7 +68,7 @@ export default function TermsPage() {
           </section>
           <section>
             <h2 className="font-body text-base font-semibold text-brand-umber-dark">7. Contact</h2>
-            <p className="mt-2">Questions about these terms: {CONTACT.email}.</p>
+            <p className="mt-2">Questions about these terms: {CONTACT.email ?? "message us on WhatsApp"}.</p>
           </section>
         </div>
       </div>

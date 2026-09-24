@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useCallback, useEffect, useRef } from "react";
-import { useCart } from "@/lib/cart-context";
+import { lineKey, useCart } from "@/lib/cart-context";
 import { formatPKR } from "@/lib/format";
 
 const FOCUSABLE = 'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])';
@@ -115,7 +115,7 @@ export function CartDrawer() {
             <ul className="flex-1 overflow-y-auto px-5 py-4">
               {lines.map((line) => (
                 <li
-                  key={`${line.product_id}-${line.ring_size ?? ""}`}
+                  key={lineKey(line)}
                   className="flex gap-3 border-b border-brand-umber/10 py-4 first:pt-0"
                 >
                   <Link
@@ -141,6 +141,9 @@ export function CartDrawer() {
                         >
                           {line.name}
                         </Link>
+                        {line.colour && (
+                          <p className="mt-0.5 font-body text-xs text-brand-charcoal/60">{line.colour}</p>
+                        )}
                         {line.ring_size && (
                           <p className="mt-0.5 font-body text-xs text-brand-charcoal/60">Size US {line.ring_size}</p>
                         )}
@@ -150,7 +153,7 @@ export function CartDrawer() {
                       </div>
                       <button
                         type="button"
-                        onClick={() => removeLine(line.product_id, line.ring_size)}
+                        onClick={() => removeLine(lineKey(line))}
                         className="h-fit font-body text-xs text-brand-charcoal/50 underline hover:text-brand-error"
                       >
                         Remove
@@ -159,7 +162,7 @@ export function CartDrawer() {
                     <div className="mt-2 flex w-fit items-center rounded-lg border border-brand-umber/20">
                       <button
                         type="button"
-                        onClick={() => updateQuantity(line.product_id, line.quantity - 1, line.ring_size)}
+                        onClick={() => updateQuantity(lineKey(line), line.quantity - 1)}
                         className="px-2.5 py-1 font-body text-sm"
                         aria-label={`Decrease quantity of ${line.name}`}
                       >
@@ -168,7 +171,7 @@ export function CartDrawer() {
                       <span className="px-2.5 font-body text-sm">{line.quantity}</span>
                       <button
                         type="button"
-                        onClick={() => updateQuantity(line.product_id, line.quantity + 1, line.ring_size)}
+                        onClick={() => updateQuantity(lineKey(line), line.quantity + 1)}
                         className="px-2.5 py-1 font-body text-sm disabled:opacity-40"
                         aria-label={`Increase quantity of ${line.name}`}
                         disabled={line.quantity >= line.max_stock}

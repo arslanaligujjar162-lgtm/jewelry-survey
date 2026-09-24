@@ -39,13 +39,14 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "category_id": "earrings",
     "price": 2200,
     "compare_at_price": null,
-    "description": "A smooth teardrop dome scattered with flush-set crystals. Post-and-butterfly backs. Shown in multicolour and clear crystal.",
+    "description": "A smooth teardrop dome scattered with flush-set crystals. Post-and-butterfly backs. In multicolour or clear crystal.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated, crystal",
     "images": ["/products/mermaid-tear-1.jpg", "/products/mermaid-tear-2.jpg", "/products/mermaid-tear-3.jpg"],
     "stock_count": 20,
     "is_new": true,
     "ring_size_range": null,
+    "colour_options": [{"name": "Multicolour", "image": "/products/mermaid-tear-1.jpg"}, {"name": "Clear crystal", "image": "/products/mermaid-tear-2.jpg"}],
     "created_at": "2026-07-01T00:00:00.000Z"
   },
   {
@@ -73,13 +74,14 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "category_id": "earrings",
     "price": 2402,
     "compare_at_price": null,
-    "description": "A squared-off hoop in high-polish tubing, open at the base. Post-and-butterfly backs. Shown in gold and bare steel.",
+    "description": "A squared-off hoop in high-polish tubing, open at the base. Post-and-butterfly backs. In gold or bare polished steel.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
-    "material_spec": "316L stainless steel, PVD gold plated",
+    "material_spec": "316L stainless steel — PVD gold plated, or bare polished steel",
     "images": ["/products/vogue-hoop-1.jpg", "/products/vogue-hoop-2.jpg"],
     "stock_count": 18,
     "is_new": false,
     "ring_size_range": null,
+    "colour_options": [{"name": "Gold", "image": "/products/vogue-hoop-1.jpg"}, {"name": "Steel", "image": "/products/vogue-hoop-2.jpg"}],
     "created_at": "2026-07-03T00:00:00.000Z"
   },
   {

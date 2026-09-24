@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import Link from "next/link";
 import { getProducts } from "@/lib/products";
 import { parseProductSort } from "@/lib/product-sort";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ShopFilters } from "@/components/shop/ShopFilters";
 import { CATEGORIES, type CategorySlug } from "@/lib/brand";
+import { SITE_URL } from "@/lib/site-url";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://1720.pk";
+const siteUrl = SITE_URL;
 
 interface ShopPageProps {
   searchParams: { category?: string; min?: string; max?: string; new?: string; q?: string; sort?: string };
@@ -72,7 +74,21 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
           </Suspense>
         </div>
 
-        {products.length === 0 ? (
+        {products.length === 0 && categoryLabel && !query && !minPrice && !maxPrice && !isNew ? (
+          <div className="mx-auto mt-14 max-w-md rounded-2xl border-2 border-dashed border-brand-umber/30 px-6 py-12 text-center">
+            <p className="font-body text-[11px] font-bold uppercase tracking-[0.2em] text-brand-umber">In the studio</p>
+            <p className="mt-2 font-display text-3xl font-semibold text-brand-umber-dark">{categoryLabel} are coming soon</p>
+            <p className="mt-3 font-body text-sm text-brand-charcoal/70">
+              We&apos;re photographing this collection now. Until then, have a look at our earrings.
+            </p>
+            <Link
+              href="/shop?category=earrings"
+              className="shadow-retro-sm mt-6 inline-flex items-center justify-center rounded-full bg-brand-umber px-7 py-3 font-body text-sm font-bold text-brand-ivory transition hover:-translate-y-0.5 hover:bg-brand-umber-dark"
+            >
+              Shop earrings
+            </Link>
+          </div>
+        ) : products.length === 0 ? (
           <p className="mt-14 font-body text-sm text-brand-charcoal/70">
             Nothing matches those filters yet. Try widening your search.
           </p>
