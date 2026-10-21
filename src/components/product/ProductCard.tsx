@@ -21,7 +21,7 @@ export function ProductCard({ product }: { product: Product }) {
             className="object-contain transition duration-300 group-hover:scale-[1.03]"
           />
           {product.is_new && (
-            <span className="absolute left-2 top-2 rounded-full bg-brand-tab px-2.5 py-1 font-body text-[11px] font-semibold uppercase tracking-wide text-brand-umber-dark">
+            <span className="absolute left-2 top-2 rounded-full bg-brand-tab px-2.5 py-1 font-body text-[11px] font-semibold uppercase tracking-wide text-brand-ivory">
               New
             </span>
           )}
