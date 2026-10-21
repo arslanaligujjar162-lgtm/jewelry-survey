@@ -59,7 +59,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "description": "A round shell pearl suspended from a polished lever-back fitting. Weighted enough to hang straight, light enough for all day.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated, shell pearl",
-    "images": ["/products/moon-drop-1.jpg", "/products/moon-drop-2.jpg"],
+    "images": ["/products/moon-drop-1.jpg", "/products/moon-drop-2.jpg", "/products/moon-drop-3.jpg"],
     "stock_count": 3,
     "is_new": true,
     "ring_size_range": null,
@@ -76,7 +76,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "description": "A hoop built from a single row of small round cubic zirconia, each bezel-set into its own link.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated, cubic zirconia",
-    "images": ["/products/vogue-hoop-1.jpg", "/products/vogue-hoop-2.jpg"],
+    "images": ["/products/vogue-hoop-1.jpg", "/products/vogue-hoop-2.jpg", "/products/vogue-hoop-3.jpg"],
     "stock_count": 8,
     "is_new": false,
     "ring_size_range": null,
@@ -93,7 +93,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "description": "An open hoop that tapers from a fine post to a broad, rounded base. High-polish throughout. Everyday size.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated",
-    "images": ["/products/ribbon-hoop-1.jpg", "/products/ribbon-hoop-2.jpg"],
+    "images": ["/products/ribbon-hoop-1.jpg", "/products/ribbon-hoop-2.jpg", "/products/ribbon-hoop-3.jpg"],
     "stock_count": 11,
     "is_new": false,
     "ring_size_range": null,
@@ -110,7 +110,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "description": "Three graduated crystals — round, pear and oval — bezel-set and falling from the post for movement without extra weight.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated, cubic zirconia",
-    "images": ["/products/cascade-drop-1.jpg", "/products/cascade-drop-2.jpg"],
+    "images": ["/products/cascade-drop-1.jpg", "/products/cascade-drop-2.jpg", "/products/cascade-drop-3.jpg"],
     "stock_count": 11,
     "is_new": false,
     "ring_size_range": null,
@@ -144,7 +144,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "description": "A chunky open hoop, half high-polish gold and half glossy black enamel. Post backs.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated, enamel",
-    "images": ["/products/black-olive-hoops-1.jpg", "/products/black-olive-hoops-2.jpg"],
+    "images": ["/products/black-olive-hoops-1.jpg", "/products/black-olive-hoops-2.jpg", "/products/black-olive-hoops-3.jpg"],
     "stock_count": 7,
     "is_new": true,
     "ring_size_range": null,
@@ -323,7 +323,8 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "material_spec": "316L stainless steel — PVD gold plated and bare polished steel",
     "images": [
       "/products/gala-studs-1.jpg",
-      "/products/gala-studs-2.jpg"
+      "/products/gala-studs-2.jpg",
+      "/products/gala-studs-3.jpg"
     ],
     "stock_count": 9,
     "is_new": true,
@@ -343,7 +344,8 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "material_spec": "316L stainless steel, enamel",
     "images": [
       "/products/green-olive-hoops-1.jpg",
-      "/products/green-olive-hoops-2.jpg"
+      "/products/green-olive-hoops-2.jpg",
+      "/products/green-olive-hoops-3.jpg"
     ],
     "stock_count": 3,
     "is_new": true,
@@ -383,7 +385,8 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "material_spec": "316L stainless steel, PVD gold plated, shell pearl",
     "images": [
       "/products/eclipse-drop-1.jpg",
-      "/products/eclipse-drop-2.jpg"
+      "/products/eclipse-drop-2.jpg",
+      "/products/eclipse-drop-3.jpg"
     ],
     "stock_count": 9,
     "is_new": true,
@@ -403,7 +406,8 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "material_spec": "316L stainless steel, PVD gold plated, cubic zirconia",
     "images": [
       "/products/trinket-cuff-1.jpg",
-      "/products/trinket-cuff-2.jpg"
+      "/products/trinket-cuff-2.jpg",
+      "/products/trinket-cuff-3.jpg"
     ],
     "stock_count": 5,
     "is_new": true,
@@ -423,7 +427,8 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "material_spec": "316L stainless steel, PVD gold plated",
     "images": [
       "/products/deco-link-1.jpg",
-      "/products/deco-link-2.jpg"
+      "/products/deco-link-2.jpg",
+      "/products/deco-link-3.jpg"
     ],
     "stock_count": 11,
     "is_new": true,
