@@ -7,8 +7,8 @@ export const PRODUCT_TAGLINES: Record<string, string> = {
   "vogue-hoop": "A little bold. A little unbothered. Completely 1720.",
   "ribbon-hoop": "A little twisted. A little playful. Completely 1720.",
   "cascade-drop": "A little movement. A little drama. Completely 1720.",
-  "gala-stud": "A little sparkle. A little understated. Completely 1720.",
-  "jet-hoop": "A little heavy. A little unapologetic. Completely 1720.",
+  "sunray-studs": "A little sparkle. A little understated. Completely 1720.",
+  "black-olive-hoops": "A little heavy. A little unapologetic. Completely 1720.",
   "hammered-band": "A little rough. A little raw. Completely 1720.",
   "dewdrop-ring": "A little delicate. A little quiet. Completely 1720.",
   "confetti-band": "A little scattered. A little celebratory. Completely 1720.",
@@ -23,6 +23,11 @@ export const PRODUCT_TAGLINES: Record<string, string> = {
   "confetti-bangle": "A little scattered. A little loud. Completely 1720.",
   "vine-bangle": "A little winding. A little wild. Completely 1720.",
   "clover-pendant": "A little lucky. A little sentimental. Completely 1720.",
+  "og-ring": "A little bold. A little original. Completely 1720.",
+  "gala-studs": "A little mixed-metal. A little sculptural. Completely 1720.",
+  "green-olive-hoops": "A little unexpected. A little bright. Completely 1720.",
+  "confetti-studs": "A little scattered. A little celebratory. Completely 1720.",
+  "eclipse-drop": "A little quiet. A little nocturnal. Completely 1720.",
 };
 
 export const DEFAULT_PRODUCT_TAGLINE = "A little retro. A little unexpected. Completely 1720.";
