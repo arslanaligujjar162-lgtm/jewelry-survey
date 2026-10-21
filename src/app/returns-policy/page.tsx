@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { LegalNotice } from "@/components/legal/LegalNotice";
 import { whatsappLink } from "@/lib/brand";
 
 export const metadata: Metadata = {
   title: "Return & Exchange Policy",
-  description: "How returns and exchanges work at 1720: timelines, condition requirements, and what's excluded.",
+  description:
+    "1720 is exchange-only, no refunds: how to request an exchange within 3 days of delivery, what it costs, and what's excluded.",
   alternates: { canonical: "/returns-policy" },
 };
 
@@ -16,73 +15,67 @@ export default function ReturnsPolicyPage() {
         <h1 className="font-display text-3xl font-semibold text-brand-umber-dark sm:text-4xl">
           Return &amp; Exchange Policy
         </h1>
-        <p className="mt-2 font-body text-sm text-brand-charcoal/60">Last updated: placeholder</p>
 
         <div className="mt-8 flex flex-wrap gap-3">
           <a
-            href={whatsappLink("Hi! I'd like to start a return.")}
+            href={whatsappLink("Hi! I'd like to request an exchange.")}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center rounded-full shadow-retro-sm bg-brand-umber px-8 py-4 font-body text-base font-bold text-brand-ivory transition hover:-translate-y-0.5 hover:bg-brand-umber-dark hover:shadow-[5px_5px_0_0_#482a24] active:translate-y-0 active:shadow-none"
           >
-            Start a return on WhatsApp
+            Request an exchange on WhatsApp
           </a>
-          <Link
-            href="/request-return"
-            className="inline-flex items-center justify-center rounded-full border-2 border-brand-umber-dark px-8 py-4 font-body text-base font-bold text-brand-umber-dark transition hover:bg-brand-sky/10"
-          >
-            Submit a return request online
-          </Link>
         </div>
 
-        <div className="mt-8">
-          <LegalNotice />
-        </div>
+        <div className="mt-10 space-y-10 font-body text-sm leading-relaxed text-brand-charcoal/85">
+          <section>
+            <h2 className="font-display text-xl font-semibold text-brand-umber-dark">Exchange Policy</h2>
+            <p className="mt-3">
+              Ordered something that doesn&apos;t fit your style or your taste? You can exchange it within 3 days of
+              delivery.
+            </p>
 
-        <div className="space-y-6 font-body text-sm leading-relaxed text-brand-charcoal/85">
-          <section>
-            <h2 className="font-body text-base font-semibold text-brand-umber-dark">Return window</h2>
-            <p className="mt-2">
-              Unworn items in original packaging can be returned or exchanged within 7 days of delivery.
-            </p>
+            <h3 className="mt-6 font-body text-base font-semibold text-brand-umber-dark">
+              To request an exchange
+            </h3>
+            <ol className="mt-2 list-decimal space-y-3 pl-5">
+              <li>
+                Message us on{" "}
+                <a href={whatsappLink("Hi! I'd like to request an exchange.")} className="text-brand-umber underline">
+                  WhatsApp at 0335-6389333
+                </a>{" "}
+                with:
+                <ul className="mt-2 list-disc space-y-1 pl-5">
+                  <li>Your order number</li>
+                  <li>The reason for the exchange</li>
+                  <li>The item you&apos;d like instead</li>
+                </ul>
+              </li>
+              <li>We&apos;ll confirm your eligibility and send you an exchange reference number.</li>
+              <li>
+                Send the item back to us, unworn and in its original packaging, with the exchange reference number
+                written on the outside. Courier it to 1720, Himalya 16, Cantt, Sialkot.
+              </li>
+              <li>
+                We inspect the item when it arrives. Once it passes, we dispatch your new piece and message you the
+                balance to pay on delivery.
+              </li>
+            </ol>
+
+            <h3 className="mt-6 font-body text-base font-semibold text-brand-umber-dark">Costs</h3>
+            <ul className="mt-2 list-disc space-y-1 pl-5">
+              <li>Return shipping and shipping for the new piece are paid by you.</li>
+              <li>If the new piece costs more, you pay the difference on delivery.</li>
+              <li>If it costs less, we refund the difference within 7 working days.</li>
+              <li>Earrings are exchange-only, and only if they are unworn.</li>
+            </ul>
           </section>
+
           <section>
-            <h2 className="font-body text-base font-semibold text-brand-umber-dark">Condition</h2>
-            <p className="mt-2">
-              Items must be unworn, unaltered, and in their original packaging with tags attached. We inspect all
-              returns before approving a refund or exchange.
-            </p>
-          </section>
-          <section>
-            <h2 className="font-body text-base font-semibold text-brand-umber-dark">Exclusions</h2>
-            <p className="mt-2">
-              Earrings cannot be returned for hygiene reasons unless faulty. Final sale items are marked as such at
-              purchase and are not eligible for return.
-            </p>
-          </section>
-          <section>
-            <h2 className="font-body text-base font-semibold text-brand-umber-dark">How to start a return</h2>
-            <p className="mt-2">
-              WhatsApp us or{" "}
-              <Link href="/request-return" className="text-brand-umber underline">
-                submit a return request online
-              </Link>{" "}
-              with your order number and the reason for return. We&apos;ll confirm pickup or drop-off and next steps
-              from there.
-            </p>
-          </section>
-          <section>
-            <h2 className="font-body text-base font-semibold text-brand-umber-dark">Refunds</h2>
-            <p className="mt-2">
-              Approved refunds for Cash on Delivery orders are issued via bank transfer within 7-10 business days of
-              us receiving the returned item.
-            </p>
-          </section>
-          <section>
-            <h2 className="font-body text-base font-semibold text-brand-umber-dark">Faulty items</h2>
-            <p className="mt-2">
-              If a piece arrives faulty or damaged, contact us within 48 hours of delivery with photos and we&apos;ll
-              replace it at no cost.
+            <h2 className="font-display text-xl font-semibold text-brand-umber-dark">Return Policy</h2>
+            <p className="mt-3">
+              1720 has a no-return policy. All items are carefully inspected prior to dispatch to ensure that your
+              purchase is in perfect order.
             </p>
           </section>
         </div>

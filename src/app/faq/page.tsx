@@ -27,7 +27,7 @@ const FAQ_SECTIONS: { category: string; items: { q: string; a: React.ReactNode }
       },
       {
         q: "What if I order the wrong ring size?",
-        a: "Get in touch within 7 days of delivery and we'll arrange an exchange, as long as the ring hasn't been worn or resized.",
+        a: "WhatsApp us within 3 days of delivery and we'll arrange an exchange, as long as the ring is unworn and unresized.",
       },
     ],
   },
@@ -38,8 +38,8 @@ const FAQ_SECTIONS: { category: string; items: { q: string; a: React.ReactNode }
         q: "What's your return policy?",
         a: (
           <>
-            Unworn items in original packaging can be returned within 7 days of delivery for a refund or exchange.
-            Earrings can&apos;t be returned for hygiene reasons unless faulty. Full details are on our{" "}
+            1720 is exchange-only — we don&apos;t offer refunds. Unworn items in original packaging can be exchanged
+            within 3 days of delivery. Earrings are exchange-only too, and only if unworn. Full details are on our{" "}
             <Link href="/returns-policy" className="text-brand-umber underline">
               Return &amp; Exchange Policy
             </Link>
@@ -48,8 +48,8 @@ const FAQ_SECTIONS: { category: string; items: { q: string; a: React.ReactNode }
         ),
       },
       {
-        q: "How do I start a return?",
-        a: "WhatsApp us your order number and reason, or use the return request option we'll share in your order confirmation. We'll confirm pickup or drop-off details from there.",
+        q: "How do I start an exchange?",
+        a: "WhatsApp us your order number, the reason, and what you'd like instead. We'll confirm you're eligible and send an exchange reference number to write on the package before you courier it back.",
       },
     ],
   },
