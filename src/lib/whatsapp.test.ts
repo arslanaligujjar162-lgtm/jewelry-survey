@@ -62,12 +62,16 @@ describe("WhatsApp links", () => {
   });
 });
 
-describe("advance payment wording, once an account is configured", () => {
+describe("advance payment wording", () => {
+  const original = [...ADVANCE_ACCOUNTS];
+
   afterEach(() => {
     ADVANCE_ACCOUNTS.length = 0;
+    ADVANCE_ACCOUNTS.push(...original);
   });
 
   it("splits the total into advance + remaining everywhere it's mentioned", () => {
+    ADVANCE_ACCOUNTS.length = 0;
     ADVANCE_ACCOUNTS.push({ method: "JazzCash", number: "0333-0278559", title: "Arslan Ali" });
 
     const summary = orderSummaryText(base);
