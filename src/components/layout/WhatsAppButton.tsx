@@ -6,7 +6,7 @@ export function WhatsAppButton({ className = "", label = "Chat with us" }: { cla
       href={whatsappLink("Hi! I have a question about 1720.")}
       target="_blank"
       rel="noopener noreferrer"
-      className={`inline-flex items-center gap-2 rounded-full bg-brand-umber px-4 py-2 text-sm font-medium text-brand-ivory transition hover:bg-brand-umber-dark ${className}`}
+      className={`inline-flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#1DA851] ${className}`}
       aria-label="Chat with 1720 on WhatsApp"
     >
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">

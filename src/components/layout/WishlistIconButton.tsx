@@ -14,8 +14,9 @@ export function WishlistIconButton() {
     >
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
         <path
-          d="M12 20.5s-7-4.35-9.5-8.86C.86 8.36 2.1 5 5.4 4.3c2-.43 3.9.5 5.1 2.2 1.2-1.7 3.1-2.63 5.1-2.2 3.3.7 4.54 4.06 2.9 7.34C19 16.15 12 20.5 12 20.5z"
+          d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
           strokeLinejoin="round"
+          strokeLinecap="round"
         />
       </svg>
       {count > 0 && (
