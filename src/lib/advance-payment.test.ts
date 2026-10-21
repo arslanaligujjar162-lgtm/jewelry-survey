@@ -2,11 +2,9 @@ import { describe, it, expect } from "vitest";
 import { ADVANCE_AMOUNT, advanceAccountsText, advancePaymentEnabled, remainingOnDelivery } from "./advance-payment";
 
 describe("advance-payment", () => {
-  it("is disabled until an account is configured", () => {
-    // ADVANCE_ACCOUNTS ships empty — nothing should show on-site or in
-    // messaging until real account details are added.
-    expect(advancePaymentEnabled()).toBe(false);
-    expect(advanceAccountsText()).toBe("");
+  it("is enabled now that a real account is configured", () => {
+    expect(advancePaymentEnabled()).toBe(true);
+    expect(advanceAccountsText()).toBe("NayaPay: 0335-6389333 (Arslan Ali)");
   });
 
   it("never lets the remaining balance go negative", () => {

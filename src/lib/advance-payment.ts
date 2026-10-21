@@ -3,11 +3,10 @@
  * remainder still Cash on Delivery — the business's existing informal
  * practice (confirmed manually over WhatsApp), formalized on-site.
  *
- * ACCOUNTS stays empty until real account details are provided; every piece
- * of UI/messaging below checks `advancePaymentEnabled()` first and shows
- * nothing until then, so the feature switches on everywhere at once the
- * moment it's configured — never a half-shown instruction with no account
- * to actually send money to.
+ * Every piece of UI/messaging below checks `advancePaymentEnabled()` first,
+ * which is true as soon as ADVANCE_ACCOUNTS has an entry — so the feature
+ * switched on everywhere at once the moment the real account went in,
+ * never a half-shown instruction with no account to actually send money to.
  */
 
 export const ADVANCE_AMOUNT = 500;
@@ -19,7 +18,7 @@ export interface AdvanceAccount {
 }
 
 export const ADVANCE_ACCOUNTS: AdvanceAccount[] = [
-  // { method: "JazzCash", number: "0333-0278559", title: "Arslan Ali" },
+  { method: "NayaPay", number: "0335-6389333", title: "Arslan Ali" },
 ];
 
 export function advancePaymentEnabled(): boolean {
