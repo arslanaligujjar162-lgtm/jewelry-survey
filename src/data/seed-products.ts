@@ -171,46 +171,6 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "created_at": "2026-07-08T00:00:00.000Z"
   },
   {
-    "id": "seed-009",
-    "sku": "1720-RNG-002",
-    "name": "Dewdrop Ring",
-    "slug": "dewdrop-ring",
-    "category_id": "rings",
-    "price": 2100,
-    "compare_at_price": null,
-    "description": "A single round-cut cubic zirconia set low on a slim band, so it sits close to the finger.",
-    "plating_spec": "18k gold PVD coating over 316L stainless steel",
-    "material_spec": "316L stainless steel, PVD gold plated, cubic zirconia",
-    "images": [
-      "/products/dewdrop-ring-1.svg",
-      "/products/dewdrop-ring-2.svg"
-    ],
-    "stock_count": 20,
-    "is_new": false,
-    "ring_size_range": "US 5-9",
-    "created_at": "2026-07-09T00:00:00.000Z"
-  },
-  {
-    "id": "seed-010",
-    "sku": "1720-RNG-003",
-    "name": "Confetti Band",
-    "slug": "confetti-band",
-    "category_id": "rings",
-    "price": 2340,
-    "compare_at_price": null,
-    "description": "A textured, scattered-finish band with a slight dome.",
-    "plating_spec": "18k gold PVD coating over 316L stainless steel",
-    "material_spec": "316L stainless steel, PVD gold plated",
-    "images": [
-      "/products/confetti-band-1.svg",
-      "/products/confetti-band-2.svg"
-    ],
-    "stock_count": 7,
-    "is_new": false,
-    "ring_size_range": "US 5-9",
-    "created_at": "2026-07-10T00:00:00.000Z"
-  },
-  {
     "id": "seed-011",
     "sku": "1720-RNG-004",
     "name": "Starlet Ring",
@@ -248,26 +208,6 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "is_new": true,
     "ring_size_range": "US 5-9",
     "created_at": "2026-07-12T00:00:00.000Z"
-  },
-  {
-    "id": "seed-013",
-    "sku": "1720-RNG-006",
-    "name": "Sculpt Ring",
-    "slug": "sculpt-ring",
-    "category_id": "rings",
-    "price": 1938,
-    "compare_at_price": null,
-    "description": "An asymmetric, sculpted band that reads as more than one ring stacked.",
-    "plating_spec": "18k gold PVD coating over 316L stainless steel",
-    "material_spec": "316L stainless steel, PVD gold plated",
-    "images": [
-      "/products/sculpt-ring-1.svg",
-      "/products/sculpt-ring-2.svg"
-    ],
-    "stock_count": 8,
-    "is_new": false,
-    "ring_size_range": "US 5-9",
-    "created_at": "2026-07-13T00:00:00.000Z"
   },
   {
     "id": "seed-014",
@@ -328,26 +268,6 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "is_new": false,
     "ring_size_range": null,
     "created_at": "2026-07-19T00:00:00.000Z"
-  },
-  {
-    "id": "seed-020",
-    "sku": "1720-BRC-006",
-    "name": "Vine Bangle",
-    "slug": "vine-bangle",
-    "category_id": "bracelets",
-    "price": 1564,
-    "compare_at_price": null,
-    "description": "A thin, twisting vine-textured bangle. Open style, one size.",
-    "plating_spec": "18k gold PVD coating over 316L stainless steel",
-    "material_spec": "316L stainless steel, PVD gold plated",
-    "images": [
-      "/products/vine-bangle-1.svg",
-      "/products/vine-bangle-2.svg"
-    ],
-    "stock_count": 17,
-    "is_new": false,
-    "ring_size_range": null,
-    "created_at": "2026-07-20T00:00:00.000Z"
   },
   {
     "id": "seed-021",
