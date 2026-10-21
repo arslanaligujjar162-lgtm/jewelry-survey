@@ -1,6 +1,7 @@
 import type { Order } from "@/lib/types";
 import { formatPKR } from "@/lib/format";
 import { CONTACT } from "@/lib/brand";
+import { ADVANCE_AMOUNT, advanceAccountsText, advancePaymentEnabled, remainingOnDelivery } from "@/lib/advance-payment";
 
 function waLink(numberDigits: string, text: string) {
   return `https://wa.me/${numberDigits.replace(/\D/g, "")}?text=${encodeURIComponent(text)}`;
@@ -22,10 +23,13 @@ function addressLine(order: Order): string {
 
 /** Plain-text order summary, shared by the WhatsApp links and the email alert. */
 export function orderSummaryText(order: Order): string {
+  const totalLine = advancePaymentEnabled()
+    ? `Total: ${formatPKR(order.total)} — ${formatPKR(ADVANCE_AMOUNT)} advance + ${formatPKR(remainingOnDelivery(order.total))} Cash on Delivery (incl. ${formatPKR(order.delivery_fee)} delivery)`
+    : `Total: ${formatPKR(order.total)} (Cash on Delivery, incl. ${formatPKR(order.delivery_fee)} delivery)`;
   return [
     `Order ${order.order_number}`,
     itemLines(order),
-    `Total: ${formatPKR(order.total)} (Cash on Delivery, incl. ${formatPKR(order.delivery_fee)} delivery)`,
+    totalLine,
     `${order.customer_name} · ${order.customer_phone}`,
     addressLine(order),
   ].join("\n");
@@ -33,21 +37,27 @@ export function orderSummaryText(order: Order): string {
 
 /** Customer → store: sent from the confirmation page, so every order opens a chat with the store. */
 export function customerConfirmLink(order: Order): string {
+  const advanceLine = advancePaymentEnabled()
+    ? `\n\nI'll send the ${formatPKR(ADVANCE_AMOUNT)} advance to ${advanceAccountsText()} and share the screenshot here.`
+    : "";
   return waLink(
     CONTACT.whatsappNumber,
-    `Hi 1720! I just placed an order and would like to confirm it.\n\n${orderSummaryText(order)}`
+    `Hi 1720! I just placed an order and would like to confirm it.\n\n${orderSummaryText(order)}${advanceLine}`
   );
 }
 
 /** Store → customer: one tap from the admin order page to confirm before dispatch. */
 export function ownerConfirmLink(order: Order): string {
+  const paymentLine = advancePaymentEnabled()
+    ? `Please send ${formatPKR(ADVANCE_AMOUNT)} advance to ${advanceAccountsText()} — the remaining ${formatPKR(remainingOnDelivery(order.total))} is payable in cash on delivery, to ${addressLine(order)}.`
+    : `Total ${formatPKR(order.total)}, payable in cash on delivery, to ${addressLine(order)}.`;
   return waLink(
     order.customer_phone,
     [
       `Assalam o Alaikum ${order.customer_name.split(" ")[0]}, this is 1720.`,
       `Thank you for your order ${order.order_number}:`,
       itemLines(order),
-      `Total ${formatPKR(order.total)}, payable in cash on delivery, to ${addressLine(order)}.`,
+      paymentLine,
       `Please reply YES to confirm and we'll dispatch it.`,
     ].join("\n")
   );

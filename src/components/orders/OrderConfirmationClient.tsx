@@ -7,6 +7,7 @@ import type { Order } from "@/lib/types";
 import { formatPKR, formatDate } from "@/lib/format";
 import { useCart } from "@/lib/cart-context";
 import { customerConfirmLink } from "@/lib/whatsapp";
+import { ADVANCE_AMOUNT, advanceAccountsText, advancePaymentEnabled, remainingOnDelivery } from "@/lib/advance-payment";
 
 export function OrderConfirmationClient() {
   const params = useParams<{ orderNumber: string }>();
@@ -94,15 +95,43 @@ export function OrderConfirmationClient() {
           Order {order.order_number} · placed {formatDate(order.created_at)}
         </p>
         <p className="mt-4 font-body text-sm text-brand-charcoal/80">
-          Pay {formatPKR(order.total)} in cash when it arrives.
+          {advancePaymentEnabled() ? (
+            <>
+              Pay {formatPKR(ADVANCE_AMOUNT)} in advance to confirm, then {formatPKR(remainingOnDelivery(order.total))}{" "}
+              in cash when it arrives.
+            </>
+          ) : (
+            <>Pay {formatPKR(order.total)} in cash when it arrives.</>
+          )}
         </p>
       </div>
 
-      <div className="mx-auto mt-8 max-w-xl rounded-xl border-2 border-brand-umber-dark bg-brand-butter p-6 text-center shadow-retro">
-        <p className="font-body text-[11px] font-bold uppercase tracking-[0.2em] text-brand-umber">One last step</p>
+      {advancePaymentEnabled() && (
+        <div className="mx-auto mt-8 max-w-xl rounded-xl border-2 border-brand-umber-dark bg-brand-butter p-6 text-center shadow-retro">
+          <p className="font-body text-[11px] font-bold uppercase tracking-[0.2em] text-brand-umber">
+            Step 1 — Send the advance
+          </p>
+          <p className="mt-2 font-display text-2xl font-semibold text-brand-umber-dark">
+            Send {formatPKR(ADVANCE_AMOUNT)} to confirm
+          </p>
+          <p className="mt-2 font-body text-sm text-brand-charcoal/80">
+            {advanceAccountsText()}. The remaining {formatPKR(remainingOnDelivery(order.total))} is paid in cash on
+            delivery.
+          </p>
+        </div>
+      )}
+
+      <div
+        className={`mx-auto max-w-xl rounded-xl border-2 border-brand-umber-dark bg-brand-butter p-6 text-center shadow-retro ${advancePaymentEnabled() ? "mt-4" : "mt-8"}`}
+      >
+        <p className="font-body text-[11px] font-bold uppercase tracking-[0.2em] text-brand-umber">
+          {advancePaymentEnabled() ? "Step 2 — Confirm on WhatsApp" : "One last step"}
+        </p>
         <p className="mt-2 font-display text-2xl font-semibold text-brand-umber-dark">Confirm your order on WhatsApp</p>
         <p className="mt-2 font-body text-sm text-brand-charcoal/80">
-          We dispatch as soon as you confirm. Your order details are already filled in — just press send.
+          {advancePaymentEnabled()
+            ? "Send your payment screenshot here so we know to dispatch."
+            : "We dispatch as soon as you confirm. Your order details are already filled in — just press send."}
         </p>
         <a
           href={customerConfirmLink(order)}

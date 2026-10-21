@@ -1,13 +1,15 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getOrder } from "@/lib/admin/queries";
-import { updateOrderStatusAction } from "@/lib/admin/actions";
+import { updateOrderStatusAction, updatePaymentStatusAction } from "@/lib/admin/actions";
 import { StatusUpdateForm } from "@/components/admin/StatusUpdateForm";
 import { formatPKR, formatDate } from "@/lib/format";
 import { ownerConfirmLink } from "@/lib/whatsapp";
+import { ADVANCE_AMOUNT, advancePaymentEnabled, remainingOnDelivery } from "@/lib/advance-payment";
 import type { OrderStatus } from "@/lib/types";
 
 const STATUSES: OrderStatus[] = ["pending", "confirmed", "dispatched", "delivered", "returned", "cancelled"];
+const PAYMENT_STATUSES = ["pending", "paid", "failed"] as const;
 
 export default async function AdminOrderDetailPage({ params }: { params: { id: string } }) {
   const order = await getOrder(params.id);
@@ -57,6 +59,11 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
                 <span>Total</span>
                 <span>{formatPKR(order.total)}</span>
               </div>
+              {advancePaymentEnabled() && (
+                <div className="mt-1 flex justify-between text-brand-charcoal/70">
+                  <span>{formatPKR(ADVANCE_AMOUNT)} advance + {formatPKR(remainingOnDelivery(order.total))} COD</span>
+                </div>
+              )}
             </div>
           </section>
 
@@ -97,7 +104,16 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
             <Row label="Placed" value={formatDate(order.created_at)} />
             <Row label="Phone" value={order.customer_phone} />
             <Row label="Payment method" value={order.payment_method === "cod" ? "Cash on Delivery" : "Online gateway"} />
-            <Row label="Payment status" value={order.payment_status} />
+            <div className="flex items-center justify-between gap-2">
+              <dt className="text-brand-charcoal/60">{advancePaymentEnabled() ? "Advance received" : "Payment status"}</dt>
+              <dd>
+                <StatusUpdateForm
+                  action={updatePaymentStatusAction.bind(null, order.id)}
+                  currentStatus={order.payment_status}
+                  options={PAYMENT_STATUSES}
+                />
+              </dd>
+            </div>
             <Row label="Phone verified by SMS" value={order.otp_verified ? "Yes" : "No"} />
             <Row label="Promo code" value={order.promo_code ?? "—"} />
           </dl>

@@ -25,6 +25,18 @@ export async function updateOrderStatusAction(orderId: string, formData: FormDat
   revalidatePath(`/admin/orders/${orderId}`);
 }
 
+/** Tracks whether the Rs 500 advance has actually been received — checked manually
+ * against the owner's wallet/bank, since there's no payment gateway in the loop. */
+export async function updatePaymentStatusAction(orderId: string, formData: FormData) {
+  await requireAdmin();
+  const payment_status = formData.get("status") as "pending" | "paid" | "failed";
+  const admin = createAdminClient();
+  const { error } = await admin.from("orders").update({ payment_status }).eq("id", orderId);
+  if (error) throw new Error(error.message);
+  revalidatePath("/admin/orders");
+  revalidatePath(`/admin/orders/${orderId}`);
+}
+
 export async function updateReturnStatusAction(returnId: string, formData: FormData) {
   await requireAdmin();
   const status = formData.get("status") as string;

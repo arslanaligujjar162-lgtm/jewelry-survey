@@ -7,6 +7,7 @@ import { formatPKR } from "@/lib/format";
 import { PK_PHONE_REGEX, PAKISTAN_PROVINCES } from "@/lib/validation";
 import { getDeliveryInfo } from "@/lib/serviceable-areas";
 import { trackEvent, trackPixelEvent } from "@/lib/analytics";
+import { ADVANCE_AMOUNT, advanceAccountsText, advancePaymentEnabled, remainingOnDelivery } from "@/lib/advance-payment";
 
 type FieldErrors = Partial<Record<"fullName" | "phone" | "addressLine1" | "city" | "province", string>>;
 
@@ -345,6 +346,12 @@ export function CheckoutForm({ otpRequired }: { otpRequired: boolean }) {
               We confirm every order with you on WhatsApp before it&apos;s dispatched.
             </p>
           )}
+          {advancePaymentEnabled() && (
+            <p className="mt-2 font-body text-sm text-brand-charcoal/70">
+              A {formatPKR(ADVANCE_AMOUNT)} advance ({advanceAccountsText()}) confirms your order — the rest is Cash
+              on Delivery.
+            </p>
+          )}
         </section>
       </div>
 
@@ -381,6 +388,11 @@ export function CheckoutForm({ otpRequired }: { otpRequired: boolean }) {
             <span>Total</span>
             <span>{formatPKR(total)}</span>
           </div>
+          {advancePaymentEnabled() && (
+            <div className="mt-2 rounded-lg bg-brand-sky/10 p-2.5 text-xs text-brand-charcoal/80">
+              {formatPKR(ADVANCE_AMOUNT)} advance to confirm, {formatPKR(remainingOnDelivery(total))} on delivery.
+            </div>
+          )}
         </div>
 
         {orderError && (
