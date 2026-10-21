@@ -382,7 +382,8 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated, shell pearl",
     "images": [
-      "/products/eclipse-drop-1.jpg"
+      "/products/eclipse-drop-1.jpg",
+      "/products/eclipse-drop-2.jpg"
     ],
     "stock_count": 9,
     "is_new": true,
