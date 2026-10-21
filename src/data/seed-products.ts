@@ -202,7 +202,8 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated, cubic zirconia",
     "images": [
-      "/products/studded-band-1.jpg"
+      "/products/studded-band-1.jpg",
+      "/products/studded-band-2.jpg"
     ],
     "stock_count": 11,
     "is_new": true,
@@ -301,7 +302,8 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated, cubic zirconia",
     "images": [
-      "/products/og-ring-1.jpg"
+      "/products/og-ring-1.jpg",
+      "/products/og-ring-2.jpg"
     ],
     "stock_count": 10,
     "is_new": true,
