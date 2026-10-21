@@ -281,7 +281,8 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated, shell pearl",
     "images": [
-      "/products/clover-pendant-1.jpg"
+      "/products/clover-pendant-1.jpg",
+      "/products/clover-pendant-2.jpg"
     ],
     "stock_count": 6,
     "is_new": true,
