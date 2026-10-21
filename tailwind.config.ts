@@ -18,7 +18,6 @@ const config: Config = {
           // This is the only blue in the system — lighter/darker moments use opacity on this
           // single value (bg-brand-sky/10, /40, etc.), never a separate tint or shade.
           sky: "#63A8C0", // Retro Sky Blue (as rendered in the locked artwork)
-          tab: "#5FA8C2", // Retro Sky Blue (locked doc hex) — tab/segmented-control bg only, kept separate from `sky` above so this swap doesn't shift the logo-matched blue used elsewhere
           umber: "#673C34", // Umber Brown
           "umber-light": "#AB948F",
           "umber-dark": "#482A24",
