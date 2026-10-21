@@ -77,7 +77,7 @@ function FilterLink({ label, active, href }: { label: string; active: boolean; h
     <Link
       href={href}
       className={`rounded-full border px-3 py-1.5 font-body text-xs capitalize ${
-        active ? "border-brand-umber bg-brand-umber text-brand-ivory" : "border-brand-umber/20 text-brand-charcoal"
+        active ? "border-brand-tab bg-brand-tab text-brand-umber-dark" : "border-brand-umber/20 text-brand-charcoal"
       }`}
     >
       {label}
