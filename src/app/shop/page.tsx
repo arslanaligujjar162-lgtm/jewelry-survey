@@ -52,9 +52,6 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
       <div className="border-b border-brand-umber/15 bg-brand-butter-light/70">
         <div className="container-page flex flex-wrap items-center justify-between gap-2 py-3">
           <p className="font-body text-[11px] uppercase tracking-[0.2em] text-brand-charcoal/60">1720 · Shop</p>
-          <p className="font-display text-[11px] italic tracking-[0.25em] text-brand-umber-dark/70">
-            {products.length} {products.length === 1 ? "PIECE" : "PIECES"} — 1720 ARCHIVE
-          </p>
         </div>
       </div>
 

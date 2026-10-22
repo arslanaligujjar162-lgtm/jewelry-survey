@@ -136,7 +136,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
   {
     "id": "seed-007",
     "sku": "1720-EAR-007",
-    "name": "Black Olive Hoops",
+    "name": "Black Olive",
     "slug": "black-olive-hoops",
     "category_id": "earrings",
     "price": 3000,
@@ -335,7 +335,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
   {
     "id": "seed-024",
     "sku": "1720-EAR-009",
-    "name": "Green Olive Hoops",
+    "name": "Green Olive",
     "slug": "green-olive-hoops",
     "category_id": "earrings",
     "price": 3000,
