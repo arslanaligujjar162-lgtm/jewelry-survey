@@ -42,7 +42,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "description": "A smooth teardrop dome scattered with flush-set crystals. Post backs.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated, crystal",
-    "images": ["/products/mermaid-tear-1.jpg", "/products/mermaid-tear-2.jpg"],
+    "images": ["/products/mermaid-tear-1.jpg", "/products/mermaid-tear-2.jpg", "/products/mermaid-tear-3.jpg"],
     "stock_count": 11,
     "is_new": true,
     "ring_size_range": null,
@@ -283,7 +283,8 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "material_spec": "316L stainless steel, PVD gold plated, shell pearl",
     "images": [
       "/products/clover-pendant-1.jpg",
-      "/products/clover-pendant-2.jpg"
+      "/products/clover-pendant-2.jpg",
+      "/products/clover-pendant-3.jpg"
     ],
     "stock_count": 6,
     "is_new": true,
