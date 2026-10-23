@@ -98,6 +98,19 @@ export default async function HomePage() {
 
       <ScallopDivider fromColor={BAND_BUTTER} toColor={BAND_IVORY} />
 
+      <section aria-hidden="true" className="bg-brand-ivory">
+        <div className="container-page flex justify-center py-14 sm:py-20">
+          <div className="w-full max-w-[280px] rotate-[-3deg] border-2 border-brand-umber-dark bg-white p-3 pb-5 shadow-retro transition duration-300 hover:rotate-0 sm:max-w-xs">
+            <div className="relative aspect-[4/7] overflow-hidden">
+              <Image src="/brand/retro-tv.jpg" alt="" fill sizes="280px" className="object-cover" />
+            </div>
+            <p className="mt-3 text-center font-display text-base italic text-brand-umber-dark">
+              Some things never go out of style.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section className="bg-brand-ivory">
         <div className="container-page py-16">
           <h2 className="font-display text-3xl font-bold text-brand-umber-dark sm:text-4xl">
