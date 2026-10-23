@@ -8,14 +8,15 @@ import { useSelectedColour } from "@/components/product/SelectedColour";
 import type { Product } from "@/lib/types";
 import { trackEvent, trackPixelEvent } from "@/lib/analytics";
 
+// Whole sizes only — half sizes (e.g. 6.5) aren't stocked.
 function parseRingSizes(range: string): string[] {
   const match = range.match(/([\d.]+)\s*-\s*([\d.]+)/);
   if (!match) return [];
-  const min = parseFloat(match[1]);
+  const min = Math.ceil(parseFloat(match[1]));
   const max = parseFloat(match[2]);
   const sizes: string[] = [];
-  for (let s = min; s <= max + 0.001; s += 0.5) {
-    sizes.push(s % 1 === 0 ? s.toString() : s.toFixed(1));
+  for (let s = min; s <= max + 0.001; s += 1) {
+    sizes.push(s.toString());
   }
   return sizes;
 }
