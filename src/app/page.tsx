@@ -33,7 +33,7 @@ const CATEGORY_TILE_COLORS: Record<string, string> = {
 };
 
 // The signature piece pinned in the hero; also the link-preview image.
-const HERO_PRODUCT_SLUG = "mermaid-tear";
+const HERO_PRODUCT_SLUG = "green-olive-hoops";
 
 const categoryOf = (p: Product) => p.category?.slug ?? p.category_id;
 
@@ -91,7 +91,7 @@ export default async function HomePage() {
         </div>
         <div className="container-page pb-10">
           <p className="font-body text-sm text-brand-charcoal/70">
-            {TAGLINE} Cash on Delivery across Pakistan · 7-day returns.
+            {TAGLINE} Cash on Delivery across Pakistan.
           </p>
         </div>
       </section>
