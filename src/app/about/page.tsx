@@ -5,7 +5,7 @@ import { BRAND_STORY_PARAGRAPHS, MANTRA } from "@/lib/brand";
 export const metadata: Metadata = {
   title: "We Have a Taste of Our Own",
   description:
-    "Why 1720 exists: modern-retro demi-fine jewellery in 316L stainless steel with PVD gold plating, for women who choose pieces because they feel like them — not to complete them.",
+    "Why 1720 exists: modern-retro demi-fine jewelry in 316L stainless steel with PVD gold plating, for women who choose pieces because they feel like them — not to complete them.",
   alternates: { canonical: "/about" },
 };
 

@@ -23,7 +23,7 @@ export function generateMetadata({ searchParams }: ShopPageProps): Metadata {
   const canonical = category ? `${siteUrl}/shop?category=${category.slug}` : `${siteUrl}/shop`;
 
   return {
-    title: category ? category.label : "Shop All Jewellery",
+    title: category ? category.label : "Shop All Jewelry",
     description: category
       ? `Browse ${category.label.toLowerCase()} in 316L stainless steel with PVD gold plating.`
       : "Browse earrings, rings, bracelets, and necklaces in 316L stainless steel with PVD gold plating.",
@@ -60,7 +60,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
           <div>
             <p className="font-body text-sm font-semibold uppercase tracking-widest text-brand-umber">Shop</p>
             <h1 className="mt-1 font-display text-3xl font-semibold text-brand-umber-dark sm:text-4xl">
-              {query ? `Results for "${query}"` : categoryLabel ?? "All jewellery"}
+              {query ? `Results for "${query}"` : categoryLabel ?? "All jewelry"}
             </h1>
           </div>
         </div>

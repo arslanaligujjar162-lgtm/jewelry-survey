@@ -4,14 +4,14 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Care Guide",
   description:
-    "How to make PVD-coated 316L stainless steel jewellery last: what to avoid, how to clean it, and how to store it between wears.",
+    "How to make PVD-coated 316L stainless steel jewelry last: what to avoid, how to clean it, and how to store it between wears.",
   alternates: { canonical: "/care-guide" },
 };
 
 const CARE_ITEMS = [
   {
     title: "Put it on last, take it off first",
-    body: "Perfume, lotion, and hairspray shorten the life of any plating. Get dressed, then put your jewellery on. Take it off before you shower or sleep.",
+    body: "Perfume, lotion, and hairspray shorten the life of any plating. Get dressed, then put your jewelry on. Take it off before you shower or sleep.",
   },
   {
     title: "Keep it dry when you can",
@@ -19,7 +19,7 @@ const CARE_ITEMS = [
   },
   {
     title: "Clean it gently",
-    body: "Wipe with a soft, dry cloth after wear. If it needs more, use a barely damp cloth and dry it immediately. Skip harsh jewellery cleaners and ultrasonic cleaners.",
+    body: "Wipe with a soft, dry cloth after wear. If it needs more, use a barely damp cloth and dry it immediately. Skip harsh jewelry cleaners and ultrasonic cleaners.",
   },
   {
     title: "Store pieces separately",
@@ -27,7 +27,7 @@ const CARE_ITEMS = [
   },
   {
     title: "Avoid direct abrasion",
-    body: "Sports, manual work, and tight clothing are the main causes of visible wear. Set jewellery aside for anything physical.",
+    body: "Sports, manual work, and tight clothing are the main causes of visible wear. Set jewelry aside for anything physical.",
   },
 ];
 

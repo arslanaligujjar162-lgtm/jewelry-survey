@@ -1,32 +1,32 @@
 export const BRAND_NAME = "1720";
 export const BRAND_MARK = "1720";
-export const TAGLINE = "Not fast fashion. Not a fortune. Just good jewellery.";
+export const TAGLINE = "Not fast fashion. Not a fortune. Just good jewelry.";
 export const MANTRA = "Not to complete you. To express you.";
-export const POSITIONING = "1720 is a modern-retro jewellery brand for women with a taste of their own.";
+export const POSITIONING = "1720 is a modern-retro jewelry brand for women with a taste of their own.";
 export const AESTHETIC = "Modern retro";
 
 // Link-preview hook (WhatsApp/social og:description) — short, concrete,
 // leads with a real fact rather than the on-site mission-statement copy.
-export const SHARE_HOOK = "Retro Modern jewellery, Rs 1,250–3,666. Cash on Delivery across Pakistan.";
+export const SHARE_HOOK = "Retro Modern jewelry, Rs 1,250–3,666. Cash on Delivery across Pakistan.";
 
 // The core brand idea — the single most prominent line on the site.
 export const HERO_HEADLINE = MANTRA;
-export const HERO_SUBHEAD = "Distinctive modern-retro jewellery for women who already know who they are.";
+export const HERO_SUBHEAD = "Distinctive modern-retro jewelry for women who already know who they are.";
 
 // The other hero option, kept for reuse elsewhere (e.g. secondary sections,
 // meta copy) now that MANTRA has taken the primary hero slot.
-export const COLLECTION_LINE = "Jewellery for a taste of your own.";
+export const COLLECTION_LINE = "Jewelry for a taste of your own.";
 
 export const BRAND_DESCRIPTION =
-  "1720 is a modern-retro jewellery brand for women with a taste of their own — demi-fine, PVD-coated pieces with character, sold direct to Pakistan through Instagram and COD. Not to complete you. To express you.";
+  "1720 is a modern-retro jewelry brand for women with a taste of their own — demi-fine, PVD-coated pieces with character, sold direct to Pakistan through Instagram and COD. Not to complete you. To express you.";
 
 // Opening line, then the pull-quote (MANTRA) is rendered separately, then
 // these closing paragraphs — see the About page for the exact assembly.
 export const BRAND_STORY_PARAGRAPHS = [
   "We believe the most personal pieces aren't necessarily the loudest. They're the ones that feel unmistakably yours.",
-  "1720 was created around a simple idea: jewellery doesn't have to complete you. It can simply be something you chose because it feels like you.",
+  "1720 was created around a simple idea: jewelry doesn't have to complete you. It can simply be something you chose because it feels like you.",
   "We are drawn to the shapes, colours and character of another era, but we don't want to recreate the past. We reinterpret it for now.",
-  "The result is modern-retro jewellery for women with a taste of their own — selective, distinctive and made to be worn your way.",
+  "The result is modern-retro jewelry for women with a taste of their own — selective, distinctive and made to be worn your way.",
 ];
 
 export const WHY_1720 = [
@@ -50,7 +50,7 @@ export const WHY_1720 = [
 
 export const COLLECTION_INTRO_HEADING = "For the ones who choose differently.";
 export const COLLECTION_INTRO_BODY =
-  "A collection of modern-retro jewellery with character, designed for women who know what they like.";
+  "A collection of modern-retro jewelry with character, designed for women who know what they like.";
 
 export const QUALITY_HEADING = "See what you're actually buying.";
 export const QUALITY_BODY =
