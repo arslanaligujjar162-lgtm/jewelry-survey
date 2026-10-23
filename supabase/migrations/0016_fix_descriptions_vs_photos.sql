@@ -1,7 +1,7 @@
 -- Descriptions audited against each product's photo; these seven contradicted
 -- what the photo shows (missing stones, wrong setting, wrong finish/shape).
 update products set
-  description = 'A wide, hand-hammered open band set with five bezel-set stones in ruby-pink and midnight blue. Adjustable.',
+  description = 'A wide, hand-hammered open band set with bezel-set stones in ruby-pink and midnight blue. Adjustable.',
   material_spec = '316L stainless steel, PVD gold plated, cubic zirconia'
 where sku = '1720-RNG-001';
 
