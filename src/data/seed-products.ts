@@ -158,7 +158,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "category_id": "rings",
     "price": 2000,
     "compare_at_price": null,
-    "description": "A wide, hand-hammered open band set with five bezel-set stones in ruby-pink and midnight blue. Adjustable.",
+    "description": "A wide, hand-hammered open band set with bezel-set stones in ruby-pink and midnight blue. Adjustable.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated, cubic zirconia",
     "images": [
@@ -402,7 +402,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "category_id": "earrings",
     "price": 2000,
     "compare_at_price": null,
-    "description": "A large pear-cut stone in a claw setting on a wide, open cuff — no piercing needed, adjustable fit.",
+    "description": "A pear-cut stone in a claw setting on a wide, open cuff — no piercing needed, adjustable fit.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated, cubic zirconia",
     "images": [
