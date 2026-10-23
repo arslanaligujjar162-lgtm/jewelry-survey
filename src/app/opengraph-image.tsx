@@ -42,35 +42,41 @@ export default function OpengraphImage() {
             left: 0,
             right: 0,
             bottom: 0,
-            height: 220,
+            height: 260,
             display: "flex",
-            background: "linear-gradient(to top, rgba(35,31,28,0.88), rgba(35,31,28,0))",
+            background: "linear-gradient(to top, rgba(35,31,28,0.92), rgba(35,31,28,0))",
           }}
         />
-        {/* Small logo badge, corner accent -- not the dominant element */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={logoSrc}
-          width={72}
-          height={72}
-          style={{ position: "absolute", left: 40, bottom: 40, borderRadius: 16 }}
-          alt=""
-        />
+        {/* Logo + wordmark, centered horizontally rather than corner-anchored —
+            chat apps (WhatsApp, iMessage) crop their compact link-preview
+            thumbnail to the center square of this 1200x630 canvas, so
+            anything pinned to a side edge gets cut off before it's seen. */}
         <div
           style={{
             position: "absolute",
-            left: 132,
-            bottom: 40,
+            left: 0,
+            right: 0,
+            bottom: 44,
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
-            height: 72,
+            alignItems: "center",
           }}
         >
-          <div style={{ fontSize: 30, fontWeight: 700, color: "#FAE3B1", fontFamily: "Georgia, serif" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={logoSrc} width={84} height={84} style={{ borderRadius: 20 }} alt="" />
+          <div
+            style={{
+              marginTop: 14,
+              fontSize: 34,
+              fontWeight: 700,
+              color: "#FAE3B1",
+              fontFamily: "Georgia, serif",
+              letterSpacing: 1,
+            }}
+          >
             {BRAND_NAME}
           </div>
-          <div style={{ marginTop: 4, fontSize: 22, color: "#FBF7EE" }}>{TAGLINE}</div>
+          <div style={{ marginTop: 6, fontSize: 22, color: "#FBF7EE" }}>{TAGLINE}</div>
         </div>
       </div>
     ),
