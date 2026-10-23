@@ -207,7 +207,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     ],
     "stock_count": 11,
     "is_new": true,
-    "ring_size_range": "US 5-9",
+    "ring_size_range": null,
     "created_at": "2026-07-12T00:00:00.000Z"
   },
   {
