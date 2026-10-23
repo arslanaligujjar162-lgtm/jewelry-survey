@@ -124,7 +124,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "category_id": "earrings",
     "price": 2000,
     "compare_at_price": null,
-    "description": "Three slim polished gold bars curving together into a single sculptural stud. Secure push backs.",
+    "description": "Three slim polished gold bars stacked into a single squared, sculptural stud. Secure push backs.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated",
     "images": ["/products/sunray-studs-1.jpg", "/products/sunray-studs-2.jpg"],
@@ -158,9 +158,9 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "category_id": "rings",
     "price": 2000,
     "compare_at_price": null,
-    "description": "A hand-hammered texture across an open, adjustable band.",
+    "description": "A wide, hand-hammered open band set with five bezel-set stones in ruby-pink and midnight blue. Adjustable.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
-    "material_spec": "316L stainless steel, PVD gold plated",
+    "material_spec": "316L stainless steel, PVD gold plated, cubic zirconia",
     "images": [
       "/products/hammered-band-1.jpg",
       "/products/hammered-band-2.jpg"
@@ -198,7 +198,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "category_id": "rings",
     "price": 2000,
     "compare_at_price": null,
-    "description": "A row of small cubic zirconia set flush into a straight band.",
+    "description": "A slim band set with round cubic zirconia in bezels of alternating sizes, staggered around the band.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated, cubic zirconia",
     "images": [
@@ -238,7 +238,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "category_id": "bracelets",
     "price": 2200,
     "compare_at_price": null,
-    "description": "A row of cubic zirconia set into a channel along a solid, hinged bangle.",
+    "description": "A row of emerald-green cubic zirconia set into a channel along a solid, hinged bangle.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated, cubic zirconia",
     "images": [
@@ -258,7 +258,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "category_id": "bracelets",
     "price": 3500,
     "compare_at_price": null,
-    "description": "A textured, scattered-finish bangle set with multicolour stones, solid and hinged.",
+    "description": "A smooth, polished bangle set with multicolour stones in round and eye-shaped cuts, solid and hinged.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated, cubic zirconia",
     "images": [
@@ -319,7 +319,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "category_id": "earrings",
     "price": 2000,
     "compare_at_price": null,
-    "description": "Three slim bars — bright silver-tone steel and gold — curving together into a two-tone sculptural stud.",
+    "description": "Three slim bars — bright silver-tone steel and gold — stacked into a two-tone squared, sculptural stud.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel — PVD gold plated and bare polished steel",
     "images": [
@@ -402,7 +402,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "category_id": "earrings",
     "price": 2000,
     "compare_at_price": null,
-    "description": "A chunky bezel-set pear stone on an open ear cuff — no piercing needed, adjustable fit.",
+    "description": "A large pear-cut stone in a claw setting on a wide, open cuff — no piercing needed, adjustable fit.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated, cubic zirconia",
     "images": [
