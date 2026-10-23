@@ -41,7 +41,7 @@ const MOOD_BOARD = [
   { src: "/brand/mood-payphone.jpg", rotate: "rotate-[-4deg]", shift: "sm:mt-4" },
   { src: "/brand/mood-chairs-bags.jpg", rotate: "rotate-[3deg]", shift: "sm:-mt-2" },
   { src: "/brand/mood-trinkets.jpg", rotate: "rotate-[-2deg]", shift: "sm:mt-6" },
-  { src: "/brand/mood-chairs-pair.jpg", rotate: "rotate-[5deg]", shift: "sm:mt-0" },
+  { src: "/brand/mood-denim-accessories.jpg", rotate: "rotate-[5deg]", shift: "sm:mt-0" },
 ] as const;
 
 const categoryOf = (p: Product) => p.category?.slug ?? p.category_id;
