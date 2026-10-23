@@ -299,7 +299,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "category_id": "rings",
     "price": 3000,
     "compare_at_price": null,
-    "description": "A wide polished band set with a single oversized pear-cut stone in a claw setting.",
+    "description": "A wide polished band scattered with multicolour stones — ruby, sapphire, and emerald — in varied cuts and bezel settings.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated, cubic zirconia",
     "images": [
