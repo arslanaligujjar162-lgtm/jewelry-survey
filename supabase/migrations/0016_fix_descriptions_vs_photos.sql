@@ -9,7 +9,7 @@ update products set description = 'A slim band set with round cubic zirconia in 
 
 update products set description = 'A smooth, polished bangle set with multicolour stones in round and eye-shaped cuts, solid and hinged.' where sku = '1720-BRC-005';
 
-update products set description = 'A large pear-cut stone in a claw setting on a wide, open cuff — no piercing needed, adjustable fit.' where sku = '1720-EAR-012';
+update products set description = 'A pear-cut stone in a claw setting on a wide, open cuff — no piercing needed, adjustable fit.' where sku = '1720-EAR-012';
 
 update products set description = 'A row of emerald-green cubic zirconia set into a channel along a solid, hinged bangle.' where sku = '1720-BRC-004';
 
