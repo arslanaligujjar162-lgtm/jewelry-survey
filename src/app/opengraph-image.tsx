@@ -1,21 +1,16 @@
 import { ImageResponse } from "next/og";
-import fs from "node:fs";
-import path from "node:path";
 import { BRAND_NAME, TAGLINE } from "@/lib/brand";
 
 export const runtime = "nodejs";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-function toDataUri(relativePath: string, mime: string) {
-  const filePath = path.join(process.cwd(), "public", relativePath);
-  return `data:${mime};base64,${fs.readFileSync(filePath).toString("base64")}`;
-}
-
+// Solid brand-blue card rather than a cropped product photo: chat apps
+// (WhatsApp, iMessage) show only the center square of this 1200x630 canvas
+// in their compact link-preview thumbnail, so a solid background reads
+// identically from any crop instead of risking the wordmark landing outside
+// the visible window.
 export default function OpengraphImage() {
-  const productSrc = toDataUri("products/mermaid-tear-1.jpg", "image/jpeg");
-  const logoSrc = toDataUri("brand/logo-light.png", "image/png");
-
   return new ImageResponse(
     (
       <div
@@ -23,60 +18,34 @@ export default function OpengraphImage() {
           width: "100%",
           height: "100%",
           display: "flex",
-          position: "relative",
-          background: "#231F1C",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "#63A8C0",
         }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element -- next/image is unusable inside next/og's ImageResponse renderer */}
-        <img
-          src={productSrc}
-          width={1200}
-          height={630}
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-          alt=""
-        />
-        {/* Bottom scrim for text legibility over the photo */}
         <div
           style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            bottom: 0,
-            height: 260,
-            display: "flex",
-            background: "linear-gradient(to top, rgba(35,31,28,0.92), rgba(35,31,28,0))",
-          }}
-        />
-        {/* Logo + wordmark, centered horizontally rather than corner-anchored —
-            chat apps (WhatsApp, iMessage) crop their compact link-preview
-            thumbnail to the center square of this 1200x630 canvas, so
-            anything pinned to a side edge gets cut off before it's seen. */}
-        <div
-          style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            bottom: 44,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            fontSize: 220,
+            fontWeight: 700,
+            color: "#FAE3B1",
+            fontFamily: "Georgia, serif",
+            letterSpacing: 4,
+            lineHeight: 1,
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={logoSrc} width={84} height={84} style={{ borderRadius: 20 }} alt="" />
-          <div
-            style={{
-              marginTop: 14,
-              fontSize: 34,
-              fontWeight: 700,
-              color: "#FAE3B1",
-              fontFamily: "Georgia, serif",
-              letterSpacing: 1,
-            }}
-          >
-            {BRAND_NAME}
-          </div>
-          <div style={{ marginTop: 6, fontSize: 22, color: "#FBF7EE" }}>{TAGLINE}</div>
+          {BRAND_NAME}
+        </div>
+        <div
+          style={{
+            marginTop: 28,
+            fontSize: 30,
+            color: "#FDF2DC",
+            textAlign: "center",
+            maxWidth: 840,
+          }}
+        >
+          {TAGLINE}
         </div>
       </div>
     ),
