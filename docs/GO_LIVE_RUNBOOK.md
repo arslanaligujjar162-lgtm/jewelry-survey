@@ -76,7 +76,7 @@ The GA4/Meta Pixel loading code already exists — it just checks whether these 
 1. Verify the domain in Search Console (Domain property, DNS TXT verification).
 2. Submit `sitemap.xml` — it's generated automatically from the live catalog.
 3. Set up a Google Business Profile (business.google.com) with category "Jewelry store" and the real address —
-   this is what surfaces the shop in local "jewellery near me" searches and Google Maps.
+   this is what surfaces the shop in local "jewelry near me" searches and Google Maps.
 
 ## 6. Order confirmation and alerts
 

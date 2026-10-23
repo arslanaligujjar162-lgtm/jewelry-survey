@@ -21,7 +21,7 @@ export function HeroMark({ featured }: { featured?: Product }) {
       >
         <Image
           src="/brand/logo-primary.png"
-          alt="1720 — demi-fine jewellery numeral mark"
+          alt="1720 — demi-fine jewelry numeral mark"
           fill
           sizes="(min-width: 1024px) 45vw, 90vw"
           className="object-cover"

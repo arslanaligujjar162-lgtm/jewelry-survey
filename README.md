@@ -1,7 +1,7 @@
 # 7teen2wenty (1720)
 
-Demi-fine, PVD-coated 316L stainless steel jewellery for the Pakistani market.
-**Not fast. Not a fortune. Just good jewellery.**
+Demi-fine, PVD-coated 316L stainless steel jewelry for the Pakistani market.
+**Not fast. Not a fortune. Just good jewelry.**
 
 Next.js 14 (App Router, TypeScript) + Tailwind CSS + Supabase (Postgres, Auth, Storage), built for Vercel.
 

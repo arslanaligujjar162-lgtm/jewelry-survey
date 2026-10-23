@@ -19,9 +19,9 @@ const BAND_IVORY = "#FDF2DC";
 const BAND_BUTTER = "#FAE3B1";
 
 export const metadata: Metadata = {
-  title: "Modern-Retro Jewellery for a Taste of Your Own",
+  title: "Modern-Retro Jewelry for a Taste of Your Own",
   description:
-    "Modern-retro demi-fine jewellery in 316L stainless steel with real PVD gold plating. Distinctive, not excessive — priced for everyday wear, shipped Cash on Delivery across Pakistan.",
+    "Modern-retro demi-fine jewelry in 316L stainless steel with real PVD gold plating. Distinctive, not excessive — priced for everyday wear, shipped Cash on Delivery across Pakistan.",
   alternates: { canonical: "/" },
 };
 

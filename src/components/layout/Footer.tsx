@@ -82,7 +82,7 @@ export function Footer() {
 
       <div className="border-t border-brand-umber/10 py-5">
         <p className="container-page font-body text-xs text-brand-charcoal/70">
-          © {new Date().getFullYear()} {BRAND_NAME}. Demi-fine jewellery, 316L stainless steel with PVD gold plating.
+          © {new Date().getFullYear()} {BRAND_NAME}. Demi-fine jewelry, 316L stainless steel with PVD gold plating.
           Cash on Delivery available across Pakistan.
         </p>
       </div>

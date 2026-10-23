@@ -23,8 +23,8 @@ export default function TermsPage() {
           <section>
             <h2 className="font-body text-base font-semibold text-brand-umber-dark">1. About us</h2>
             <p className="mt-2">
-              1720 sells demi-fine jewellery made from 316L stainless steel with PVD gold plating. We are not a fine
-              jewellery retailer and do not sell solid gold.
+              1720 sells demi-fine jewelry made from 316L stainless steel with PVD gold plating. We are not a fine
+              jewelry retailer and do not sell solid gold.
             </p>
           </section>
           <section>
