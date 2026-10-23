@@ -35,6 +35,15 @@ const CATEGORY_TILE_COLORS: Record<string, string> = {
 // The signature piece pinned in the hero; also the link-preview image.
 const HERO_PRODUCT_SLUG = "green-olive-hoops";
 
+// Scattered-polaroid mood board between "Why 1720?" and the collection grid —
+// alternating rotation/offset per card gives the loose, tossed-on-a-table feel.
+const MOOD_BOARD = [
+  { src: "/brand/mood-payphone.jpg", rotate: "rotate-[-4deg]", shift: "sm:mt-4" },
+  { src: "/brand/mood-chairs-bags.jpg", rotate: "rotate-[3deg]", shift: "sm:-mt-2" },
+  { src: "/brand/mood-trinkets.jpg", rotate: "rotate-[-2deg]", shift: "sm:mt-6" },
+  { src: "/brand/mood-chairs-pair.jpg", rotate: "rotate-[5deg]", shift: "sm:mt-0" },
+] as const;
+
 const categoryOf = (p: Product) => p.category?.slug ?? p.category_id;
 
 export default async function HomePage() {
@@ -99,15 +108,22 @@ export default async function HomePage() {
       <ScallopDivider fromColor={BAND_BUTTER} toColor={BAND_IVORY} />
 
       <section aria-hidden="true" className="bg-brand-ivory">
-        <div className="container-page flex justify-center py-14 sm:py-20">
-          <div className="w-full max-w-[280px] rotate-[-3deg] border-2 border-brand-umber-dark bg-white p-3 pb-5 shadow-retro transition duration-300 hover:rotate-0 sm:max-w-xs">
-            <div className="relative aspect-[4/7] overflow-hidden">
-              <Image src="/brand/retro-tv.jpg" alt="" fill sizes="280px" className="object-cover" />
-            </div>
-            <p className="mt-3 text-center font-display text-base italic text-brand-umber-dark">
-              Some things never go out of style.
-            </p>
+        <div className="container-page py-14 sm:py-20">
+          <div className="flex flex-wrap items-start justify-center gap-x-4 gap-y-10 sm:gap-x-6">
+            {MOOD_BOARD.map((item) => (
+              <div
+                key={item.src}
+                className={`w-[42%] min-w-[150px] max-w-[220px] border-2 border-brand-umber-dark bg-white p-2.5 shadow-retro-sm transition duration-300 hover:z-10 hover:rotate-0 hover:shadow-retro sm:p-3 ${item.rotate} ${item.shift}`}
+              >
+                <div className="relative aspect-[3/4] overflow-hidden">
+                  <Image src={item.src} alt="" fill sizes="220px" className="object-cover" />
+                </div>
+              </div>
+            ))}
           </div>
+          <p className="mt-10 text-center font-display text-base italic text-brand-umber-dark sm:text-lg">
+            Some things never go out of style.
+          </p>
         </div>
       </section>
 
