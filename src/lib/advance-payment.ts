@@ -19,6 +19,7 @@ export interface AdvanceAccount {
 
 export const ADVANCE_ACCOUNTS: AdvanceAccount[] = [
   { method: "NayaPay", number: "0335-6389333", title: "Arslan Ali" },
+  { method: "SadaPay", number: "0310-4594770", title: "Arslan Ali" },
 ];
 
 export function advancePaymentEnabled(): boolean {
