@@ -72,16 +72,16 @@ describe("advance payment wording", () => {
 
   it("splits the total into advance + remaining everywhere it's mentioned", () => {
     ADVANCE_ACCOUNTS.length = 0;
-    ADVANCE_ACCOUNTS.push({ method: "JazzCash", number: "0333-0278559", title: "Arslan Ali" });
+    ADVANCE_ACCOUNTS.push({ method: "NayaPay", number: "0310-4594770", title: "Asim Zaheer" });
 
     const summary = orderSummaryText(base);
     expect(summary).toContain("Rs. 500 advance + Rs. 6,250 Cash on Delivery");
 
     const customerText = decodedText(customerConfirmLink(base));
-    expect(customerText).toContain("I'll send the Rs. 500 advance to JazzCash: 0333-0278559 (Arslan Ali)");
+    expect(customerText).toContain("I'll send the Rs. 500 advance to NayaPay: 0310-4594770 (Asim Zaheer)");
 
     const ownerText = decodedText(ownerConfirmLink(base));
-    expect(ownerText).toContain("Please send Rs. 500 advance to JazzCash: 0333-0278559 (Arslan Ali)");
+    expect(ownerText).toContain("Please send Rs. 500 advance to NayaPay: 0310-4594770 (Asim Zaheer)");
     expect(ownerText).toContain("remaining Rs. 6,250 is payable in cash on delivery");
   });
 });
