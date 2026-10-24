@@ -4,7 +4,7 @@ import { ADVANCE_AMOUNT, advanceAccountsText, advancePaymentEnabled, remainingOn
 describe("advance-payment", () => {
   it("is enabled now that a real account is configured", () => {
     expect(advancePaymentEnabled()).toBe(true);
-    expect(advanceAccountsText()).toBe("SadaPay: 0310-4594770 (Asim Zaheer)");
+    expect(advanceAccountsText()).toBe("NayaPay: 0310-4594770 (Asim Zaheer)");
   });
 
   it("never lets the remaining balance go negative", () => {

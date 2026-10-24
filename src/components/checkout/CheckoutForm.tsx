@@ -336,10 +336,6 @@ export function CheckoutForm({ otpRequired }: { otpRequired: boolean }) {
               <input type="radio" name="payment" checked readOnly />
               Cash on Delivery
             </label>
-            <label className="flex items-center gap-3 rounded-lg border border-brand-umber/15 p-3 font-body text-sm text-brand-charcoal/40">
-              <input type="radio" name="payment" disabled />
-              Card / JazzCash / Easypaisa — coming soon
-            </label>
           </div>
           {!otpRequired && (
             <p className="mt-3 font-body text-sm text-brand-charcoal/70">
