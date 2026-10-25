@@ -46,7 +46,9 @@ export const metadata: Metadata = {
     description: SHARE_HOOK,
     url: siteUrl,
     siteName: BRAND_NAME,
-    images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
+    // A small static JPEG (~46 KB): chat apps drop preview images over
+    // roughly 300 KB, and the textured logo is far larger as a generated PNG.
+    images: [{ url: "/brand/og-logo.jpg", width: 1200, height: 630, alt: "1720" }],
     locale: "en_PK",
     type: "website",
   },
@@ -54,6 +56,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: TAGLINE,
     description: SHARE_HOOK,
+    images: ["/brand/og-logo.jpg"],
   },
 };
 
