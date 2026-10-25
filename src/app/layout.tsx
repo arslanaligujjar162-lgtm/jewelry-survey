@@ -46,17 +46,18 @@ export const metadata: Metadata = {
     description: SHARE_HOOK,
     url: siteUrl,
     siteName: BRAND_NAME,
-    // A small static JPEG (~46 KB): chat apps drop preview images over
-    // roughly 300 KB, and the textured logo is far larger as a generated PNG.
-    images: [{ url: "/brand/og-logo.jpg", width: 1200, height: 630, alt: "1720" }],
+    // A small, square static JPEG (~41 KB). Chat apps drop preview images over
+    // roughly 300 KB, and WhatsApp shows link previews as a square thumbnail —
+    // a wide image gets its ends cropped off, a square one shows the whole logo.
+    images: [{ url: "/brand/og-logo-square.jpg", width: 800, height: 800, alt: "1720" }],
     locale: "en_PK",
     type: "website",
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title: TAGLINE,
     description: SHARE_HOOK,
-    images: ["/brand/og-logo.jpg"],
+    images: ["/brand/og-logo-square.jpg"],
   },
 };
 
