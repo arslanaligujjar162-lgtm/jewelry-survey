@@ -29,12 +29,12 @@ describe("gatewayProvider", () => {
     expect(gatewayProvider.isAvailable()).toBe(false);
   });
 
-  it("becomes available once the flag is flipped", () => {
+  it("stays unavailable with the flag on until the gateway adapter is configured", () => {
     process.env.NEXT_PUBLIC_GATEWAY_ENABLED = "true";
-    expect(gatewayProvider.isAvailable()).toBe(true);
+    expect(gatewayProvider.isAvailable()).toBe(false);
   });
 
-  it("fails a charge with a clear error even when flagged available", async () => {
+  it("fails a charge with a clear error while the adapter isn't implemented", async () => {
     process.env.NEXT_PUBLIC_GATEWAY_ENABLED = "true";
     const result = await gatewayProvider.charge({
       order: { order_number: "1720-TEST", total: 1000, customer_name: "Test", customer_phone: "+923001234567" },

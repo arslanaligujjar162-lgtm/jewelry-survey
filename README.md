@@ -38,7 +38,7 @@ app degrades gracefully (see **Status** above) when Supabase, analytics, or the 
 | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase project — catalog, orders, auth |
 | `SUPABASE_SERVICE_ROLE_KEY` | Server-only key used for checkout writes and the admin dashboard. Never expose client-side. |
 | `NEXT_PUBLIC_SITE_URL` | Canonical URL used in metadata, sitemap, robots.txt and link previews. Falls back to Vercel's production domain when unset |
-| `NEXT_PUBLIC_GATEWAY_ENABLED` | Flip to `true` once a card/JazzCash/Easypaisa merchant account is approved and `src/lib/payments/gateway.ts` is wired up |
+| `NEXT_PUBLIC_GATEWAY_ENABLED` | Flip to `true` only after the NayaPay adapter (`src/lib/payments/nayapay.ts`) is implemented and its credentials are set — it also shows the "pay the advance online" option at checkout |
 | `NEXT_PUBLIC_GA4_ID`, `NEXT_PUBLIC_META_PIXEL_ID` | Analytics — omit to skip loading either script |
 | `RESEND_API_KEY`, `ORDER_ALERT_EMAIL`, `ORDER_ALERT_FROM` | New-order email alerts to the owner via Resend — omit to skip |
 | `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM_NUMBER` | Optional SMS phone verification at checkout. Unset: COD orders go through without a code and are confirmed on WhatsApp |
@@ -61,10 +61,21 @@ photos uploaded from the admin dashboard go to the `product-images` Storage buck
 
 ## Payments
 
-`src/lib/payments/` defines a `PaymentProvider` interface. `cod.ts` is the only live provider — checkout always
-succeeds with `payment_status: "pending"` and settles in cash on delivery. `gateway.ts` is a stub for card /
-JazzCash / Easypaisa: implement `charge()` with the real gateway SDK and flip `NEXT_PUBLIC_GATEWAY_ENABLED=true`
-once a merchant account is approved. No other checkout code needs to change.
+`src/lib/payments/` defines a `PaymentProvider` interface. `cod.ts` is the live provider: checkout succeeds with
+`payment_status: "pending"` and the order settles in cash on delivery (the Rs. 500 advance is confirmed by hand in
+the admin).
+
+`gateway.ts` is the online-advance option, built but switched off. Flow: checkout creates a payment session
+(`createSession`) and saves the order unpaid with the gateway's reference, the customer pays on the gateway's page,
+and the gateway calls `POST /api/payments/webhook`. The webhook verifies the signature on the raw body, checks the
+amount and reference against the order, then marks it paid and confirmed and sends the owner alert (once, even if
+the gateway retries). With no configured adapter the webhook answers 404, so it is inert until set up.
+
+To go live, implement the three functions of the NayaPay adapter in `nayapay.ts` (`isConfigured`, `createSession`,
+`parseWebhook`) from NayaPay's merchant docs, run migration `0017_order_payment_reference.sql`, set the
+credentials, register `https://<domain>/api/payments/webhook` with NayaPay, test in their sandbox, then set
+`NEXT_PUBLIC_GATEWAY_ENABLED=true`. Known gap: stock is reserved when an online order is created, so an abandoned
+payment holds stock until it is cancelled by hand.
 
 ## WhatsApp order confirmations
 

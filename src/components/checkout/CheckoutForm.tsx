@@ -35,6 +35,7 @@ export function CheckoutForm({ otpRequired }: { otpRequired: boolean }) {
   const [otpError, setOtpError] = useState<string | null>(null);
   const [devCode, setDevCode] = useState<string | null>(null);
 
+  const [payOnline, setPayOnline] = useState(false);
   const [placing, setPlacing] = useState(false);
   const [orderError, setOrderError] = useState<string | null>(null);
 
@@ -141,11 +142,19 @@ export function CheckoutForm({ otpRequired }: { otpRequired: boolean }) {
             colour: l.colour ?? null,
           })),
           promoCode: promoStatus?.valid ? promoInput : undefined,
-          paymentMethod: "cod",
+          paymentMethod: payOnline ? "gateway" : "cod",
         }),
       });
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.error ?? "Could not place your order");
+
+      // Gateway orders: keep our copy for when they come back, then go pay.
+      // The purchase events fire from the confirmation flow, not before payment.
+      if (data.redirect_url) {
+        sessionStorage.setItem(`order:${data.order.order_number}`, JSON.stringify(data.order));
+        window.location.assign(data.redirect_url);
+        return;
+      }
 
       trackEvent("purchase", { transaction_id: data.order.order_number, value: data.order.total, currency: "PKR" });
       trackPixelEvent("Purchase", { value: data.order.total, currency: "PKR" });
@@ -333,20 +342,33 @@ export function CheckoutForm({ otpRequired }: { otpRequired: boolean }) {
           </h2>
           <div className="mt-4 space-y-2">
             <label className="flex items-center gap-3 rounded-lg border border-brand-umber bg-brand-butter p-3 font-body text-sm">
-              <input type="radio" name="payment" checked readOnly />
+              <input type="radio" name="payment" checked={!payOnline} onChange={() => setPayOnline(false)} />
               Cash on Delivery
             </label>
+            {process.env.NEXT_PUBLIC_GATEWAY_ENABLED === "true" && (
+              <label className="flex items-center gap-3 rounded-lg border border-brand-umber/20 p-3 font-body text-sm">
+                <input type="radio" name="payment" checked={payOnline} onChange={() => setPayOnline(true)} />
+                Pay the {formatPKR(ADVANCE_AMOUNT)} advance online
+              </label>
+            )}
           </div>
           {!otpRequired && (
             <p className="mt-3 font-body text-sm text-brand-charcoal/70">
               We confirm every order with you on WhatsApp before it&apos;s dispatched.
             </p>
           )}
-          {advancePaymentEnabled() && (
+          {payOnline ? (
             <p className="mt-2 font-body text-sm text-brand-charcoal/70">
-              A {formatPKR(ADVANCE_AMOUNT)} advance ({advanceAccountsText()}) confirms your order — the rest is Cash
-              on Delivery.
+              You&apos;ll pay the {formatPKR(ADVANCE_AMOUNT)} advance securely online, and your order is confirmed
+              automatically — the rest is Cash on Delivery.
             </p>
+          ) : (
+            advancePaymentEnabled() && (
+              <p className="mt-2 font-body text-sm text-brand-charcoal/70">
+                A {formatPKR(ADVANCE_AMOUNT)} advance ({advanceAccountsText()}) confirms your order — the rest is Cash
+                on Delivery.
+              </p>
+            )
           )}
         </section>
       </div>
@@ -403,7 +425,7 @@ export function CheckoutForm({ otpRequired }: { otpRequired: boolean }) {
           disabled={placing || lines.length === 0}
           className="mt-5 flex w-full items-center justify-center rounded-full bg-brand-umber py-3 font-body text-sm font-semibold text-brand-ivory transition hover:bg-brand-umber-dark disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {placing ? "Placing order…" : "Place order — Cash on Delivery"}
+          {placing ? "Placing order…" : payOnline ? "Continue to payment" : "Place order — Cash on Delivery"}
         </button>
       </div>
     </div>
