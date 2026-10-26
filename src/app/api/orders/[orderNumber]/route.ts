@@ -16,6 +16,7 @@ function toPublicOrder(order: Order): Order {
     customer_name: firstName,
     customer_phone: order.customer_phone.replace(/\d(?=\d{3})/g, "•"),
     customer_email: null,
+    payment_reference: null,
     notes: null,
     shipping_address: {
       fullName: firstName,

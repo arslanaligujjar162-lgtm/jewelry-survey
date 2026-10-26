@@ -26,7 +26,21 @@ export function OrderConfirmationClient() {
       // it's the fallback for opening this link on another device.
       const stored = sessionStorage.getItem(`order:${orderNumber}`);
       if (stored) {
-        if (!cancelled) setOrder(JSON.parse(stored));
+        const local: Order = JSON.parse(stored);
+        if (!cancelled) setOrder(local);
+        // A gateway order was saved before the customer paid, so its stored
+        // copy is out of date once they return — take the live status.
+        if (local.payment_method === "gateway") {
+          try {
+            const res = await fetch(`/api/orders/${orderNumber}`);
+            if (res.ok) {
+              const { order: live } = await res.json();
+              if (!cancelled) setOrder({ ...local, payment_status: live.payment_status, status: live.status });
+            }
+          } catch {
+            // keep the stored copy
+          }
+        }
         return;
       }
 
@@ -80,6 +94,8 @@ export function OrderConfirmationClient() {
     );
   }
 
+  const online = order.payment_method === "gateway";
+
   return (
     <div className="container-page py-14 sm:py-20">
       <div className="mx-auto max-w-xl text-center">
@@ -95,7 +111,12 @@ export function OrderConfirmationClient() {
           Order {order.order_number} · placed {formatDate(order.created_at)}
         </p>
         <p className="mt-4 font-body text-sm text-brand-charcoal/80">
-          {advancePaymentEnabled() ? (
+          {online ? (
+            <>
+              {formatPKR(ADVANCE_AMOUNT)} advance paid online, then {formatPKR(remainingOnDelivery(order.total))} in
+              cash when it arrives.
+            </>
+          ) : advancePaymentEnabled() ? (
             <>
               Pay {formatPKR(ADVANCE_AMOUNT)} in advance to confirm, then {formatPKR(remainingOnDelivery(order.total))}{" "}
               in cash when it arrives.
@@ -106,7 +127,20 @@ export function OrderConfirmationClient() {
         </p>
       </div>
 
-      {advancePaymentEnabled() && (
+      {online && (
+        <div className="mx-auto mt-8 max-w-xl rounded-xl border-2 border-brand-umber-dark bg-brand-butter p-6 text-center shadow-retro">
+          <p className="font-display text-2xl font-semibold text-brand-umber-dark">
+            {order.payment_status === "paid" ? "Advance received — your order is confirmed" : "Confirming your payment"}
+          </p>
+          <p className="mt-2 font-body text-sm text-brand-charcoal/80">
+            {order.payment_status === "paid"
+              ? "Thank you. We'll message you on WhatsApp when it's dispatched."
+              : "This usually takes a minute. Refresh this page to check, or message us on WhatsApp if it doesn't update."}
+          </p>
+        </div>
+      )}
+
+      {advancePaymentEnabled() && !online && (
         <div className="mx-auto mt-8 max-w-xl rounded-xl border-2 border-brand-umber-dark bg-brand-butter p-6 text-center shadow-retro">
           <p className="font-body text-[11px] font-bold uppercase tracking-[0.2em] text-brand-umber">
             Step 1 — Send the advance
@@ -125,11 +159,15 @@ export function OrderConfirmationClient() {
         className={`mx-auto max-w-xl rounded-xl border-2 border-brand-umber-dark bg-brand-butter p-6 text-center shadow-retro ${advancePaymentEnabled() ? "mt-4" : "mt-8"}`}
       >
         <p className="font-body text-[11px] font-bold uppercase tracking-[0.2em] text-brand-umber">
-          {advancePaymentEnabled() ? "Step 2 — Confirm on WhatsApp" : "One last step"}
+          {online ? "Need anything?" : advancePaymentEnabled() ? "Step 2 — Confirm on WhatsApp" : "One last step"}
         </p>
-        <p className="mt-2 font-display text-2xl font-semibold text-brand-umber-dark">Confirm your order on WhatsApp</p>
+        <p className="mt-2 font-display text-2xl font-semibold text-brand-umber-dark">
+          {online ? "Message us on WhatsApp" : "Confirm your order on WhatsApp"}
+        </p>
         <p className="mt-2 font-body text-sm text-brand-charcoal/80">
-          {advancePaymentEnabled()
+          {online
+            ? "Your order details are already filled in if you'd like to talk to us about it."
+            : advancePaymentEnabled()
             ? "Send your payment screenshot here so we know to dispatch."
             : "We dispatch as soon as you confirm. Your order details are already filled in — just press send."}
         </p>

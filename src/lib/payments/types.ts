@@ -15,6 +15,42 @@ export interface PaymentChargeResult {
   error?: string;
 }
 
+/** What a hosted gateway hands back after we ask it to start a payment. */
+export interface GatewaySession {
+  redirect_url: string;
+  reference: string;
+}
+
+/** A verified "payment finished" message from the gateway. */
+export interface GatewayEvent {
+  order_number: string;
+  reference: string;
+  /** Amount actually paid, in rupees. */
+  amount: number;
+  status: "paid" | "failed";
+}
+
+/**
+ * The only part that differs between payment gateways. Everything around it
+ * (creating the order, settling it when the gateway calls back) is shared.
+ */
+export interface GatewayAdapter {
+  name: string;
+  /** True only when every credential the gateway needs is present. */
+  isConfigured(): boolean;
+  createSession(input: {
+    order_number: string;
+    amount: number;
+    customer_name: string;
+    customer_phone: string;
+  }): Promise<GatewaySession>;
+  /**
+   * Verify the gateway's signature on the raw request body and parse it.
+   * Returns null for anything that doesn't verify — never throw on bad input.
+   */
+  parseWebhook(rawBody: string, headers: Headers): GatewayEvent | null;
+}
+
 /**
  * Every payment method the storefront supports implements this interface.
  * The checkout flow only ever talks to a PaymentProvider — swapping COD for

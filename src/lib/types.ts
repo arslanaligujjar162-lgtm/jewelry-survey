@@ -78,6 +78,8 @@ export interface Order {
   promo_code: string | null;
   payment_method: "cod" | "gateway";
   payment_status: "pending" | "paid" | "failed";
+  /** Gateway's transaction reference; only set for gateway orders. */
+  payment_reference?: string | null;
   status: OrderStatus;
   otp_verified: boolean;
   notes: string | null;

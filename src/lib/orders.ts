@@ -5,6 +5,8 @@ import { shippingAddressSchema, normalizePkPhone } from "@/lib/validation";
 import { getDeliveryInfo } from "@/lib/serviceable-areas";
 import { validatePromoCode } from "@/lib/promo";
 import { getPaymentProvider } from "@/lib/payments";
+import { advanceChargeAmount } from "@/lib/payments/gateway";
+import type { GatewayEvent } from "@/lib/payments/types";
 import { isOtpRequired, isPhoneOtpVerified } from "@/lib/otp";
 import { notifyNewOrder } from "@/lib/notify";
 import { reportError } from "@/lib/monitoring";
@@ -27,6 +29,8 @@ export interface CheckoutPayload {
 export interface CheckoutResult {
   success: boolean;
   order?: Order;
+  /** Where to send the customer to pay, for gateway orders. */
+  redirect_url?: string;
   error?: string;
 }
 
@@ -141,6 +145,7 @@ export async function createOrder(payload: CheckoutPayload): Promise<CheckoutRes
     promo_code: promoCode,
     payment_method: payload.paymentMethod,
     payment_status: chargeResult.payment_status,
+    payment_reference: chargeResult.reference ?? null,
     status: "pending",
     otp_verified: otpRequired,
     notes: null,
@@ -166,6 +171,9 @@ export async function createOrder(payload: CheckoutPayload): Promise<CheckoutRes
         promo_code: order.promo_code,
         payment_method: order.payment_method,
         payment_status: order.payment_status,
+        // Only gateway orders carry a reference; leaving the column out for
+        // cash-on-delivery keeps those orders independent of the migration.
+        ...(order.payment_reference ? { payment_reference: order.payment_reference } : {}),
         status: order.status,
         otp_verified: order.otp_verified,
       })
@@ -189,9 +197,11 @@ export async function createOrder(payload: CheckoutPayload): Promise<CheckoutRes
     fallbackOrders.set(order.order_number, order);
   }
 
-  await notifyNewOrder(order);
+  // A gateway order isn't a real order until the advance lands, so the owner
+  // is notified when it's settled instead (see settleGatewayPayment).
+  if (order.payment_method !== "gateway") await notifyNewOrder(order);
 
-  return { success: true, order };
+  return { success: true, order, redirect_url: chargeResult.redirect_url };
 }
 
 export async function getOrderByNumber(orderNumber: string): Promise<Order | null> {
@@ -201,4 +211,38 @@ export async function getOrderByNumber(orderNumber: string): Promise<Order | nul
     return (data as Order) ?? null;
   }
   return fallbackOrders.get(orderNumber) ?? null;
+}
+
+export type SettleResult = "settled" | "already_settled" | "not_found" | "mismatch";
+
+/**
+ * Applies a verified gateway message to its order. Safe to call repeatedly:
+ * gateways retry webhooks, and only the first "paid" changes anything.
+ */
+export async function settleGatewayPayment(event: GatewayEvent): Promise<SettleResult> {
+  const order = await getOrderByNumber(event.order_number);
+  if (!order || order.payment_method !== "gateway") return "not_found";
+  if (order.payment_reference && order.payment_reference !== event.reference) return "mismatch";
+  if (event.status === "paid" && event.amount !== advanceChargeAmount(order.total)) return "mismatch";
+  if (order.payment_status === "paid") return "already_settled";
+
+  const payment_status = event.status;
+  const status = event.status === "paid" && order.status === "pending" ? "confirmed" : order.status;
+
+  if (isSupabaseConfigured()) {
+    const supabase = createAdminClient();
+    const { data, error } = await supabase
+      .from("orders")
+      .update({ payment_status, status })
+      .eq("order_number", order.order_number)
+      .neq("payment_status", "paid")
+      .select("id");
+    if (error) throw new Error(error.message);
+    if (!data?.length) return "already_settled";
+  } else {
+    fallbackOrders.set(order.order_number, { ...order, payment_status, status, updated_at: new Date().toISOString() });
+  }
+
+  if (event.status === "paid") await notifyNewOrder({ ...order, payment_status, status });
+  return "settled";
 }
