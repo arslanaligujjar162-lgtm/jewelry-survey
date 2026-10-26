@@ -16,7 +16,6 @@ import { WishlistButton } from "@/components/product/WishlistButton";
 import { RecentlyViewedTracker } from "@/components/product/RecentlyViewedTracker";
 import { RecentlyViewedSection } from "@/components/product/RecentlyViewedSection";
 import { ReviewsSection } from "@/components/product/ReviewsSection";
-import { StickyMobileCTA } from "@/components/layout/StickyMobileCTA";
 import { BreadcrumbSchema } from "@/components/seo/BreadcrumbSchema";
 import { RevealOnScroll } from "@/components/motion/RevealOnScroll";
 import { getProductTagline } from "@/data/product-taglines";
@@ -209,7 +208,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <RecentlyViewedSection excludeProductId={product.id} />
       </div>
 
-      <StickyMobileCTA label={`Add to cart — ${formatPKR(product.price)}`} href="#add-to-cart" />
       <div className="h-16 sm:hidden" aria-hidden="true" />
     </div>
   );

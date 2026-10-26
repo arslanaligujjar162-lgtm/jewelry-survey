@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
 import { useSelectedColour } from "@/components/product/SelectedColour";
 import type { Product } from "@/lib/types";
 import { trackEvent, trackPixelEvent } from "@/lib/analytics";
+import { formatPKR } from "@/lib/format";
 
 // Whole sizes only — half sizes (e.g. 6.5) aren't stocked.
 function parseRingSizes(range: string): string[] {
@@ -29,6 +31,8 @@ export function AddToCartForm({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const colourOptions = product.colour_options ?? [];
   const selection = useSelectedColour();
   const colour = selection?.colour ?? null;
@@ -78,8 +82,28 @@ export function AddToCartForm({ product }: { product: Product }) {
     return true;
   }
 
+  // Mobile-only bar pinned to the bottom of the screen. It runs the same add
+  // logic as the buttons below; if validation blocks it (e.g. no colour chosen),
+  // it scrolls the form into view so the message is actually seen.
+  const stickyBar = (
+    <div className="fixed inset-x-0 bottom-0 z-30 border-t border-brand-umber/15 bg-brand-ivory p-3 shadow-[0_-2px_12px_rgba(0,0,0,0.06)] sm:hidden">
+      <button
+        type="button"
+        disabled={outOfStock}
+        onClick={() => {
+          if (handleAddToCart()) openDrawer();
+          else document.getElementById("add-to-cart")?.scrollIntoView({ behavior: "smooth", block: "center" });
+        }}
+        className="flex w-full items-center justify-center rounded-full bg-brand-umber py-3 font-body text-sm font-semibold text-brand-ivory disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {outOfStock ? "Out of stock" : added ? "Added ✓" : `Add to cart — ${formatPKR(product.price * quantity)}`}
+      </button>
+    </div>
+  );
+
   return (
     <div className="mt-6" id="add-to-cart">
+      {mounted && createPortal(stickyBar, document.body)}
       {colourOptions.length > 0 && (
         <fieldset className="mb-5">
           <legend className="font-body text-sm font-medium text-brand-charcoal">
