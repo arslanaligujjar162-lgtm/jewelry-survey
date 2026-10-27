@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from "vitest";
-import { customerConfirmLink, orderSummaryText, ownerConfirmLink } from "./whatsapp";
+import { orderSummaryText, ownerConfirmLink } from "./whatsapp";
 import { ADVANCE_ACCOUNTS } from "./advance-payment";
 import type { Order } from "./types";
 
@@ -49,12 +49,6 @@ describe("orderSummaryText", () => {
 });
 
 describe("WhatsApp links", () => {
-  it("customer link goes to the store number with the order filled in", () => {
-    const link = customerConfirmLink(base);
-    expect(link.startsWith("https://wa.me/923356389333?")).toBe(true);
-    expect(decodedText(link)).toContain("1720-ABC1234");
-  });
-
   it("owner link goes to the customer's number as digits only", () => {
     const link = ownerConfirmLink(base);
     expect(link.startsWith("https://wa.me/923001234567?")).toBe(true);
@@ -76,9 +70,6 @@ describe("advance payment wording", () => {
 
     const summary = orderSummaryText(base);
     expect(summary).toContain("Rs. 500 advance + Rs. 6,250 Cash on Delivery");
-
-    const customerText = decodedText(customerConfirmLink(base));
-    expect(customerText).toContain("I'll send the Rs. 500 advance to NayaPay: 0310-4594770 (Asim Zaheer)");
 
     const ownerText = decodedText(ownerConfirmLink(base));
     expect(ownerText).toContain("Please send Rs. 500 advance to NayaPay: 0310-4594770 (Asim Zaheer)");
