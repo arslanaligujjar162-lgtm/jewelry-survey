@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getOrder } from "@/lib/admin/queries";
-import { updateOrderStatusAction, updatePaymentStatusAction } from "@/lib/admin/actions";
+import { updateOrderStatusAction, updatePaymentStatusAction, deleteOrderAction } from "@/lib/admin/actions";
 import { StatusUpdateForm } from "@/components/admin/StatusUpdateForm";
+import { DeleteOrderButton } from "@/components/admin/DeleteOrderButton";
 import { formatPKR, formatDate } from "@/lib/format";
 import { ownerConfirmLink } from "@/lib/whatsapp";
 import { ADVANCE_AMOUNT, advancePaymentEnabled, remainingOnDelivery } from "@/lib/advance-payment";
@@ -23,7 +24,12 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
 
       <div className="mt-3 flex flex-wrap items-center justify-between gap-4">
         <h1 className="font-display text-2xl font-semibold text-brand-umber-dark">{order.order_number}</h1>
-        <StatusUpdateForm action={updateOrderStatusAction.bind(null, order.id)} currentStatus={order.status} options={STATUSES} />
+        <div className="flex items-center gap-2">
+          <StatusUpdateForm action={updateOrderStatusAction.bind(null, order.id)} currentStatus={order.status} options={STATUSES} />
+          {order.status === "cancelled" && (
+            <DeleteOrderButton action={deleteOrderAction.bind(null, order.id)} redirectTo="/admin/orders" />
+          )}
+        </div>
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">

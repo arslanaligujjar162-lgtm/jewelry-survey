@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { listOrders } from "@/lib/admin/queries";
-import { updateOrderStatusAction } from "@/lib/admin/actions";
+import { updateOrderStatusAction, deleteOrderAction } from "@/lib/admin/actions";
 import { StatusUpdateForm } from "@/components/admin/StatusUpdateForm";
+import { DeleteOrderButton } from "@/components/admin/DeleteOrderButton";
 import { formatPKR, formatDate } from "@/lib/format";
 import type { OrderStatus } from "@/lib/types";
 
@@ -32,6 +33,7 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
               <th className="px-4 py-3 font-semibold text-brand-umber-dark">Total</th>
               <th className="px-4 py-3 font-semibold text-brand-umber-dark">Placed</th>
               <th className="px-4 py-3 font-semibold text-brand-umber-dark">Status</th>
+              <th className="px-4 py-3" />
             </tr>
           </thead>
           <tbody className="divide-y divide-brand-umber/10">
@@ -56,11 +58,16 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
                     options={STATUSES}
                   />
                 </td>
+                <td className="px-4 py-3">
+                  {order.status === "cancelled" && (
+                    <DeleteOrderButton action={deleteOrderAction.bind(null, order.id)} />
+                  )}
+                </td>
               </tr>
             ))}
             {orders.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-brand-charcoal/50">
+                <td colSpan={6} className="px-4 py-8 text-center text-brand-charcoal/50">
                   No orders yet.
                 </td>
               </tr>

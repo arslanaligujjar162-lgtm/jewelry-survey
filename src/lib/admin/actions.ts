@@ -37,6 +37,15 @@ export async function updatePaymentStatusAction(orderId: string, formData: FormD
   revalidatePath(`/admin/orders/${orderId}`);
 }
 
+/** Only ever called for a cancelled order — kept out of the status dropdown's reach. */
+export async function deleteOrderAction(orderId: string) {
+  await requireAdmin();
+  const admin = createAdminClient();
+  const { error } = await admin.from("orders").delete().eq("id", orderId);
+  if (error) throw new Error(error.message);
+  revalidatePath("/admin/orders");
+}
+
 export async function updateReturnStatusAction(returnId: string, formData: FormData) {
   await requireAdmin();
   const status = formData.get("status") as string;
