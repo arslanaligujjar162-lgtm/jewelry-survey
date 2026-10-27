@@ -17,9 +17,9 @@ export interface AdvanceAccount {
   title: string; // account holder's name, so customers can verify before sending
 }
 
-export const ADVANCE_ACCOUNTS: AdvanceAccount[] = [
-  { method: "NayaPay", number: "0310-4594770", title: "Asim Zaheer" },
-];
+// Empty = no advance: checkout, messages and admin all show plain Cash on
+// Delivery. Add an account here to switch the advance back on everywhere.
+export const ADVANCE_ACCOUNTS: AdvanceAccount[] = [];
 
 export function advancePaymentEnabled(): boolean {
   return ADVANCE_ACCOUNTS.length > 0;

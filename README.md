@@ -62,8 +62,8 @@ photos uploaded from the admin dashboard go to the `product-images` Storage buck
 ## Payments
 
 `src/lib/payments/` defines a `PaymentProvider` interface. `cod.ts` is the live provider: checkout succeeds with
-`payment_status: "pending"` and the order settles in cash on delivery (the Rs. 500 advance is confirmed by hand in
-the admin).
+`payment_status: "pending"` and the order settles in cash on delivery (the optional Rs. 500 advance is currently off — see
+`src/lib/advance-payment.ts`).
 
 `gateway.ts` is the online-advance option, built but switched off. Flow: checkout creates a payment session
 (`createSession`) and saves the order unpaid with the gateway's reference, the customer pays on the gateway's page,
