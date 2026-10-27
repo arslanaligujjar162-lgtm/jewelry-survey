@@ -2,9 +2,9 @@ import { describe, it, expect } from "vitest";
 import { ADVANCE_AMOUNT, advanceAccountsText, advancePaymentEnabled, remainingOnDelivery } from "./advance-payment";
 
 describe("advance-payment", () => {
-  it("is enabled now that a real account is configured", () => {
-    expect(advancePaymentEnabled()).toBe(true);
-    expect(advanceAccountsText()).toBe("NayaPay: 0310-4594770 (Asim Zaheer)");
+  it("is off by default, so checkout is plain Cash on Delivery", () => {
+    expect(advancePaymentEnabled()).toBe(false);
+    expect(advanceAccountsText()).toBe("");
   });
 
   it("never lets the remaining balance go negative", () => {

@@ -45,8 +45,8 @@ export default function TermsPage() {
           <section>
             <h2 className="font-body text-base font-semibold text-brand-umber-dark">4. Payment</h2>
             <p className="mt-2">
-              Cash on Delivery is available in our serviceable areas. A small advance payment confirms each
-              order, and the balance is paid in cash on delivery.
+              Cash on Delivery is available in our serviceable areas. You pay the full amount in cash to the
+              courier when your order arrives.
             </p>
           </section>
           <section>

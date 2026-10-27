@@ -71,11 +71,7 @@ const FAQ_SECTIONS: { category: string; items: { q: string; a: React.ReactNode }
     items: [
       {
         q: "How does Cash on Delivery work?",
-        a: "Place your order online, verify it with the one-time code sent to your phone, and pay the courier in cash when your order arrives. A small advance confirms your order; the rest is paid on delivery.",
-      },
-      {
-        q: "How do I pay the advance?",
-        a: "After you place your order, send the advance to the account shown at checkout and share the screenshot with us on WhatsApp. We confirm your order once it arrives. Cash on Delivery is available across Pakistan.",
+        a: "Place your order online, verify it with the one-time code sent to your phone, and pay the courier in cash when your order arrives. No advance payment needed.",
       },
     ],
   },
