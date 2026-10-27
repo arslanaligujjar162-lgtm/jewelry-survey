@@ -19,10 +19,25 @@ export async function updateOrderStatusAction(orderId: string, formData: FormDat
   await requireAdmin();
   const status = formData.get("status") as OrderStatus;
   const admin = createAdminClient();
+
+  // Stock is reserved (decremented) the moment an order is placed, so cancelling
+  // one needs to give it back — but only the first time it's cancelled, so
+  // toggling the dropdown back and forth can't restock the same order twice.
+  const { data: existing } = await admin.from("orders").select("status, items").eq("id", orderId).single();
+  if (status === "cancelled" && existing && existing.status !== "cancelled") {
+    for (const item of existing.items as { product_id: string; quantity: number }[]) {
+      await admin.rpc("increment_stock", { p_product_id: item.product_id, p_quantity: item.quantity }).then(
+        () => undefined,
+        () => undefined
+      );
+    }
+  }
+
   const { error } = await admin.from("orders").update({ status }).eq("id", orderId);
   if (error) throw new Error(error.message);
   revalidatePath("/admin/orders");
   revalidatePath(`/admin/orders/${orderId}`);
+  revalidatePath("/", "layout");
 }
 
 /** Tracks whether the Rs 500 advance has actually been received — checked manually
