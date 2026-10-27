@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import type { Order } from "@/lib/types";
 import { formatPKR, formatDate } from "@/lib/format";
 import { useCart } from "@/lib/cart-context";
-import { customerConfirmLink } from "@/lib/whatsapp";
+import { whatsappLink } from "@/lib/brand";
 import { ADVANCE_AMOUNT, advanceAccountsText, advancePaymentEnabled, remainingOnDelivery } from "@/lib/advance-payment";
 
 export function OrderConfirmationClient() {
@@ -156,33 +156,29 @@ export function OrderConfirmationClient() {
       )}
 
       <div
-        className={`mx-auto max-w-xl rounded-xl border-2 border-brand-umber-dark bg-brand-butter p-6 text-center shadow-retro ${advancePaymentEnabled() ? "mt-4" : "mt-8"}`}
+        className={`mx-auto max-w-xl rounded-xl border-2 border-brand-umber-dark bg-brand-butter p-6 text-center shadow-retro ${online || advancePaymentEnabled() ? "mt-4" : "mt-8"}`}
       >
-        <p className="font-body text-[11px] font-bold uppercase tracking-[0.2em] text-brand-umber">
-          {online ? "Need anything?" : advancePaymentEnabled() ? "Step 2 — Confirm on WhatsApp" : "One last step"}
-        </p>
+        <p className="font-body text-[11px] font-bold uppercase tracking-[0.2em] text-brand-umber">What happens next</p>
         <p className="mt-2 font-display text-2xl font-semibold text-brand-umber-dark">
-          {online ? "Message us on WhatsApp" : "Confirm your order on WhatsApp"}
+          We&apos;ll confirm your order on WhatsApp
         </p>
         <p className="mt-2 font-body text-sm text-brand-charcoal/80">
-          {online
-            ? "Your order details are already filled in if you'd like to talk to us about it."
-            : advancePaymentEnabled()
-            ? "Send your payment screenshot here so we know to dispatch."
-            : "We dispatch as soon as you confirm. Your order details are already filled in — just press send."}
+          Our team will message you{order.customer_phone && !order.customer_phone.includes("•") ? ` on ${order.customer_phone}` : ""}{" "}
+          before we dispatch it. There&apos;s nothing more you need to do.
         </p>
+      </div>
+
+      <p className="mx-auto mt-4 max-w-xl text-center font-body text-sm text-brand-charcoal/70">
+        Questions about your order?{" "}
         <a
-          href={customerConfirmLink(order)}
+          href={whatsappLink(`Hi 1720! I have a question about order ${order.order_number}.`)}
           target="_blank"
           rel="noopener noreferrer"
-          className="shadow-retro-sm mt-5 inline-flex items-center justify-center gap-2 rounded-full bg-brand-umber px-7 py-3.5 font-body text-base font-bold text-brand-ivory transition hover:-translate-y-0.5 hover:bg-brand-umber-dark hover:shadow-[5px_5px_0_0_#482a24]"
+          className="text-brand-umber underline"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.5-.3z" />
-          </svg>
-          Confirm on WhatsApp
+          Message us on WhatsApp
         </a>
-      </div>
+      </p>
 
       <div className="mx-auto mt-10 max-w-xl rounded-xl border border-brand-umber/10 p-6">
         <h2 className="font-body text-sm font-semibold uppercase tracking-wide text-brand-umber-dark">Order details</h2>
