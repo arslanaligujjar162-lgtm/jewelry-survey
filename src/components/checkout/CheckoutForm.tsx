@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { lineKey, useCart } from "@/lib/cart-context";
 import { formatPKR } from "@/lib/format";
@@ -14,6 +14,21 @@ type FieldErrors = Partial<Record<"fullName" | "phone" | "addressLine1" | "city"
 export function CheckoutForm({ otpRequired }: { otpRequired: boolean }) {
   const { lines, subtotal } = useCart();
   const router = useRouter();
+
+  // Fires once per checkout visit, not on every cart edit — a line someone
+  // removes a second later shouldn't un-fire the event.
+  const checkoutTracked = useRef(false);
+  useEffect(() => {
+    if (checkoutTracked.current || lines.length === 0) return;
+    checkoutTracked.current = true;
+    trackPixelEvent("InitiateCheckout", {
+      content_ids: lines.map((l) => l.sku),
+      num_items: lines.reduce((sum, l) => sum + l.quantity, 0),
+      value: subtotal,
+      currency: "PKR",
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- fire once; re-running on every subtotal/line change would re-fire the event
+  }, [lines]);
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
