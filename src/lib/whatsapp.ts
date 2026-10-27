@@ -1,6 +1,5 @@
 import type { Order } from "@/lib/types";
 import { formatPKR } from "@/lib/format";
-import { CONTACT } from "@/lib/brand";
 import { ADVANCE_AMOUNT, advanceAccountsText, advancePaymentEnabled, remainingOnDelivery } from "@/lib/advance-payment";
 
 function waLink(numberDigits: string, text: string) {
@@ -33,17 +32,6 @@ export function orderSummaryText(order: Order): string {
     `${order.customer_name} · ${order.customer_phone}`,
     addressLine(order),
   ].join("\n");
-}
-
-/** Customer → store: sent from the confirmation page, so every order opens a chat with the store. */
-export function customerConfirmLink(order: Order): string {
-  const advanceLine = advancePaymentEnabled()
-    ? `\n\nI'll send the ${formatPKR(ADVANCE_AMOUNT)} advance to ${advanceAccountsText()} and share the screenshot here.`
-    : "";
-  return waLink(
-    CONTACT.whatsappNumber,
-    `Hi 1720! I just placed an order and would like to confirm it.\n\n${orderSummaryText(order)}${advanceLine}`
-  );
 }
 
 /** Store → customer: one tap from the admin order page to confirm before dispatch. */
