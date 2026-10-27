@@ -26,6 +26,22 @@ function parseRingSizes(range: string): string[] {
 export function AddToCartForm({ product }: { product: Product }) {
   const { addLine, lines, openDrawer } = useCart();
   const router = useRouter();
+
+  // Fires once per product-page view — the signal catalog ads and
+  // retargeting ("people who viewed this") are built on. content_ids
+  // matches the sku used as the catalog feed's id (or item_group_id for
+  // products sold in multiple colours), so Meta can tie the view back to
+  // the right catalog item.
+  useEffect(() => {
+    trackPixelEvent("ViewContent", {
+      content_ids: [product.sku],
+      content_type: "product",
+      value: product.price,
+      currency: "PKR",
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- fire once per mount, not on every product field change
+  }, [product.sku]);
+
   const ringSizes = product.ring_size_range ? parseRingSizes(product.ring_size_range) : [];
   const [ringSize, setRingSize] = useState(ringSizes[0] ?? "");
   const [quantity, setQuantity] = useState(1);
