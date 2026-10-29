@@ -7,6 +7,7 @@ import { formatPKR } from "@/lib/format";
 import { PK_PHONE_REGEX, PAKISTAN_PROVINCES } from "@/lib/validation";
 import { getDeliveryInfo } from "@/lib/serviceable-areas";
 import { trackEvent, trackPixelEvent } from "@/lib/analytics";
+import type { OrderItem } from "@/lib/types";
 import { ADVANCE_AMOUNT, advanceAccountsText, advancePaymentEnabled, remainingOnDelivery } from "@/lib/advance-payment";
 
 type FieldErrors = Partial<Record<"fullName" | "phone" | "addressLine1" | "city" | "province", string>>;
@@ -172,7 +173,18 @@ export function CheckoutForm({ otpRequired }: { otpRequired: boolean }) {
       }
 
       trackEvent("purchase", { transaction_id: data.order.order_number, value: data.order.total, currency: "PKR" });
-      trackPixelEvent("Purchase", { value: data.order.total, currency: "PKR" });
+      trackPixelEvent("Purchase", {
+        value: data.order.total,
+        currency: "PKR",
+        content_type: "product",
+        content_ids: data.order.items.map((item: OrderItem) => item.sku),
+        contents: data.order.items.map((item: OrderItem) => ({
+          id: item.sku,
+          quantity: item.quantity,
+          item_price: item.price,
+        })),
+        num_items: data.order.items.reduce((sum: number, item: OrderItem) => sum + item.quantity, 0),
+      });
 
       sessionStorage.setItem(`order:${data.order.order_number}`, JSON.stringify(data.order));
       // Cart is cleared by the confirmation page once it has the order in
