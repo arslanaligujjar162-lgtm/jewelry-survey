@@ -17,10 +17,15 @@ const CSP = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://*.supabase.co https://www.facebook.com",
   "font-src 'self' data:",
-  "connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://www.googletagmanager.com https://connect.facebook.net",
+  "connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://www.googletagmanager.com https://www.facebook.com https://connect.facebook.net",
+  // The Pixel falls back to a hidden iframe + form POST to facebook.com/tr for
+  // cookie-matching on richer events (AddToCart, Purchase) when third-party
+  // cookies are restricted — PageView's simpler <img> beacon doesn't need this,
+  // which is why only PageView fired before frame-src/form-action allowed it.
+  "frame-src https://www.facebook.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",
-  "form-action 'self'",
+  "form-action 'self' https://www.facebook.com",
 ].join("; ");
 
 const securityHeaders = [
