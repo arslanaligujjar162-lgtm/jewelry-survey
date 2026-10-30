@@ -4,7 +4,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import type { ColourOption, OrderStatus } from "@/lib/types";
+import type { ColourOption, Order, OrderStatus } from "@/lib/types";
+import { bookPostExOrder, cancelPostExOrder, getPostExPaymentStatus, trackPostExOrder } from "@/lib/postex";
 
 async function requireAdmin() {
   const supabase = createClient();
@@ -59,6 +60,75 @@ export async function deleteOrderAction(orderId: string) {
   const { error } = await admin.from("orders").delete().eq("id", orderId);
   if (error) throw new Error(error.message);
   revalidatePath("/admin/orders");
+}
+
+/** Books the order as a COD shipment with PostEx and stores the tracking number. */
+export async function bookPostExOrderAction(orderId: string): Promise<{ error?: string }> {
+  await requireAdmin();
+  const admin = createAdminClient();
+  const { data: order } = await admin.from("orders").select("*").eq("id", orderId).single();
+  if (!order) return { error: "Order not found." };
+
+  const result = await bookPostExOrder(order as Order);
+  if (!result.success) return { error: result.error };
+
+  const { error } = await admin
+    .from("orders")
+    .update({ postex_tracking_number: result.trackingNumber, postex_status: "Booked" })
+    .eq("id", orderId);
+  if (error) return { error: error.message };
+
+  revalidatePath("/admin/orders");
+  revalidatePath(`/admin/orders/${orderId}`);
+  return {};
+}
+
+export async function refreshPostExStatusAction(orderId: string): Promise<{ error?: string }> {
+  await requireAdmin();
+  const admin = createAdminClient();
+  const { data: order } = await admin.from("orders").select("postex_tracking_number").eq("id", orderId).single();
+  if (!order?.postex_tracking_number) return { error: "This order hasn't been booked with PostEx yet." };
+
+  const result = await trackPostExOrder(order.postex_tracking_number);
+  if (!result.success) return { error: result.error };
+
+  const { error } = await admin.from("orders").update({ postex_status: result.status }).eq("id", orderId);
+  if (error) return { error: error.message };
+
+  revalidatePath("/admin/orders");
+  revalidatePath(`/admin/orders/${orderId}`);
+  return {};
+}
+
+export async function cancelPostExBookingAction(orderId: string): Promise<{ error?: string }> {
+  await requireAdmin();
+  const admin = createAdminClient();
+  const { data: order } = await admin.from("orders").select("postex_tracking_number").eq("id", orderId).single();
+  if (!order?.postex_tracking_number) return { error: "This order hasn't been booked with PostEx yet." };
+
+  const result = await cancelPostExOrder(order.postex_tracking_number);
+  if (!result.success) return { error: result.error };
+
+  const { error } = await admin.from("orders").update({ postex_status: "Cancelled" }).eq("id", orderId);
+  if (error) return { error: error.message };
+
+  revalidatePath("/admin/orders");
+  revalidatePath(`/admin/orders/${orderId}`);
+  return {};
+}
+
+/** Checked on demand rather than stored — this is purely informational for the owner. */
+export async function checkPostExPaymentStatusAction(
+  orderId: string
+): Promise<{ error?: string; settled?: boolean; settlementDate?: string | null }> {
+  await requireAdmin();
+  const admin = createAdminClient();
+  const { data: order } = await admin.from("orders").select("postex_tracking_number").eq("id", orderId).single();
+  if (!order?.postex_tracking_number) return { error: "This order hasn't been booked with PostEx yet." };
+
+  const result = await getPostExPaymentStatus(order.postex_tracking_number);
+  if (!result.success) return { error: result.error };
+  return { settled: result.settled, settlementDate: result.settlementDate };
 }
 
 export async function updateReturnStatusAction(returnId: string, formData: FormData) {

@@ -4,6 +4,7 @@ import { getOrder } from "@/lib/admin/queries";
 import { updateOrderStatusAction, updatePaymentStatusAction, deleteOrderAction } from "@/lib/admin/actions";
 import { StatusUpdateForm } from "@/components/admin/StatusUpdateForm";
 import { DeleteOrderButton } from "@/components/admin/DeleteOrderButton";
+import { PostExPanel } from "@/components/admin/PostExPanel";
 import { formatPKR, formatDate } from "@/lib/format";
 import { ownerConfirmLink } from "@/lib/whatsapp";
 import { ADVANCE_AMOUNT, advancePaymentEnabled, remainingOnDelivery } from "@/lib/advance-payment";
@@ -86,6 +87,8 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
               {order.shipping_address.city}, {order.shipping_address.province} {order.shipping_address.postalCode}
             </p>
           </section>
+
+          <PostExPanel orderId={order.id} trackingNumber={order.postex_tracking_number} status={order.postex_status} />
         </div>
 
         <section className="h-fit rounded-xl border border-brand-umber/10 bg-brand-ivory p-5 font-body text-sm">
