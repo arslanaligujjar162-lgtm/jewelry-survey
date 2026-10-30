@@ -42,6 +42,7 @@ app degrades gracefully (see **Status** above) when Supabase, analytics, or the 
 | `NEXT_PUBLIC_GA4_ID`, `NEXT_PUBLIC_META_PIXEL_ID` | Analytics — omit to skip loading either script |
 | `RESEND_API_KEY`, `ORDER_ALERT_EMAIL`, `ORDER_ALERT_FROM` | New-order email alerts to the owner via Resend — omit to skip |
 | `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM_NUMBER` | Optional SMS phone verification at checkout. Unset: COD orders go through without a code and are confirmed on WhatsApp |
+| `POSTEX_API_TOKEN` | PostEx courier integration (`src/lib/postex.ts`) — booking, tracking and COD payout status from Admin → Orders. Unset: the "Book with PostEx" panel shows a config error instead |
 
 ## Supabase setup
 

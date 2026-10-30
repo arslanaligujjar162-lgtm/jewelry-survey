@@ -80,6 +80,10 @@ export interface Order {
   payment_status: "pending" | "paid" | "failed";
   /** Gateway's transaction reference; only set for gateway orders. */
   payment_reference?: string | null;
+  /** PostEx's tracking number once the order's been booked for delivery. */
+  postex_tracking_number?: string | null;
+  /** PostEx's last-known delivery status, e.g. "Booked", "Out For Delivery". */
+  postex_status?: string | null;
   status: OrderStatus;
   otp_verified: boolean;
   notes: string | null;
