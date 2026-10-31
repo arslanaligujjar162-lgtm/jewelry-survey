@@ -79,8 +79,8 @@ export const CONTACT: {
   email: null,
   whatsappNumber: "923356389333",
   address: null,
-  instagram: null,
-  facebook: null,
+  instagram: "https://instagram.com/7teen2wenty",
+  facebook: "https://www.facebook.com/share/1EVMqxjfhd/",
 };
 
 export function whatsappLink(message?: string) {
