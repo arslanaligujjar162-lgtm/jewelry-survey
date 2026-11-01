@@ -1,5 +1,5 @@
 import { createAdminClient } from "@/lib/supabase/admin";
-import type { Category, Order, OrderStatus, Product, ReturnRequest } from "@/lib/types";
+import type { AdOrderLogEntry, Category, Order, OrderStatus, Product, ReturnRequest } from "@/lib/types";
 import type { Review } from "@/lib/reviews";
 
 export async function listOrders(status?: OrderStatus): Promise<Order[]> {
@@ -45,6 +45,24 @@ export async function listReturnRequests(): Promise<ReturnRequest[]> {
   const { data, error } = await admin.from("return_requests").select("*").order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
   return (data ?? []) as ReturnRequest[];
+}
+
+export async function countAdOrderLogEntries(): Promise<number> {
+  const admin = createAdminClient();
+  const { count, error } = await admin.from("ad_order_log").select("*", { count: "exact", head: true });
+  if (error) throw new Error(error.message);
+  return count ?? 0;
+}
+
+export async function listAdOrderLog(): Promise<AdOrderLogEntry[]> {
+  const admin = createAdminClient();
+  const { data, error } = await admin
+    .from("ad_order_log")
+    .select("*")
+    .order("order_date", { ascending: false })
+    .order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  return (data ?? []) as AdOrderLogEntry[];
 }
 
 export interface ReviewWithProduct extends Review {

@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import type { ColourOption, Order, OrderStatus } from "@/lib/types";
+import type { AdOrderLogSource, AdOrderLogStatus, ColourOption, Order, OrderStatus } from "@/lib/types";
 import { bookPostExOrder, cancelPostExOrder, getPostExPaymentStatus, trackPostExOrder } from "@/lib/postex";
 
 async function requireAdmin() {
@@ -197,4 +197,60 @@ export async function updateReviewStatusAction(reviewId: string, formData: FormD
   const { error } = await admin.from("reviews").update({ status }).eq("id", reviewId);
   if (error) throw new Error(error.message);
   revalidatePath("/admin/reviews");
+}
+
+// --- ad_order_log ------------------------------------------------------------
+
+export interface AdOrderLogFormValues {
+  order_date: string;
+  source: AdOrderLogSource;
+  ad_name: string | null;
+  product_name: string;
+  revenue: number;
+  status: AdOrderLogStatus;
+  cash_collected: number | null;
+  dispatched_at: string | null;
+  resolved_at: string | null;
+  notes: string | null;
+}
+
+export async function createAdOrderLogEntry(values: AdOrderLogFormValues) {
+  await requireAdmin();
+  const admin = createAdminClient();
+  const { error } = await admin.from("ad_order_log").insert(values);
+  if (error) throw new Error(error.message);
+  revalidatePath("/admin/order-log");
+  revalidatePath("/admin/pricing");
+}
+
+export async function updateAdOrderLogStatusAction(entryId: string, formData: FormData) {
+  await requireAdmin();
+  const status = formData.get("status") as AdOrderLogStatus;
+  const admin = createAdminClient();
+  const { error } = await admin.from("ad_order_log").update({ status }).eq("id", entryId);
+  if (error) throw new Error(error.message);
+  revalidatePath("/admin/order-log");
+  revalidatePath("/admin/pricing");
+}
+
+export async function updateAdOrderLogCashCollectedAction(
+  entryId: string,
+  cashCollected: number | null,
+): Promise<{ error?: string }> {
+  await requireAdmin();
+  const admin = createAdminClient();
+  const { error } = await admin.from("ad_order_log").update({ cash_collected: cashCollected }).eq("id", entryId);
+  if (error) return { error: error.message };
+  revalidatePath("/admin/order-log");
+  revalidatePath("/admin/pricing");
+  return {};
+}
+
+export async function deleteAdOrderLogEntryAction(entryId: string) {
+  await requireAdmin();
+  const admin = createAdminClient();
+  const { error } = await admin.from("ad_order_log").delete().eq("id", entryId);
+  if (error) throw new Error(error.message);
+  revalidatePath("/admin/order-log");
+  revalidatePath("/admin/pricing");
 }
