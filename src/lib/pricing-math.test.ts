@@ -183,13 +183,23 @@ describe("calculateAdPaymentTaxRate", () => {
 describe("countKnownSourcingCosts", () => {
   const products: CatalogProductOption[] = [
     { id: "1", name: "Mermaid Tear", priceRs: 3000, image: "/products/mermaid-tear-1.jpg" },
-    { id: "2", name: "Black Olive", priceRs: 3000, image: "/products/black-olive-hoops-1.jpg" },
+    { id: "2", name: "Some New SKU", priceRs: 3000, image: "/products/some-new-sku-1.jpg" },
     { id: "3", name: "Moon Drop", priceRs: 2500, image: "/products/moon-drop-1.jpg" },
   ];
 
   it("counts only products with a recorded sourcing default", () => {
-    // Mermaid Tear and Moon Drop are in SOURCING_DEFAULTS; Black Olive is not.
+    // Mermaid Tear and Moon Drop are in SOURCING_DEFAULTS; Some New SKU is not.
     expect(countKnownSourcingCosts(products)).toEqual({ known: 2, total: 3 });
+  });
+
+  it("covers all four founder-confirmed renames (Black/Green Olive, Confetti Studs, Eclipse Drop)", () => {
+    const renamed: CatalogProductOption[] = [
+      { id: "4", name: "Black Olive", priceRs: 3000, image: "x" },
+      { id: "5", name: "Green Olive", priceRs: 3000, image: "x" },
+      { id: "6", name: "Confetti Studs", priceRs: 3000, image: "x" },
+      { id: "7", name: "Eclipse Drop", priceRs: 2500, image: "x" },
+    ];
+    expect(countKnownSourcingCosts(renamed)).toEqual({ known: 4, total: 4 });
   });
 });
 
