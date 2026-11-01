@@ -27,8 +27,8 @@ export default async function AdminOrderLogPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-display text-2xl font-semibold text-brand-umber-dark">Order log</h1>
-        <p className="mt-1 font-body text-sm text-brand-charcoal/60">
+        <h1 className="font-display text-3xl font-semibold text-brand-umber-dark">Order log</h1>
+        <p className="mt-1 font-body text-base text-brand-charcoal/60">
           One row per order, however it came in. This is where your real RTO rate (r) and cancellation rate (k) come
           from — not a guess. See the{" "}
           <Link href="/admin/pricing" className="text-brand-umber underline">
@@ -55,7 +55,7 @@ export default async function AdminOrderLogPage() {
       </div>
 
       {summary.totalPlaced > 0 && (
-        <p className="font-body text-xs text-brand-charcoal/50">
+        <p className="font-body text-sm text-brand-charcoal/50">
           Carry the cancellation rate (k) and RTO rate (r) above into the Unit economics calculator on the{" "}
           <Link href="/admin/pricing" className="text-brand-umber underline">
             Pricing page
@@ -63,7 +63,7 @@ export default async function AdminOrderLogPage() {
           to replace its guessed rates with your real ones.
         </p>
       )}
-      <p className="font-body text-xs text-brand-charcoal/50">
+      <p className="font-body text-sm text-brand-charcoal/50">
         &quot;Cash collected&quot; means what the courier has actually remitted to you, not the order&apos;s face
         value — expect it to lag delivery by days or weeks, so it&apos;s normal for a freshly delivered order to
         show Rs 0 here until the next remittance.
@@ -72,7 +72,7 @@ export default async function AdminOrderLogPage() {
       <AdOrderLogForm />
 
       <div className="overflow-x-auto rounded-xl border border-brand-umber/10 bg-brand-ivory">
-        <table className="w-full text-left font-body text-sm">
+        <table className="w-full text-left font-body text-base">
           <thead className="bg-brand-sky/60">
             <tr>
               <th className="px-4 py-3 font-semibold text-brand-umber-dark">Date</th>
@@ -129,8 +129,8 @@ function SummaryStat({ label, value, highlight }: { label: string; value: string
         highlight ? "border-brand-sky/40 bg-brand-sky/10" : "border-brand-umber/10 bg-brand-ivory"
       }`}
     >
-      <p className="font-body text-xs text-brand-charcoal/60">{label}</p>
-      <p className="mt-1 font-display text-xl font-semibold text-brand-umber-dark">{value}</p>
+      <p className="font-body text-sm text-brand-charcoal/60">{label}</p>
+      <p className="mt-1 font-display text-2xl font-semibold text-brand-umber-dark">{value}</p>
     </div>
   );
 }

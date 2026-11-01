@@ -19,12 +19,12 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
 
   return (
     <div>
-      <Link href="/admin/orders" className="font-body text-xs text-brand-umber hover:underline">
+      <Link href="/admin/orders" className="font-body text-sm text-brand-umber hover:underline">
         ← Back to orders
       </Link>
 
       <div className="mt-3 flex flex-wrap items-center justify-between gap-4">
-        <h1 className="font-display text-2xl font-semibold text-brand-umber-dark">{order.order_number}</h1>
+        <h1 className="font-display text-3xl font-semibold text-brand-umber-dark">{order.order_number}</h1>
         <div className="flex items-center gap-2">
           <StatusUpdateForm action={updateOrderStatusAction.bind(null, order.id)} currentStatus={order.status} options={STATUSES} />
           {order.status === "cancelled" && (
@@ -36,8 +36,8 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-6">
           <section className="rounded-xl border border-brand-umber/10 bg-brand-ivory p-5">
-            <h2 className="font-body text-sm font-semibold uppercase tracking-wide text-brand-umber-dark">Items</h2>
-            <ul className="mt-3 divide-y divide-brand-umber/10 font-body text-sm">
+            <h2 className="font-body text-base font-semibold uppercase tracking-wide text-brand-umber-dark">Items</h2>
+            <ul className="mt-3 divide-y divide-brand-umber/10 font-body text-base">
               {order.items.map((item, i) => (
                 <li key={i} className="flex justify-between py-2">
                   <span>
@@ -49,7 +49,7 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
                 </li>
               ))}
             </ul>
-            <div className="mt-3 space-y-1 border-t border-brand-umber/10 pt-3 font-body text-sm">
+            <div className="mt-3 space-y-1 border-t border-brand-umber/10 pt-3 font-body text-base">
               <div className="flex justify-between">
                 <span className="text-brand-charcoal/70">Subtotal</span>
                 <span>{formatPKR(order.subtotal)}</span>
@@ -75,10 +75,10 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
           </section>
 
           <section className="rounded-xl border border-brand-umber/10 bg-brand-ivory p-5">
-            <h2 className="font-body text-sm font-semibold uppercase tracking-wide text-brand-umber-dark">
+            <h2 className="font-body text-base font-semibold uppercase tracking-wide text-brand-umber-dark">
               Shipping address
             </h2>
-            <p className="mt-2 font-body text-sm text-brand-charcoal/80">
+            <p className="mt-2 font-body text-base text-brand-charcoal/80">
               {order.shipping_address.fullName}
               <br />
               {order.shipping_address.addressLine1}
@@ -91,7 +91,7 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
           <PostExPanel orderId={order.id} trackingNumber={order.postex_tracking_number} status={order.postex_status} />
         </div>
 
-        <section className="h-fit rounded-xl border border-brand-umber/10 bg-brand-ivory p-5 font-body text-sm">
+        <section className="h-fit rounded-xl border border-brand-umber/10 bg-brand-ivory p-5 font-body text-base">
           <div className="mb-5 space-y-2">
             <a
               href={ownerConfirmLink(order)}
@@ -108,7 +108,7 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
               Call {order.customer_phone}
             </a>
           </div>
-          <h2 className="font-body text-sm font-semibold uppercase tracking-wide text-brand-umber-dark">Details</h2>
+          <h2 className="font-body text-base font-semibold uppercase tracking-wide text-brand-umber-dark">Details</h2>
           <dl className="mt-3 space-y-2">
             <Row label="Placed" value={formatDate(order.created_at)} />
             <Row label="Phone" value={order.customer_phone} />

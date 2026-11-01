@@ -14,7 +14,7 @@ const SOURCES: { value: AdOrderLogSource; label: string }[] = [
 const STATUSES: AdOrderLogStatus[] = ["placed", "cancelled", "shipped", "delivered", "rto"];
 
 const inputClass =
-  "w-full rounded-md border border-brand-umber/20 bg-white px-3 py-2 font-body text-sm text-brand-charcoal outline-none focus-visible:ring-2 focus-visible:ring-brand-sky";
+  "w-full rounded-md border border-brand-umber/20 bg-white px-3 py-2 font-body text-base text-brand-charcoal outline-none focus-visible:ring-2 focus-visible:ring-brand-sky";
 
 function Field({
   label,
@@ -29,9 +29,9 @@ function Field({
 }) {
   return (
     <label className={`block ${className ?? ""}`}>
-      <span className="mb-1 block font-body text-xs font-semibold text-brand-charcoal">{label}</span>
+      <span className="mb-1 block font-body text-sm font-semibold text-brand-charcoal">{label}</span>
       {children}
-      {hint && <span className="mt-1 block font-body text-xs leading-snug text-brand-charcoal/50">{hint}</span>}
+      {hint && <span className="mt-1 block font-body text-sm leading-snug text-brand-charcoal/50">{hint}</span>}
     </label>
   );
 }
@@ -97,8 +97,8 @@ export function AdOrderLogForm() {
 
   return (
     <form onSubmit={handleSubmit} className="rounded-xl border border-brand-umber/10 bg-brand-ivory p-5">
-      <h2 className="font-display text-lg font-semibold text-brand-umber-dark">Log an order</h2>
-      <p className="mt-1 font-body text-xs text-brand-charcoal/60">
+      <h2 className="font-display text-xl font-semibold text-brand-umber-dark">Log an order</h2>
+      <p className="mt-1 font-body text-sm text-brand-charcoal/60">
         Every order, however it came in — website, WhatsApp, or Instagram DM.
       </p>
 
@@ -173,12 +173,12 @@ export function AdOrderLogForm() {
         </Field>
       </div>
 
-      {error && <p className="mt-3 font-body text-xs text-brand-error">{error}</p>}
+      {error && <p className="mt-3 font-body text-sm text-brand-error">{error}</p>}
 
       <button
         type="submit"
         disabled={isPending}
-        className="mt-4 rounded-full bg-brand-umber px-5 py-2 font-body text-sm font-semibold text-brand-ivory transition hover:bg-brand-umber-dark disabled:opacity-50"
+        className="mt-4 rounded-full bg-brand-umber px-5 py-2 font-body text-base font-semibold text-brand-ivory transition hover:bg-brand-umber-dark disabled:opacity-50"
       >
         {isPending ? "Logging…" : "Log order"}
       </button>

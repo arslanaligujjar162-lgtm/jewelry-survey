@@ -129,7 +129,7 @@ export function ProductForm({
         <TextField label="Name" value={name} onChange={setName} required />
         <TextField label="Slug" value={slug} onChange={setSlug} required hint="URL-safe, e.g. amber-signet-ring" />
         <div>
-          <label className="block font-body text-sm font-medium text-brand-charcoal">
+          <label className="block font-body text-base font-medium text-brand-charcoal">
             <span className="mb-1.5 block">Category</span>
             <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} className="input" required>
               {categories.map((c) => (
@@ -143,8 +143,13 @@ export function ProductForm({
         <TextField label="Price (PKR)" value={price} onChange={setPrice} type="number" required />
         <TextField label="Stock count" value={stockCount} onChange={setStockCount} type="number" required />
         <TextField label="Ring size range (rings only)" value={ringSizeRange} onChange={setRingSizeRange} hint="e.g. US 5-9, leave blank otherwise" />
-        <label className="flex items-center gap-2 font-body text-sm text-brand-charcoal">
-          <input type="checkbox" checked={isNew} onChange={(e) => setIsNew(e.target.checked)} />
+        <label className="flex items-center gap-2 font-body text-base text-brand-charcoal">
+          <input
+            type="checkbox"
+            checked={isNew}
+            onChange={(e) => setIsNew(e.target.checked)}
+            className="h-4 w-4 accent-brand-umber"
+          />
           Mark as new arrival
         </label>
       </div>
@@ -154,7 +159,7 @@ export function ProductForm({
       <TextField label="Material spec" value={materialSpec} onChange={setMaterialSpec} required />
 
       <div>
-        <span className="block font-body text-sm font-medium text-brand-charcoal">Images</span>
+        <span className="block font-body text-base font-medium text-brand-charcoal">Images</span>
         <div className="mt-2 flex flex-wrap gap-3">
           {images.map((src, i) => (
             <div key={src} className="w-24">
@@ -163,7 +168,7 @@ export function ProductForm({
                 <button
                   type="button"
                   onClick={() => setImages((prev) => prev.filter((_, idx) => idx !== i))}
-                  className="absolute right-0 top-0 rounded-bl bg-brand-error px-1.5 py-0.5 text-[10px] text-white"
+                  className="absolute right-0 top-0 rounded-bl bg-brand-error px-1.5 py-0.5 text-[12px] text-white"
                 >
                   ×
                 </button>
@@ -174,23 +179,23 @@ export function ProductForm({
                 onChange={(e) => setColourNames((prev) => ({ ...prev, [src]: e.target.value }))}
                 placeholder="Colour name"
                 aria-label={`Colour name for image ${i + 1}`}
-                className="input mt-1 px-2 py-1 text-xs"
+                className="input mt-1 px-2 py-1 text-sm"
               />
             </div>
           ))}
         </div>
-        <label className="mt-3 inline-block cursor-pointer rounded-lg border border-brand-umber/30 px-4 py-2 font-body text-xs text-brand-umber-dark">
+        <label className="mt-3 inline-block cursor-pointer rounded-lg border border-brand-umber/30 px-4 py-2 font-body text-sm text-brand-umber-dark">
           {uploading ? "Uploading…" : "Upload image"}
           <input type="file" accept="image/*" onChange={handleUpload} disabled={uploading} className="hidden" />
         </label>
-        <p className="mt-1 font-body text-xs text-brand-charcoal/50">
+        <p className="mt-1 font-body text-sm text-brand-charcoal/50">
           The first photo leads in the shop. To sell a piece in more than one colour, type a colour name under the
           photo of each colourway (e.g. Gold, Steel) — customers then pick one. Leave blank for single-colour pieces.
         </p>
       </div>
 
       {error && (
-        <p role="alert" className="font-body text-sm text-brand-error">
+        <p role="alert" className="font-body text-base text-brand-error">
           {error}
         </p>
       )}
@@ -199,7 +204,7 @@ export function ProductForm({
         <button
           type="submit"
           disabled={saving}
-          className="rounded-full bg-brand-umber px-6 py-2.5 font-body text-sm font-semibold text-brand-ivory disabled:opacity-50"
+          className="rounded-full bg-brand-umber px-6 py-2.5 font-body text-base font-semibold text-brand-ivory disabled:opacity-50"
         >
           {saving ? "Saving…" : product ? "Save changes" : "Create product"}
         </button>
@@ -207,7 +212,7 @@ export function ProductForm({
           <button
             type="button"
             onClick={handleDelete}
-            className="rounded-full border border-brand-error/40 px-6 py-2.5 font-body text-sm font-semibold text-brand-error"
+            className="rounded-full border border-brand-error/40 px-6 py-2.5 font-body text-base font-semibold text-brand-error"
           >
             Delete
           </button>
@@ -233,10 +238,10 @@ function TextField({
   hint?: string;
 }) {
   return (
-    <label className="block font-body text-sm font-medium text-brand-charcoal">
+    <label className="block font-body text-base font-medium text-brand-charcoal">
       <span className="mb-1.5 block">{label}</span>
       <input type={type} value={value} onChange={(e) => onChange(e.target.value)} required={required} className="input" />
-      {hint && <span className="mt-1 block font-body text-xs font-normal text-brand-charcoal/50">{hint}</span>}
+      {hint && <span className="mt-1 block font-body text-sm font-normal text-brand-charcoal/50">{hint}</span>}
     </label>
   );
 }
@@ -255,7 +260,7 @@ function TextArea({
   required?: boolean;
 }) {
   return (
-    <label className="block font-body text-sm font-medium text-brand-charcoal">
+    <label className="block font-body text-base font-medium text-brand-charcoal">
       <span className="mb-1.5 block">{label}</span>
       <textarea value={value} onChange={(e) => onChange(e.target.value)} rows={rows} required={required} className="input" />
     </label>

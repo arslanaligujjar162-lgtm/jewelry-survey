@@ -9,7 +9,7 @@ export default async function EditProductPage({ params }: { params: { id: string
 
   return (
     <div>
-      <h1 className="font-display text-2xl font-semibold text-brand-umber-dark">Edit product</h1>
+      <h1 className="font-display text-3xl font-semibold text-brand-umber-dark">Edit product</h1>
       <div className="mt-6 max-w-2xl">
         <ProductForm
           product={product}
