@@ -25,9 +25,9 @@ export interface SourcingDefault {
 
 // Best-known sourcing cost (¥) and landed weight (g) per catalog product
 // name, carried over from the original sourcing worksheet. Only products
-// whose name matches the live catalog exactly are listed here — guessing a
-// number for a product this wasn't recorded against would silently misstate
-// its margin, so an unmatched product is left for the user to fill in.
+// whose name matches the live catalog, or whose match was explicitly
+// confirmed by the founder, are listed here — guessing a number for a
+// product this wasn't recorded against would silently misstate its margin.
 export const SOURCING_DEFAULTS: Record<string, SourcingDefault> = {
   "Mermaid Tear": { rmbCost: 17, weightGrams: 30 },
   "Moon Drop": { rmbCost: 15, weightGrams: 30 },
@@ -46,6 +46,12 @@ export const SOURCING_DEFAULTS: Record<string, SourcingDefault> = {
   "Whisper Band": { rmbCost: 15.5, weightGrams: 30 },
   "Channel Bangle": { rmbCost: 15, weightGrams: 14 },
   "Confetti Bangle": { rmbCost: 38, weightGrams: 30 },
+  // Confirmed by the founder: these four are the same pieces as earlier
+  // catalog names under the old sourcing worksheet, just renamed/recoloured.
+  "Black Olive": { rmbCost: 17, weightGrams: 30 }, // = Jet Hoop
+  "Green Olive": { rmbCost: 17, weightGrams: 30 }, // = Olive Hoop
+  "Confetti Studs": { rmbCost: 17, weightGrams: 30 }, // = Confetti Hoop
+  "Eclipse Drop": { rmbCost: 15, weightGrams: 30 }, // same cost as Moon Drop
   "Clover Pendant": { rmbCost: 16, weightGrams: 5 },
 };
 
