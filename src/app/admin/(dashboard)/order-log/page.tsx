@@ -50,7 +50,7 @@ export default async function AdminOrderLogPage() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <SummaryStat label="Cancellation rate (k)" value={`${summary.cancellationRatePct.toFixed(1)}%`} highlight />
         <SummaryStat label="RTO rate (r)" value={`${summary.rtoRatePct.toFixed(1)}%`} highlight />
-        <SummaryStat label="Cash collected" value={formatPKR(summary.totalCashCollected)} />
+        <SummaryStat label="Cash collected (remitted)" value={formatPKR(summary.totalCashCollected)} />
         <SummaryStat label="Revenue placed" value={formatPKR(summary.totalRevenuePlaced)} />
       </div>
 
@@ -63,6 +63,11 @@ export default async function AdminOrderLogPage() {
           to replace its guessed rates with your real ones.
         </p>
       )}
+      <p className="font-body text-xs text-brand-charcoal/50">
+        &quot;Cash collected&quot; means what the courier has actually remitted to you, not the order&apos;s face
+        value — expect it to lag delivery by days or weeks, so it&apos;s normal for a freshly delivered order to
+        show Rs 0 here until the next remittance.
+      </p>
 
       <AdOrderLogForm />
 

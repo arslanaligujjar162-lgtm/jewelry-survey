@@ -156,7 +156,10 @@ export function AdOrderLogForm() {
             ))}
           </select>
         </Field>
-        <Field label="Cash collected (Rs)" hint="Fill in once delivered — can be added later too.">
+        <Field
+          label="Cash collected (Rs)"
+          hint="Not the same moment as 'delivered' — this is once PostEx/Leopards actually remits it to you. Leave blank and come back to it."
+        >
           <input
             type="number"
             min={0}
