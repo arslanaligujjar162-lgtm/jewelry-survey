@@ -2,6 +2,8 @@
 // (/admin/pricing): the per-piece sourcing price calculator and the
 // COD unit-economics / ad-spend reconciliation model.
 
+import type { AdOrderLogStatus } from "@/lib/types";
+
 export type CostMode = "rmb" | "pkr";
 
 // A product as picked from the live catalog (Supabase in production, the
@@ -305,6 +307,61 @@ export function evaluateReadinessStage(flags: ReadinessFlags): ReadinessEvaluati
   }
 
   return { stage, blockingNextStage };
+}
+
+// --- Order log summary ------------------------------------------------------
+//
+// Turns raw ad_order_log rows into the r and k the rest of this module
+// expects, computed from real orders instead of guessed — the whole point
+// of Section 4B's "most important measurement tool you own".
+
+export interface AdOrderLogEntryLike {
+  status: AdOrderLogStatus;
+  revenue: number;
+  cashCollected: number | null;
+}
+
+export interface AdOrderLogSummary {
+  totalPlaced: number;
+  totalCancelled: number;
+  /** Dispatched at all: shipped + delivered + rto. */
+  totalShipped: number;
+  totalDelivered: number;
+  totalRto: number;
+  /** Shipped but not yet resolved either way. */
+  stillInTransit: number;
+  /** k = cancelled ÷ placed. */
+  cancellationRatePct: number;
+  /** r = refused/returned ÷ shipped. */
+  rtoRatePct: number;
+  totalCashCollected: number;
+  totalRevenuePlaced: number;
+}
+
+export function summarizeOrderLog(entries: AdOrderLogEntryLike[]): AdOrderLogSummary {
+  const totalPlaced = entries.length;
+  const totalCancelled = entries.filter((e) => e.status === "cancelled").length;
+  const totalDelivered = entries.filter((e) => e.status === "delivered").length;
+  const totalRto = entries.filter((e) => e.status === "rto").length;
+  const stillInTransit = entries.filter((e) => e.status === "shipped").length;
+  const totalShipped = stillInTransit + totalDelivered + totalRto;
+  const cancellationRatePct = safeDiv(totalCancelled, totalPlaced) * 100;
+  const rtoRatePct = safeDiv(totalRto, totalShipped) * 100;
+  const totalCashCollected = entries.reduce((sum, e) => sum + (e.cashCollected ?? 0), 0);
+  const totalRevenuePlaced = entries.reduce((sum, e) => sum + e.revenue, 0);
+
+  return {
+    totalPlaced,
+    totalCancelled,
+    totalShipped,
+    totalDelivered,
+    totalRto,
+    stillInTransit,
+    cancellationRatePct,
+    rtoRatePct,
+    totalCashCollected,
+    totalRevenuePlaced,
+  };
 }
 
 export interface AdSpendReconciliationInput {

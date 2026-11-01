@@ -8,10 +8,12 @@ import {
   calculateAdPaymentTaxRate,
   countKnownSourcingCosts,
   evaluateReadinessStage,
+  summarizeOrderLog,
   type PriceCalcInput,
   type UnitEconomicsInput,
   type CatalogProductOption,
   type ReadinessFlags,
+  type AdOrderLogEntryLike,
 } from "./pricing-math";
 
 describe("calculatePieceCost", () => {
@@ -236,5 +238,48 @@ describe("evaluateReadinessStage", () => {
     // must not be reported as ready-to-scale.
     const { stage } = evaluateReadinessStage({ ...allTrue, orderLogLive: false });
     expect(stage).toBe("not-ready");
+  });
+});
+
+describe("summarizeOrderLog", () => {
+  // Modelled on the brief's Section 6 finding: ~100 placed, ~63 ship,
+  // ~1 in 5 shipped parcels come back, ~49-57 end with cash collected.
+  const entries: AdOrderLogEntryLike[] = [
+    ...Array(37).fill({ status: "cancelled", revenue: 2200, cashCollected: null }),
+    ...Array(13).fill({ status: "rto", revenue: 2200, cashCollected: null }),
+    ...Array(5).fill({ status: "shipped", revenue: 2200, cashCollected: null }),
+    ...Array(45).fill({ status: "delivered", revenue: 2200, cashCollected: 2200 }),
+  ];
+
+  it("computes k (cancellation rate) against every placed order", () => {
+    const { cancellationRatePct, totalPlaced, totalCancelled } = summarizeOrderLog(entries);
+    expect(totalPlaced).toBe(100);
+    expect(totalCancelled).toBe(37);
+    expect(cancellationRatePct).toBeCloseTo(37, 5);
+  });
+
+  it("computes r (RTO rate) against shipped orders only, not all placed", () => {
+    const { rtoRatePct, totalShipped, totalRto } = summarizeOrderLog(entries);
+    // shipped = delivered + rto + still-in-transit = 45 + 13 + 5 = 63
+    expect(totalShipped).toBe(63);
+    expect(totalRto).toBe(13);
+    expect(rtoRatePct).toBeCloseTo((13 / 63) * 100, 5);
+  });
+
+  it("totals cash actually collected, not the face value of delivered orders", () => {
+    const mixed: AdOrderLogEntryLike[] = [
+      { status: "delivered", revenue: 2200, cashCollected: 2000 }, // partial/discounted collection
+      { status: "delivered", revenue: 2200, cashCollected: 2200 },
+      { status: "rto", revenue: 2200, cashCollected: null },
+    ];
+    expect(summarizeOrderLog(mixed).totalCashCollected).toBe(4200);
+    expect(summarizeOrderLog(mixed).totalRevenuePlaced).toBe(6600);
+  });
+
+  it("returns 0 rates instead of NaN when the log is empty", () => {
+    const summary = summarizeOrderLog([]);
+    expect(summary.cancellationRatePct).toBe(0);
+    expect(summary.rtoRatePct).toBe(0);
+    expect(summary.totalPlaced).toBe(0);
   });
 });

@@ -1,4 +1,5 @@
 import { getProducts } from "@/lib/products";
+import { countAdOrderLogEntries } from "@/lib/admin/queries";
 import type { CatalogProductOption } from "@/lib/pricing-math";
 import { PricingCalculator } from "@/components/admin/PricingCalculator";
 import { UnitEconomicsCalculator } from "@/components/admin/UnitEconomicsCalculator";
@@ -13,6 +14,7 @@ export default async function AdminPricingPage() {
   const catalogProducts: CatalogProductOption[] = products
     .map((p) => ({ id: p.id, name: p.name, priceRs: p.price, image: p.images[0] }))
     .sort((a, b) => a.name.localeCompare(b.name));
+  const orderLogEntryCount = await countAdOrderLogEntries();
 
   return (
     <div className="space-y-10">
@@ -29,7 +31,7 @@ export default async function AdminPricingPage() {
           Are you actually ready to spend ad money yet? From the Meta Ads Phase 1 readiness test.
         </p>
         <div className="mt-5">
-          <ReadinessPanel catalogProducts={catalogProducts} />
+          <ReadinessPanel catalogProducts={catalogProducts} orderLogEntryCount={orderLogEntryCount} />
         </div>
       </section>
 

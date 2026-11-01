@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import Link from "next/link";
 import clsx from "clsx";
 import {
   countKnownSourcingCosts,
@@ -11,12 +12,11 @@ import {
 } from "@/lib/pricing-math";
 import { usePersistedState } from "@/lib/use-persisted-state";
 
-type ManualFlagKey = Exclude<keyof ReadinessFlags, "allSkuCostsKnown">;
+type ManualFlagKey = Exclude<keyof ReadinessFlags, "allSkuCostsKnown" | "orderLogLive">;
 
 type ManualFlags = Record<ManualFlagKey, boolean>;
 
 const MANUAL_DEFAULTS: ManualFlags = {
-  orderLogLive: false,
   purchaseEventTested: false,
   confirmationStepBeforeDispatch: false,
   maxTestBudgetSet: false,
@@ -47,7 +47,6 @@ const SECTIONS: { stage: ReadinessStage; title: string; items: { key: ManualFlag
     stage: "controlled-testing",
     title: "To clear “not ready” and start controlled testing",
     items: [
-      { key: "orderLogLive", label: "Order log is live — one row per order, with source and ad name" },
       { key: "purchaseEventTested", label: "Purchase event tested in Meta Events Manager (value + PKR currency)" },
       { key: "confirmationStepBeforeDispatch", label: "Every order gets a call/message confirmation before dispatch" },
       { key: "maxTestBudgetSet", label: "A written maximum you can afford to lose on the first test" },
@@ -73,13 +72,20 @@ const SECTIONS: { stage: ReadinessStage; title: string; items: { key: ManualFlag
   },
 ];
 
-export function ReadinessPanel({ catalogProducts }: { catalogProducts: CatalogProductOption[] }) {
+export function ReadinessPanel({
+  catalogProducts,
+  orderLogEntryCount,
+}: {
+  catalogProducts: CatalogProductOption[];
+  orderLogEntryCount: number;
+}) {
   const [manual, setManual] = usePersistedState<ManualFlags>("admin-1720-readiness", MANUAL_DEFAULTS);
 
   const skuCosts = useMemo(() => countKnownSourcingCosts(catalogProducts), [catalogProducts]);
   const allSkuCostsKnown = skuCosts.total > 0 && skuCosts.known === skuCosts.total;
+  const orderLogLive = orderLogEntryCount > 0;
 
-  const flags: ReadinessFlags = { allSkuCostsKnown, ...manual };
+  const flags: ReadinessFlags = { allSkuCostsKnown, orderLogLive, ...manual };
   const { stage, blockingNextStage } = evaluateReadinessStage(flags);
 
   function toggle(key: ManualFlagKey) {
@@ -113,6 +119,29 @@ export function ReadinessPanel({ catalogProducts }: { catalogProducts: CatalogPr
             )}
           >
             {skuCosts.known}/{skuCosts.total}
+          </span>
+        </div>
+      </section>
+
+      <section className="rounded-xl border border-brand-umber/10 bg-brand-ivory p-5">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p className="font-body text-sm font-semibold text-brand-charcoal">Order log is live</p>
+            <p className="font-body text-xs text-brand-charcoal/60">
+              Auto-computed from the{" "}
+              <Link href="/admin/order-log" className="text-brand-umber underline">
+                order log
+              </Link>
+              .
+            </p>
+          </div>
+          <span
+            className={clsx(
+              "shrink-0 rounded-full px-3 py-1 font-body text-sm font-semibold",
+              orderLogLive ? "bg-brand-success/10 text-brand-success" : "bg-brand-error/10 text-brand-error",
+            )}
+          >
+            {orderLogEntryCount} order{orderLogEntryCount === 1 ? "" : "s"}
           </span>
         </div>
       </section>
