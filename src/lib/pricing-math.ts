@@ -209,6 +209,104 @@ export function calculateUnitEconomics(input: UnitEconomicsInput): UnitEconomics
   };
 }
 
+// Section 6 of the Meta Ads Phase 1 brief: "run the economics at three
+// levels (r = 10%, 20%, 30%) and only proceed if the plan survives the 20%
+// case" — your own RTO rate isn't known yet, so show the break-even at each
+// level instead of a single number that assumes you already know it.
+export interface RtoSensitivityRow extends UnitEconomicsResult {
+  rtoRatePct: number;
+}
+
+export function calculateRtoSensitivity(
+  input: UnitEconomicsInput,
+  rtoLevelsPct: number[] = [10, 20, 30],
+): RtoSensitivityRow[] {
+  return rtoLevelsPct.map((rtoRatePct) => ({
+    rtoRatePct,
+    ...calculateUnitEconomics({ ...input, rtoRatePct }),
+  }));
+}
+
+// Section 7's `[REC]`: don't trust published ad-payment tax/fee rates (they
+// range from 0.5% to 17% across sources) — read one real card statement that
+// includes a Meta charge and back the rate out directly.
+export function calculateAdPaymentTaxRate(totalDebitedRs: number, metaInvoiceRs: number): number {
+  return safeDiv(totalDebitedRs - metaInvoiceRs, metaInvoiceRs) * 100;
+}
+
+// Section 4A: how many of the live catalog's products have a recorded
+// sourcing cost, vs. ones still needing a manual entry before their margin
+// can be trusted.
+export function countKnownSourcingCosts(products: CatalogProductOption[]): { known: number; total: number } {
+  const known = products.filter((p) => SOURCING_DEFAULTS[p.name] !== undefined).length;
+  return { known, total: products.length };
+}
+
+// --- Readiness test (Section 4D) --------------------------------------------
+
+export type ReadinessStage = "not-ready" | "controlled-testing" | "structured-optimisation" | "ready-to-scale";
+
+export interface ReadinessFlags {
+  /** Auto-computed from the live catalog, not self-reported. */
+  allSkuCostsKnown: boolean;
+  orderLogLive: boolean;
+  purchaseEventTested: boolean;
+  confirmationStepBeforeDispatch: boolean;
+  maxTestBudgetSet: boolean;
+  conversionPathChosen: boolean;
+  tracksReconcile2Weeks: boolean;
+  enoughDeliveredOrdersToCompare: boolean;
+  contributionAfterAdsPositive: boolean;
+  holdsAcrossCreativeRefresh: boolean;
+  stockCanAbsorbMoreOrders: boolean;
+}
+
+export interface ReadinessEvaluation {
+  stage: ReadinessStage;
+  /** Flags still unmet that are blocking the next stage up. */
+  blockingNextStage: (keyof ReadinessFlags)[];
+}
+
+const STAGE_REQUIREMENTS: { stage: ReadinessStage; requires: (keyof ReadinessFlags)[] }[] = [
+  {
+    stage: "controlled-testing",
+    requires: [
+      "allSkuCostsKnown",
+      "orderLogLive",
+      "purchaseEventTested",
+      "confirmationStepBeforeDispatch",
+      "maxTestBudgetSet",
+      "conversionPathChosen",
+    ],
+  },
+  {
+    stage: "structured-optimisation",
+    requires: ["tracksReconcile2Weeks", "enoughDeliveredOrdersToCompare"],
+  },
+  {
+    stage: "ready-to-scale",
+    requires: ["contributionAfterAdsPositive", "holdsAcrossCreativeRefresh", "stockCanAbsorbMoreOrders"],
+  },
+];
+
+export function evaluateReadinessStage(flags: ReadinessFlags): ReadinessEvaluation {
+  let stage: ReadinessStage = "not-ready";
+  let blockingNextStage: (keyof ReadinessFlags)[] = STAGE_REQUIREMENTS[0].requires.filter((key) => !flags[key]);
+
+  for (const { stage: candidateStage, requires } of STAGE_REQUIREMENTS) {
+    const unmet = requires.filter((key) => !flags[key]);
+    if (unmet.length > 0) {
+      blockingNextStage = unmet;
+      break;
+    }
+    stage = candidateStage;
+    const nextIndex = STAGE_REQUIREMENTS.findIndex((s) => s.stage === candidateStage) + 1;
+    blockingNextStage = STAGE_REQUIREMENTS[nextIndex]?.requires.filter((key) => !flags[key]) ?? [];
+  }
+
+  return { stage, blockingNextStage };
+}
+
 export interface AdSpendReconciliationInput {
   spend: number;
   placedOrders: number;

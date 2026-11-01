@@ -4,8 +4,14 @@ import {
   checkPriceAgainstCost,
   calculateUnitEconomics,
   reconcileAdSpend,
+  calculateRtoSensitivity,
+  calculateAdPaymentTaxRate,
+  countKnownSourcingCosts,
+  evaluateReadinessStage,
   type PriceCalcInput,
   type UnitEconomicsInput,
+  type CatalogProductOption,
+  type ReadinessFlags,
 } from "./pricing-math";
 
 describe("calculatePieceCost", () => {
@@ -127,5 +133,108 @@ describe("reconcileAdSpend", () => {
     // 70 * 1162 - 20 * 400 - 50000 = 81340 - 8000 - 50000
     expect(result.contributionAfterAds).toBe(23340);
     expect(result.trueAdCost).toBe(58500);
+  });
+});
+
+describe("calculateRtoSensitivity", () => {
+  const worked: UnitEconomicsInput = {
+    price: 2200,
+    discount: 0,
+    deliveryChargeToCustomer: 0,
+    landedCost: 550,
+    packaging: 150,
+    outboundCourier: 250,
+    codFeeRatePct: 4,
+    returnFee: 0,
+    rtoRatePct: 999, // must be overridden per row, not read
+    cancellationRatePct: 30,
+  };
+
+  it("reruns the break-even model at each RTO level, holding k fixed", () => {
+    const rows = calculateRtoSensitivity(worked, [10, 20, 30]);
+    expect(rows.map((r) => r.rtoRatePct)).toEqual([10, 20, 30]);
+    // r=20% row must match the spreadsheet's own worked example exactly.
+    const r20 = rows.find((r) => r.rtoRatePct === 20)!;
+    expect(r20.breakEvenReportedRoas).toBeCloseTo(3.7, 2);
+    // Break-even gets harder (higher ROAS needed) as RTO rises.
+    expect(rows[0].breakEvenReportedRoas).toBeLessThan(rows[1].breakEvenReportedRoas);
+    expect(rows[1].breakEvenReportedRoas).toBeLessThan(rows[2].breakEvenReportedRoas);
+  });
+
+  it("defaults to the 10/20/30% levels the brief recommends", () => {
+    const rows = calculateRtoSensitivity(worked);
+    expect(rows.map((r) => r.rtoRatePct)).toEqual([10, 20, 30]);
+  });
+});
+
+describe("calculateAdPaymentTaxRate", () => {
+  it("backs the real rate out of one card statement, per Section 7's REC", () => {
+    // Debited Rs 10,170 against a Rs 10,000 Meta invoice = 1.7% overhead.
+    expect(calculateAdPaymentTaxRate(10170, 10000)).toBeCloseTo(1.7, 5);
+  });
+
+  it("returns 0 instead of dividing by zero when no invoice amount is entered", () => {
+    expect(calculateAdPaymentTaxRate(500, 0)).toBe(0);
+  });
+});
+
+describe("countKnownSourcingCosts", () => {
+  const products: CatalogProductOption[] = [
+    { id: "1", name: "Mermaid Tear", priceRs: 3000, image: "/products/mermaid-tear-1.jpg" },
+    { id: "2", name: "Black Olive", priceRs: 3000, image: "/products/black-olive-hoops-1.jpg" },
+    { id: "3", name: "Moon Drop", priceRs: 2500, image: "/products/moon-drop-1.jpg" },
+  ];
+
+  it("counts only products with a recorded sourcing default", () => {
+    // Mermaid Tear and Moon Drop are in SOURCING_DEFAULTS; Black Olive is not.
+    expect(countKnownSourcingCosts(products)).toEqual({ known: 2, total: 3 });
+  });
+});
+
+describe("evaluateReadinessStage", () => {
+  const allTrue: ReadinessFlags = {
+    allSkuCostsKnown: true,
+    orderLogLive: true,
+    purchaseEventTested: true,
+    confirmationStepBeforeDispatch: true,
+    maxTestBudgetSet: true,
+    conversionPathChosen: true,
+    tracksReconcile2Weeks: true,
+    enoughDeliveredOrdersToCompare: true,
+    contributionAfterAdsPositive: true,
+    holdsAcrossCreativeRefresh: true,
+    stockCanAbsorbMoreOrders: true,
+  };
+  const allFalse: ReadinessFlags = Object.fromEntries(
+    Object.keys(allTrue).map((k) => [k, false]),
+  ) as unknown as ReadinessFlags;
+
+  it("is not-ready when the Section 4D blockers are unmet", () => {
+    const { stage, blockingNextStage } = evaluateReadinessStage(allFalse);
+    expect(stage).toBe("not-ready");
+    expect(blockingNextStage).toContain("orderLogLive");
+  });
+
+  it("reaches ready-to-scale only once every flag is true", () => {
+    const { stage, blockingNextStage } = evaluateReadinessStage(allTrue);
+    expect(stage).toBe("ready-to-scale");
+    expect(blockingNextStage).toEqual([]);
+  });
+
+  it("stops at controlled-testing when later-stage flags aren't met yet", () => {
+    const { stage, blockingNextStage } = evaluateReadinessStage({
+      ...allTrue,
+      tracksReconcile2Weeks: false,
+      contributionAfterAdsPositive: false,
+    });
+    expect(stage).toBe("controlled-testing");
+    expect(blockingNextStage).toContain("tracksReconcile2Weeks");
+  });
+
+  it("does not let a later-stage flag compensate for a missing earlier one", () => {
+    // Everything about scaling is true, but the order log still isn't live —
+    // must not be reported as ready-to-scale.
+    const { stage } = evaluateReadinessStage({ ...allTrue, orderLogLive: false });
+    expect(stage).toBe("not-ready");
   });
 });

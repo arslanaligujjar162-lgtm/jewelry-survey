@@ -1,8 +1,14 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import clsx from "clsx";
-import { calculateUnitEconomics, reconcileAdSpend, type UnitEconomicsInput } from "@/lib/pricing-math";
+import {
+  calculateUnitEconomics,
+  reconcileAdSpend,
+  calculateRtoSensitivity,
+  calculateAdPaymentTaxRate,
+  type UnitEconomicsInput,
+} from "@/lib/pricing-math";
 import { usePersistedState } from "@/lib/use-persisted-state";
 import { formatPKR } from "@/lib/format";
 
@@ -89,12 +95,19 @@ function NumberField({
 
 export function UnitEconomicsCalculator() {
   const [form, setForm] = usePersistedState<FormState>("admin-1720-unit-economics", DEFAULTS);
+  const [taxHelperDebited, setTaxHelperDebited] = useState(0);
+  const [taxHelperInvoice, setTaxHelperInvoice] = useState(0);
 
   function set<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
 
   const economics = useMemo(() => calculateUnitEconomics(form), [form]);
+  const sensitivity = useMemo(() => calculateRtoSensitivity(form), [form]);
+  const impliedTaxRate = useMemo(
+    () => calculateAdPaymentTaxRate(taxHelperDebited, taxHelperInvoice),
+    [taxHelperDebited, taxHelperInvoice],
+  );
 
   const reconciliation = useMemo(
     () =>
@@ -243,6 +256,47 @@ export function UnitEconomicsCalculator() {
       </div>
 
       <section className="rounded-xl border border-brand-umber/10 bg-brand-ivory p-5">
+        <h2 className="font-display text-lg font-semibold text-brand-umber-dark">
+          Does the plan survive worse RTO than expected?
+        </h2>
+        <p className="mt-1 font-body text-xs text-brand-charcoal/60">
+          Your real RTO rate isn&apos;t known yet. Check break-even at 10%, 20%, and 30% — only proceed if it still
+          works at 20%.
+        </p>
+
+        <div className="mt-4 overflow-x-auto">
+          <table className="w-full text-left font-body text-sm">
+            <thead>
+              <tr className="border-b border-brand-umber/15 text-xs text-brand-charcoal/60">
+                <th className="py-2 pr-4 font-semibold">RTO rate (r)</th>
+                <th className="py-2 pr-4 font-semibold">Break-even reported ROAS</th>
+                <th className="py-2 pr-4 font-semibold">Max ad cost / placed order</th>
+                <th className="py-2 font-semibold">Break-even cost / delivered order</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sensitivity.map((row) => (
+                <tr
+                  key={row.rtoRatePct}
+                  className={clsx(
+                    "border-b border-brand-umber/10 last:border-0",
+                    row.rtoRatePct === 20 && "bg-brand-sky/10",
+                  )}
+                >
+                  <td className="py-2 pr-4 font-semibold text-brand-umber-dark">
+                    {row.rtoRatePct}%{row.rtoRatePct === 20 && <span className="ml-1.5 font-normal text-brand-charcoal/50">(test this one)</span>}
+                  </td>
+                  <td className="py-2 pr-4 text-brand-charcoal">{row.breakEvenReportedRoas.toFixed(2)}×</td>
+                  <td className="py-2 pr-4 text-brand-charcoal">{formatPKR(row.expectedContributionPerPlacedOrder)}</td>
+                  <td className="py-2 text-brand-charcoal">{formatPKR(row.breakEvenCostPerDeliveredOrder)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section className="rounded-xl border border-brand-umber/10 bg-brand-ivory p-5">
         <h2 className="font-display text-lg font-semibold text-brand-umber-dark">Reconcile against real ad spend</h2>
         <p className="mt-1 font-body text-xs text-brand-charcoal/60">
           Type what actually happened — from your order log and Meta/Ads Manager — to see whether this period made
@@ -288,6 +342,37 @@ export function UnitEconomicsCalculator() {
             value={form.taxAndFeeRatePctOnAdPayments}
             onChange={(v) => set("taxAndFeeRatePctOnAdPayments", v)}
           />
+        </div>
+
+        <div className="mt-4 rounded-md border border-brand-umber/15 bg-brand-butter-light p-4">
+          <p className="font-body text-xs font-semibold text-brand-charcoal">
+            Don&apos;t trust a published tax rate — work it out from a real statement
+          </p>
+          <p className="mt-1 font-body text-xs text-brand-charcoal/60">
+            Published ad-payment tax rates for Pakistan range from 0.5% to 17% depending on the source. Pull one
+            month&apos;s card statement with a Meta charge on it instead.
+          </p>
+          <div className="mt-3 grid gap-3 sm:grid-cols-3 sm:items-end">
+            <NumberField
+              label="Total debited by your bank (Rs)"
+              prefix="Rs"
+              value={taxHelperDebited}
+              onChange={setTaxHelperDebited}
+            />
+            <NumberField label="Meta invoice amount (Rs)" prefix="Rs" value={taxHelperInvoice} onChange={setTaxHelperInvoice} />
+            <div>
+              <p className="font-body text-xs text-brand-charcoal/60">Implied rate</p>
+              <p className="font-display text-xl font-semibold text-brand-umber-dark">{impliedTaxRate.toFixed(2)}%</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            disabled={taxHelperInvoice <= 0}
+            onClick={() => set("taxAndFeeRatePctOnAdPayments", Math.round(impliedTaxRate * 100) / 100)}
+            className="mt-3 rounded-full border border-brand-umber/30 px-4 py-1.5 font-body text-xs font-medium text-brand-umber-dark hover:bg-brand-sky/20 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Use this rate above
+          </button>
         </div>
 
         {hasRealData ? (

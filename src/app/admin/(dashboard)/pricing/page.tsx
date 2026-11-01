@@ -2,6 +2,8 @@ import { getProducts } from "@/lib/products";
 import type { CatalogProductOption } from "@/lib/pricing-math";
 import { PricingCalculator } from "@/components/admin/PricingCalculator";
 import { UnitEconomicsCalculator } from "@/components/admin/UnitEconomicsCalculator";
+import { SkuPricingSheet } from "@/components/admin/SkuPricingSheet";
+import { ReadinessPanel } from "@/components/admin/ReadinessPanel";
 
 export default async function AdminPricingPage() {
   // The real, live storefront catalog — Supabase in production, the local
@@ -20,6 +22,26 @@ export default async function AdminPricingPage() {
           Everything persists in this browser, so it&apos;s exactly as you left it next time you open it.
         </p>
       </div>
+
+      <section>
+        <h2 className="font-display text-xl font-semibold text-brand-umber-dark">Readiness</h2>
+        <p className="mt-1 font-body text-sm text-brand-charcoal/60">
+          Are you actually ready to spend ad money yet? From the Meta Ads Phase 1 readiness test.
+        </p>
+        <div className="mt-5">
+          <ReadinessPanel catalogProducts={catalogProducts} />
+        </div>
+      </section>
+
+      <section>
+        <h2 className="font-display text-xl font-semibold text-brand-umber-dark">SKU pricing sheet</h2>
+        <p className="mt-1 font-body text-sm text-brand-charcoal/60">
+          Every real product, its real price, and its real margin — worst margin first.
+        </p>
+        <div className="mt-5">
+          <SkuPricingSheet catalogProducts={catalogProducts} />
+        </div>
+      </section>
 
       <section>
         <h2 className="font-display text-xl font-semibold text-brand-umber-dark">Price calculator</h2>
