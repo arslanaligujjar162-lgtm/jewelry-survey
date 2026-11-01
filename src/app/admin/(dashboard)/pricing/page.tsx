@@ -1,7 +1,17 @@
+import { getProducts } from "@/lib/products";
+import type { CatalogProductOption } from "@/lib/pricing-math";
 import { PricingCalculator } from "@/components/admin/PricingCalculator";
 import { UnitEconomicsCalculator } from "@/components/admin/UnitEconomicsCalculator";
 
-export default function AdminPricingPage() {
+export default async function AdminPricingPage() {
+  // The real, live storefront catalog — Supabase in production, the local
+  // fallback seed otherwise — so the calculator's product picker shows the
+  // actual selling price and a real photo, not a hand-typed guess.
+  const products = await getProducts({ sort: "newest" });
+  const catalogProducts: CatalogProductOption[] = products
+    .map((p) => ({ id: p.id, name: p.name, priceRs: p.price, image: p.images[0] }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
   return (
     <div className="space-y-10">
       <div>
@@ -17,7 +27,7 @@ export default function AdminPricingPage() {
           Work out what a piece needs to sell for — sourcing, packaging, courier, and your margin.
         </p>
         <div className="mt-5">
-          <PricingCalculator />
+          <PricingCalculator catalogProducts={catalogProducts} />
         </div>
       </section>
 

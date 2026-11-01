@@ -1,18 +1,20 @@
 "use client";
 
 import { useMemo } from "react";
+import Image from "next/image";
 import clsx from "clsx";
 import {
   calculatePieceCost,
   checkPriceAgainstCost,
-  SOURCING_PRODUCTS,
+  SOURCING_DEFAULTS,
+  type CatalogProductOption,
   type CostMode,
 } from "@/lib/pricing-math";
 import { usePersistedState } from "@/lib/use-persisted-state";
 import { formatPKR } from "@/lib/format";
 
 interface FormState {
-  productIndex: string; // index into SOURCING_PRODUCTS, or "custom"
+  productId: string; // a CatalogProductOption id, or "custom"
   costMode: CostMode;
   productCostRmb: number;
   exchangeRate: number;
@@ -31,7 +33,7 @@ interface FormState {
 }
 
 const DEFAULTS: FormState = {
-  productIndex: "custom",
+  productId: "custom",
   costMode: "rmb",
   productCostRmb: 35,
   exchangeRate: 39.5,
@@ -106,28 +108,39 @@ function NumberField({
   );
 }
 
-export function PricingCalculator() {
+export function PricingCalculator({ catalogProducts }: { catalogProducts: CatalogProductOption[] }) {
   const [form, setForm] = usePersistedState<FormState>("admin-1720-pricing-calculator", DEFAULTS);
 
   function set<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
 
-  function applyProduct(productIndex: string) {
+  function applyProduct(productId: string) {
     setForm((prev) => {
-      if (productIndex === "custom") return { ...prev, productIndex };
-      const product = SOURCING_PRODUCTS[parseInt(productIndex, 10)];
+      if (productId === "custom") return { ...prev, productId, yourPrice: 0 };
+      const product = catalogProducts.find((p) => p.id === productId);
       if (!product) return prev;
+      const sourcing = SOURCING_DEFAULTS[product.name];
       return {
         ...prev,
-        productIndex,
-        costMode: "rmb",
-        productCostRmb: product.rmb,
-        unitWeightGrams: product.weightGrams,
-        yourPrice: 0,
+        productId,
+        // Real selling price, straight from the site — this is what "Check
+        // your price" below should show the actual margin on, not a guess.
+        yourPrice: product.priceRs,
+        ...(sourcing && {
+          costMode: "rmb" as const,
+          productCostRmb: sourcing.rmbCost,
+          unitWeightGrams: sourcing.weightGrams,
+        }),
       };
     });
   }
+
+  const selectedProduct = useMemo(
+    () => catalogProducts.find((p) => p.id === form.productId),
+    [catalogProducts, form.productId],
+  );
+  const hasKnownSourcingCost = !selectedProduct || Boolean(SOURCING_DEFAULTS[selectedProduct.name]);
 
   const result = useMemo(() => calculatePieceCost(form), [form]);
 
@@ -152,21 +165,48 @@ export function PricingCalculator() {
             <label className="block">
               <span className="mb-1 block font-body text-xs font-semibold text-brand-charcoal">Product</span>
               <select
-                value={form.productIndex}
+                value={form.productId}
                 onChange={(e) => applyProduct(e.target.value)}
                 className="w-full rounded-md border border-brand-umber/20 bg-brand-butter-light px-3 py-2 font-body text-sm text-brand-charcoal"
               >
                 <option value="custom">Custom (type your own)</option>
-                {SOURCING_PRODUCTS.map((p, i) => (
-                  <option key={p.name} value={i}>
-                    {p.name} — ¥{p.rmb}, {p.weightGrams}g
+                {catalogProducts.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.name} — {formatPKR(p.priceRs)} on the site
                   </option>
                 ))}
               </select>
               <span className="mt-1 block font-body text-xs leading-snug text-brand-charcoal/50">
-                Pick one of your products to auto-fill its cost &amp; weight, or choose Custom.
+                Pick a product to pull its real photo &amp; selling price, or choose Custom.
               </span>
             </label>
+
+            {selectedProduct && (
+              <div className="mt-3 flex items-center gap-3 rounded-md border border-brand-umber/15 bg-white p-3">
+                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-md bg-white">
+                  <Image
+                    src={selectedProduct.image}
+                    alt={selectedProduct.name}
+                    fill
+                    sizes="64px"
+                    className="object-contain"
+                  />
+                </div>
+                <div className="min-w-0">
+                  <p className="truncate font-body text-sm font-semibold text-brand-charcoal">
+                    {selectedProduct.name}
+                  </p>
+                  <p className="font-body text-xs text-brand-charcoal/60">
+                    Selling on the website for {formatPKR(selectedProduct.priceRs)}
+                  </p>
+                  {!hasKnownSourcingCost && (
+                    <p className="mt-0.5 font-body text-xs font-medium text-brand-brass">
+                      No saved sourcing cost for this product yet — check the fields below.
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="mt-4 flex gap-5 font-body text-sm text-brand-charcoal">
@@ -380,7 +420,11 @@ export function PricingCalculator() {
 
         <div className="rounded-xl border border-brand-umber/10 bg-brand-ivory p-5">
           <h2 className="font-display text-base font-semibold text-brand-umber-dark">Check your price</h2>
-          <p className="mt-1 font-body text-xs text-brand-charcoal/60">Type what you&apos;re actually charging.</p>
+          <p className="mt-1 font-body text-xs text-brand-charcoal/60">
+            {selectedProduct
+              ? `Prefilled with ${selectedProduct.name}'s real price on the website.`
+              : "Type what you're actually charging."}
+          </p>
           <div className="mt-3">
             <NumberField
               label="Your price (Rs)"

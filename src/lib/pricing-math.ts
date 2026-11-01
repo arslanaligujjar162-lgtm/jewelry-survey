@@ -4,38 +4,48 @@
 
 export type CostMode = "rmb" | "pkr";
 
-export interface SourcingProduct {
+// A product as picked from the live catalog (Supabase in production, the
+// local fallback seed otherwise) — real name, real selling price, real
+// photo, not a hand-typed guess.
+export interface CatalogProductOption {
+  id: string;
   name: string;
-  rmb: number;
+  /** The real, current selling price on the storefront. */
+  priceRs: number;
+  /** Path to a real product photo (white background), e.g. "/products/foo-1.jpg". */
+  image: string;
+}
+
+export interface SourcingDefault {
+  rmbCost: number;
   weightGrams: number;
 }
 
-// Ported from the standalone 1720 pricing calculator (sourcing cost in RMB,
-// landed weight in grams) so the product picker keeps working unchanged.
-export const SOURCING_PRODUCTS: SourcingProduct[] = [
-  { name: "Confetti Hoop", rmb: 17, weightGrams: 30 },
-  { name: "Mermaid Tear", rmb: 17, weightGrams: 30 },
-  { name: "Moon Drop", rmb: 15, weightGrams: 30 },
-  { name: "Pearl Drop", rmb: 15, weightGrams: 30 },
-  { name: "Vogue Hoop", rmb: 22, weightGrams: 7 },
-  { name: "Trinket Cuff", rmb: 9, weightGrams: 2 },
-  { name: "Deco Link", rmb: 15, weightGrams: 16 },
-  { name: "Baroque Link", rmb: 15, weightGrams: 16 },
-  { name: "Ribbon Hoop", rmb: 10, weightGrams: 9 },
-  { name: "Cascade Drop", rmb: 15, weightGrams: 8 },
-  { name: "Gala Stud", rmb: 13, weightGrams: 7 },
-  { name: "Sunray Stud", rmb: 13, weightGrams: 7 },
-  { name: "Jet Hoop", rmb: 17, weightGrams: 30 },
-  { name: "Olive Hoop", rmb: 17, weightGrams: 30 },
-  { name: "Hammered Band", rmb: 4, weightGrams: 30 },
-  { name: "OG Ring", rmb: 21, weightGrams: 10 },
-  { name: "Starlet Ring", rmb: 17, weightGrams: 14 },
-  { name: "Studded Band", rmb: 13, weightGrams: 3 },
-  { name: "Whisper Band", rmb: 15.5, weightGrams: 30 },
-  { name: "Channel Bangle", rmb: 15, weightGrams: 14 },
-  { name: "Confetti Bangle", rmb: 38, weightGrams: 30 },
-  { name: "Clover Pendant", rmb: 16, weightGrams: 5 },
-];
+// Best-known sourcing cost (¥) and landed weight (g) per catalog product
+// name, carried over from the original sourcing worksheet. Only products
+// whose name matches the live catalog exactly are listed here — guessing a
+// number for a product this wasn't recorded against would silently misstate
+// its margin, so an unmatched product is left for the user to fill in.
+export const SOURCING_DEFAULTS: Record<string, SourcingDefault> = {
+  "Mermaid Tear": { rmbCost: 17, weightGrams: 30 },
+  "Moon Drop": { rmbCost: 15, weightGrams: 30 },
+  "Vogue Hoop": { rmbCost: 22, weightGrams: 7 },
+  "Trinket Cuff": { rmbCost: 9, weightGrams: 2 },
+  "Deco Link": { rmbCost: 15, weightGrams: 16 },
+  "Baroque Link": { rmbCost: 15, weightGrams: 16 },
+  "Ribbon Hoop": { rmbCost: 10, weightGrams: 9 },
+  "Cascade Drop": { rmbCost: 15, weightGrams: 8 },
+  "Gala Studs": { rmbCost: 13, weightGrams: 7 },
+  "Sunray Studs": { rmbCost: 13, weightGrams: 7 },
+  "Hammered Band": { rmbCost: 4, weightGrams: 30 },
+  "The OG Ring": { rmbCost: 21, weightGrams: 10 },
+  "Starlet Ring": { rmbCost: 17, weightGrams: 14 },
+  "Studded Band": { rmbCost: 13, weightGrams: 3 },
+  "Whisper Band": { rmbCost: 15.5, weightGrams: 30 },
+  "Channel Bangle": { rmbCost: 15, weightGrams: 14 },
+  "Confetti Bangle": { rmbCost: 38, weightGrams: 30 },
+  "Clover Pendant": { rmbCost: 16, weightGrams: 5 },
+};
 
 function safeDiv(numerator: number, denominator: number): number {
   return denominator === 0 ? 0 : numerator / denominator;
