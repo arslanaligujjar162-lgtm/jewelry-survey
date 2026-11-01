@@ -96,11 +96,11 @@ export function ReadinessPanel({
     <div className="space-y-5">
       <div className={clsx("flex flex-wrap items-center justify-between gap-3 rounded-xl p-5", STAGE_TONE[stage])}>
         <div>
-          <p className="font-body text-xs font-semibold uppercase tracking-wide opacity-70">Readiness</p>
-          <p className="font-display text-2xl font-semibold">{STAGE_LABEL[stage]}</p>
+          <p className="font-body text-sm font-semibold uppercase tracking-wide opacity-70">Readiness</p>
+          <p className="font-display text-3xl font-semibold">{STAGE_LABEL[stage]}</p>
         </div>
         {blockingNextStage.length > 0 && (
-          <p className="max-w-sm font-body text-xs opacity-80">
+          <p className="max-w-sm font-body text-sm opacity-80">
             {blockingNextStage.length} item{blockingNextStage.length === 1 ? "" : "s"} away from the next stage.
           </p>
         )}
@@ -109,12 +109,12 @@ export function ReadinessPanel({
       <section className="rounded-xl border border-brand-umber/10 bg-brand-ivory p-5">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <p className="font-body text-sm font-semibold text-brand-charcoal">Per-SKU landed cost known</p>
-            <p className="font-body text-xs text-brand-charcoal/60">Auto-computed from the SKU sheet below.</p>
+            <p className="font-body text-base font-semibold text-brand-charcoal">Per-SKU landed cost known</p>
+            <p className="font-body text-sm text-brand-charcoal/60">Auto-computed from the SKU sheet below.</p>
           </div>
           <span
             className={clsx(
-              "shrink-0 rounded-full px-3 py-1 font-body text-sm font-semibold",
+              "shrink-0 rounded-full px-3 py-1 font-body text-base font-semibold",
               allSkuCostsKnown ? "bg-brand-success/10 text-brand-success" : "bg-brand-error/10 text-brand-error",
             )}
           >
@@ -126,8 +126,8 @@ export function ReadinessPanel({
       <section className="rounded-xl border border-brand-umber/10 bg-brand-ivory p-5">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <p className="font-body text-sm font-semibold text-brand-charcoal">Order log is live</p>
-            <p className="font-body text-xs text-brand-charcoal/60">
+            <p className="font-body text-base font-semibold text-brand-charcoal">Order log is live</p>
+            <p className="font-body text-sm text-brand-charcoal/60">
               Auto-computed from the{" "}
               <Link href="/admin/order-log" className="text-brand-umber underline">
                 order log
@@ -137,7 +137,7 @@ export function ReadinessPanel({
           </div>
           <span
             className={clsx(
-              "shrink-0 rounded-full px-3 py-1 font-body text-sm font-semibold",
+              "shrink-0 rounded-full px-3 py-1 font-body text-base font-semibold",
               orderLogLive ? "bg-brand-success/10 text-brand-success" : "bg-brand-error/10 text-brand-error",
             )}
           >
@@ -148,15 +148,15 @@ export function ReadinessPanel({
 
       {SECTIONS.map((section) => (
         <section key={section.stage} className="rounded-xl border border-brand-umber/10 bg-brand-ivory p-5">
-          <h3 className="font-display text-base font-semibold text-brand-umber-dark">{section.title}</h3>
+          <h3 className="font-display text-lg font-semibold text-brand-umber-dark">{section.title}</h3>
           <div className="mt-3 space-y-2">
             {section.items.map((item) => (
-              <label key={item.key} className="flex items-start gap-2 font-body text-sm text-brand-charcoal">
+              <label key={item.key} className="flex items-start gap-2 font-body text-base text-brand-charcoal">
                 <input
                   type="checkbox"
                   checked={manual[item.key]}
                   onChange={() => toggle(item.key)}
-                  className="mt-0.5"
+                  className="mt-0.5 h-4 w-4 accent-brand-umber"
                 />
                 <span>{item.label}</span>
               </label>

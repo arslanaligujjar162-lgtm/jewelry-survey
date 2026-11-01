@@ -82,10 +82,10 @@ function NumberField({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block font-body text-xs font-semibold text-brand-charcoal">{label}</span>
+      <span className="mb-1 block font-body text-sm font-semibold text-brand-charcoal">{label}</span>
       <span className="flex items-center overflow-hidden rounded-md border border-brand-umber/20 bg-brand-butter-light">
         {prefix && (
-          <span className="border-r border-brand-umber/20 px-2.5 py-2 font-body text-xs text-brand-charcoal/60">
+          <span className="border-r border-brand-umber/20 px-2.5 py-2 font-body text-sm text-brand-charcoal/60">
             {prefix}
           </span>
         )}
@@ -95,15 +95,15 @@ function NumberField({
           step={step}
           value={Number.isFinite(value) ? value : 0}
           onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
-          className="min-w-0 flex-1 bg-transparent px-3 py-2 font-body text-sm text-brand-charcoal outline-none focus-visible:ring-2 focus-visible:ring-brand-sky"
+          className="min-w-0 flex-1 bg-transparent px-3 py-2 font-body text-base text-brand-charcoal outline-none focus-visible:ring-2 focus-visible:ring-brand-sky"
         />
         {suffix && (
-          <span className="border-l border-brand-umber/20 px-2.5 py-2 font-body text-xs text-brand-charcoal/60">
+          <span className="border-l border-brand-umber/20 px-2.5 py-2 font-body text-sm text-brand-charcoal/60">
             {suffix}
           </span>
         )}
       </span>
-      {hint && <span className="mt-1 block font-body text-xs leading-snug text-brand-charcoal/50">{hint}</span>}
+      {hint && <span className="mt-1 block font-body text-sm leading-snug text-brand-charcoal/50">{hint}</span>}
     </label>
   );
 }
@@ -156,18 +156,18 @@ export function PricingCalculator({ catalogProducts }: { catalogProducts: Catalo
       {/* Inputs */}
       <div className="space-y-5">
         <section className="rounded-xl border border-brand-umber/10 bg-brand-ivory p-5">
-          <h2 className="font-display text-lg font-semibold text-brand-umber-dark">Sourcing cost</h2>
-          <p className="mt-1 font-body text-xs text-brand-charcoal/60">
+          <h2 className="font-display text-xl font-semibold text-brand-umber-dark">Sourcing cost</h2>
+          <p className="mt-1 font-body text-sm text-brand-charcoal/60">
             What the piece itself costs, landed from your 1688 supplier.
           </p>
 
           <div className="mt-4">
             <label className="block">
-              <span className="mb-1 block font-body text-xs font-semibold text-brand-charcoal">Product</span>
+              <span className="mb-1 block font-body text-sm font-semibold text-brand-charcoal">Product</span>
               <select
                 value={form.productId}
                 onChange={(e) => applyProduct(e.target.value)}
-                className="w-full rounded-md border border-brand-umber/20 bg-brand-butter-light px-3 py-2 font-body text-sm text-brand-charcoal"
+                className="w-full rounded-md border border-brand-umber/20 bg-brand-butter-light px-3 py-2 font-body text-base text-brand-charcoal"
               >
                 <option value="custom">Custom (type your own)</option>
                 {catalogProducts.map((p) => (
@@ -176,7 +176,7 @@ export function PricingCalculator({ catalogProducts }: { catalogProducts: Catalo
                   </option>
                 ))}
               </select>
-              <span className="mt-1 block font-body text-xs leading-snug text-brand-charcoal/50">
+              <span className="mt-1 block font-body text-sm leading-snug text-brand-charcoal/50">
                 Pick a product to pull its real photo &amp; selling price, or choose Custom.
               </span>
             </label>
@@ -193,14 +193,14 @@ export function PricingCalculator({ catalogProducts }: { catalogProducts: Catalo
                   />
                 </div>
                 <div className="min-w-0">
-                  <p className="truncate font-body text-sm font-semibold text-brand-charcoal">
+                  <p className="truncate font-body text-base font-semibold text-brand-charcoal">
                     {selectedProduct.name}
                   </p>
-                  <p className="font-body text-xs text-brand-charcoal/60">
+                  <p className="font-body text-sm text-brand-charcoal/60">
                     Selling on the website for {formatPKR(selectedProduct.priceRs)}
                   </p>
                   {!hasKnownSourcingCost && (
-                    <p className="mt-0.5 font-body text-xs font-medium text-brand-brass">
+                    <p className="mt-0.5 font-body text-sm font-medium text-brand-brass">
                       No saved sourcing cost for this product yet — check the fields below.
                     </p>
                   )}
@@ -209,13 +209,14 @@ export function PricingCalculator({ catalogProducts }: { catalogProducts: Catalo
             )}
           </div>
 
-          <div className="mt-4 flex gap-5 font-body text-sm text-brand-charcoal">
+          <div className="mt-4 flex gap-5 font-body text-base text-brand-charcoal">
             <label className="flex items-center gap-1.5">
               <input
                 type="radio"
                 name="costMode"
                 checked={form.costMode === "rmb"}
                 onChange={() => set("costMode", "rmb")}
+                className="h-4 w-4 accent-brand-umber"
               />
               Quoted in RMB
             </label>
@@ -225,6 +226,7 @@ export function PricingCalculator({ catalogProducts }: { catalogProducts: Catalo
                 name="costMode"
                 checked={form.costMode === "pkr"}
                 onChange={() => set("costMode", "pkr")}
+                className="h-4 w-4 accent-brand-umber"
               />
               Quoted in PKR
             </label>
@@ -294,8 +296,8 @@ export function PricingCalculator({ catalogProducts }: { catalogProducts: Catalo
         </section>
 
         <section className="rounded-xl border border-brand-umber/10 bg-brand-ivory p-5">
-          <h2 className="font-display text-lg font-semibold text-brand-umber-dark">Packaging</h2>
-          <p className="mt-1 font-body text-xs text-brand-charcoal/60">
+          <h2 className="font-display text-xl font-semibold text-brand-umber-dark">Packaging</h2>
+          <p className="mt-1 font-body text-sm text-brand-charcoal/60">
             Box, filler, stickers, card, and seal — per order.
           </p>
           <div className="mt-4">
@@ -311,8 +313,8 @@ export function PricingCalculator({ catalogProducts }: { catalogProducts: Catalo
         </section>
 
         <section className="rounded-xl border border-brand-umber/10 bg-brand-ivory p-5">
-          <h2 className="font-display text-lg font-semibold text-brand-umber-dark">Fulfilment &amp; courier</h2>
-          <p className="mt-1 font-body text-xs text-brand-charcoal/60">PostEx COD costs, per order.</p>
+          <h2 className="font-display text-xl font-semibold text-brand-umber-dark">Fulfilment &amp; courier</h2>
+          <p className="mt-1 font-body text-sm text-brand-charcoal/60">PostEx COD costs, per order.</p>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <NumberField
               label="Courier fee (Rs per order)"
@@ -335,11 +337,11 @@ export function PricingCalculator({ catalogProducts }: { catalogProducts: Catalo
               type="checkbox"
               checked={form.rtoEnabled}
               onChange={(e) => set("rtoEnabled", e.target.checked)}
-              className="mt-0.5"
+              className="mt-0.5 h-4 w-4 accent-brand-umber"
             />
-            <span className="font-body text-sm font-semibold text-brand-charcoal">
+            <span className="font-body text-base font-semibold text-brand-charcoal">
               Account for returned (RTO) orders
-              <span className="mt-0.5 block font-body text-xs font-normal leading-snug text-brand-charcoal/60">
+              <span className="mt-0.5 block font-body text-sm font-normal leading-snug text-brand-charcoal/60">
                 COD orders that get sent back still cost packaging and courier both ways. Spread that cost across the
                 orders that do sell.
               </span>
@@ -360,8 +362,8 @@ export function PricingCalculator({ catalogProducts }: { catalogProducts: Catalo
         </section>
 
         <section className="rounded-xl border border-brand-umber/10 bg-brand-ivory p-5">
-          <h2 className="font-display text-lg font-semibold text-brand-umber-dark">Margin</h2>
-          <p className="mt-1 font-body text-xs text-brand-charcoal/60">
+          <h2 className="font-display text-xl font-semibold text-brand-umber-dark">Margin</h2>
+          <p className="mt-1 font-body text-sm text-brand-charcoal/60">
             What you want to keep once product, packaging, and courier are covered.
           </p>
           <div className="mt-4">
@@ -376,7 +378,7 @@ export function PricingCalculator({ catalogProducts }: { catalogProducts: Catalo
           <button
             type="button"
             onClick={() => setForm(DEFAULTS)}
-            className="mt-4 rounded-full border border-brand-umber/30 px-4 py-1.5 font-body text-xs font-medium text-brand-umber-dark hover:bg-brand-sky/10"
+            className="mt-4 rounded-full border border-brand-umber/30 px-4 py-1.5 font-body text-sm font-medium text-brand-umber-dark hover:bg-brand-sky/10"
           >
             Reset to defaults
           </button>
@@ -386,13 +388,13 @@ export function PricingCalculator({ catalogProducts }: { catalogProducts: Catalo
       {/* Summary */}
       <div className="space-y-5 lg:sticky lg:top-6">
         <div className="rounded-xl bg-brand-umber-dark p-6 text-brand-ivory">
-          <p className="font-body text-xs text-brand-ivory/70">Suggested selling price</p>
-          <p className="mt-1 font-display text-4xl font-semibold">{formatPKR(result.suggestedPrice)}</p>
-          <p className="mt-1 font-body text-xs text-brand-ivory/70">
+          <p className="font-body text-sm text-brand-ivory/70">Suggested selling price</p>
+          <p className="mt-1 font-display text-5xl font-semibold">{formatPKR(result.suggestedPrice)}</p>
+          <p className="mt-1 font-body text-sm text-brand-ivory/70">
             Profit {formatPKR(result.profitAtSuggestedPrice)} per piece at this price
           </p>
 
-          <div className="mt-4 space-y-1.5 border-t border-brand-ivory/15 pt-4 font-body text-sm">
+          <div className="mt-4 space-y-1.5 border-t border-brand-ivory/15 pt-4 font-body text-base">
             <div className="flex justify-between text-brand-ivory/85">
               <span>Product + agent fee + freight/customs</span>
               <span>{formatPKR(result.baseProductCost)}</span>
@@ -419,8 +421,8 @@ export function PricingCalculator({ catalogProducts }: { catalogProducts: Catalo
         </div>
 
         <div className="rounded-xl border border-brand-umber/10 bg-brand-ivory p-5">
-          <h2 className="font-display text-base font-semibold text-brand-umber-dark">Check your price</h2>
-          <p className="mt-1 font-body text-xs text-brand-charcoal/60">
+          <h2 className="font-display text-lg font-semibold text-brand-umber-dark">Check your price</h2>
+          <p className="mt-1 font-body text-sm text-brand-charcoal/60">
             {selectedProduct
               ? `Prefilled with ${selectedProduct.name}'s real price on the website.`
               : "Type what you're actually charging."}
@@ -433,7 +435,7 @@ export function PricingCalculator({ catalogProducts }: { catalogProducts: Catalo
               onChange={(v) => set("yourPrice", v)}
             />
           </div>
-          <div className="mt-3 space-y-1.5 font-body text-sm text-brand-charcoal">
+          <div className="mt-3 space-y-1.5 font-body text-base text-brand-charcoal">
             <div className="flex justify-between">
               <span className="text-brand-charcoal/60">Profit at this price</span>
               <span className="font-medium">{formatPKR(yourCheck.profit)}</span>

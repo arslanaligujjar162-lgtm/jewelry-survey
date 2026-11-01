@@ -8,17 +8,17 @@ export default async function AdminProductsPage() {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="font-display text-2xl font-semibold text-brand-umber-dark">Products</h1>
+        <h1 className="font-display text-3xl font-semibold text-brand-umber-dark">Products</h1>
         <Link
           href="/admin/products/new"
-          className="rounded-full bg-brand-umber px-5 py-2 font-body text-sm font-semibold text-brand-ivory"
+          className="rounded-full bg-brand-umber px-5 py-2 font-body text-base font-semibold text-brand-ivory"
         >
           Add product
         </Link>
       </div>
 
       <div className="mt-6 overflow-x-auto rounded-xl border border-brand-umber/10 bg-brand-ivory">
-        <table className="w-full text-left font-body text-sm">
+        <table className="w-full text-left font-body text-base">
           <thead className="bg-brand-sky/60">
             <tr>
               <th className="px-4 py-3 font-semibold text-brand-umber-dark">SKU</th>

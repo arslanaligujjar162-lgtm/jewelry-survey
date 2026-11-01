@@ -11,10 +11,10 @@ export default async function AdminReviewsPage() {
 
   return (
     <div>
-      <h1 className="font-display text-2xl font-semibold text-brand-umber-dark">Reviews</h1>
+      <h1 className="font-display text-3xl font-semibold text-brand-umber-dark">Reviews</h1>
 
       <div className="mt-6 overflow-x-auto rounded-xl border border-brand-umber/10 bg-brand-ivory">
-        <table className="w-full text-left font-body text-sm">
+        <table className="w-full text-left font-body text-base">
           <thead className="bg-brand-sky/60">
             <tr>
               <th className="px-4 py-3 font-semibold text-brand-umber-dark">Product</th>

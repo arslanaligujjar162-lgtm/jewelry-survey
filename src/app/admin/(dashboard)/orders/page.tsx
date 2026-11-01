@@ -15,7 +15,7 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="font-display text-2xl font-semibold text-brand-umber-dark">Orders</h1>
+        <h1 className="font-display text-3xl font-semibold text-brand-umber-dark">Orders</h1>
         <div className="flex flex-wrap gap-2">
           <FilterLink label="All" active={!status} href="/admin/orders" />
           {STATUSES.map((s) => (
@@ -25,7 +25,7 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
       </div>
 
       <div className="mt-6 overflow-x-auto rounded-xl border border-brand-umber/10 bg-brand-ivory">
-        <table className="w-full text-left font-body text-sm">
+        <table className="w-full text-left font-body text-base">
           <thead className="bg-brand-sky/60">
             <tr>
               <th className="px-4 py-3 font-semibold text-brand-umber-dark">Order</th>
@@ -47,7 +47,7 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
                 <td className="px-4 py-3 text-brand-charcoal/80">
                   {order.customer_name}
                   <br />
-                  <span className="text-xs text-brand-charcoal/50">{order.customer_phone}</span>
+                  <span className="text-sm text-brand-charcoal/50">{order.customer_phone}</span>
                 </td>
                 <td className="px-4 py-3 text-brand-charcoal/80">{formatPKR(order.total)}</td>
                 <td className="px-4 py-3 text-brand-charcoal/80">{formatDate(order.created_at)}</td>
@@ -83,7 +83,7 @@ function FilterLink({ label, active, href }: { label: string; active: boolean; h
   return (
     <Link
       href={href}
-      className={`rounded-full border px-3 py-1.5 font-body text-xs capitalize ${
+      className={`rounded-full border px-3 py-1.5 font-body text-sm capitalize ${
         active ? "border-brand-umber bg-brand-umber text-brand-ivory" : "border-brand-umber/20 text-brand-charcoal"
       }`}
     >

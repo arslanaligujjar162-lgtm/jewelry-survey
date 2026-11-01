@@ -67,10 +67,10 @@ function NumberField({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block font-body text-xs font-semibold text-brand-charcoal">{label}</span>
+      <span className="mb-1 block font-body text-sm font-semibold text-brand-charcoal">{label}</span>
       <span className="flex items-center overflow-hidden rounded-md border border-brand-umber/20 bg-brand-butter-light">
         {prefix && (
-          <span className="border-r border-brand-umber/20 px-2.5 py-2 font-body text-xs text-brand-charcoal/60">
+          <span className="border-r border-brand-umber/20 px-2.5 py-2 font-body text-sm text-brand-charcoal/60">
             {prefix}
           </span>
         )}
@@ -80,15 +80,15 @@ function NumberField({
           step={step}
           value={Number.isFinite(value) ? value : 0}
           onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
-          className="min-w-0 flex-1 bg-transparent px-3 py-2 font-body text-sm text-brand-charcoal outline-none focus-visible:ring-2 focus-visible:ring-brand-sky"
+          className="min-w-0 flex-1 bg-transparent px-3 py-2 font-body text-base text-brand-charcoal outline-none focus-visible:ring-2 focus-visible:ring-brand-sky"
         />
         {suffix && (
-          <span className="border-l border-brand-umber/20 px-2.5 py-2 font-body text-xs text-brand-charcoal/60">
+          <span className="border-l border-brand-umber/20 px-2.5 py-2 font-body text-sm text-brand-charcoal/60">
             {suffix}
           </span>
         )}
       </span>
-      {hint && <span className="mt-1 block font-body text-xs leading-snug text-brand-charcoal/50">{hint}</span>}
+      {hint && <span className="mt-1 block font-body text-sm leading-snug text-brand-charcoal/50">{hint}</span>}
     </label>
   );
 }
@@ -128,8 +128,8 @@ export function UnitEconomicsCalculator() {
         {/* Inputs */}
         <div className="space-y-5">
           <section className="rounded-xl border border-brand-umber/10 bg-brand-ivory p-5">
-            <h2 className="font-display text-lg font-semibold text-brand-umber-dark">Per-order economics</h2>
-            <p className="mt-1 font-body text-xs text-brand-charcoal/60">
+            <h2 className="font-display text-xl font-semibold text-brand-umber-dark">Per-order economics</h2>
+            <p className="mt-1 font-body text-sm text-brand-charcoal/60">
               What one order is actually worth once COD failure is priced in. r = RTO rate (refused/returned ÷
               shipped). k = cancellation rate (cancelled before dispatch ÷ placed).
             </p>
@@ -204,7 +204,7 @@ export function UnitEconomicsCalculator() {
             <button
               type="button"
               onClick={() => setForm(DEFAULTS)}
-              className="mt-4 rounded-full border border-brand-umber/30 px-4 py-1.5 font-body text-xs font-medium text-brand-umber-dark hover:bg-brand-sky/10"
+              className="mt-4 rounded-full border border-brand-umber/30 px-4 py-1.5 font-body text-sm font-medium text-brand-umber-dark hover:bg-brand-sky/10"
             >
               Reset to defaults
             </button>
@@ -214,14 +214,14 @@ export function UnitEconomicsCalculator() {
         {/* Summary */}
         <div className="space-y-5 lg:sticky lg:top-6">
           <div className="rounded-xl bg-brand-umber-dark p-6 text-brand-ivory">
-            <p className="font-body text-xs text-brand-ivory/70">Break-even reported ROAS</p>
-            <p className="mt-1 font-display text-4xl font-semibold">{economics.breakEvenReportedRoas.toFixed(2)}×</p>
-            <p className="mt-1 font-body text-xs text-brand-ivory/70">
+            <p className="font-body text-sm text-brand-ivory/70">Break-even reported ROAS</p>
+            <p className="mt-1 font-display text-5xl font-semibold">{economics.breakEvenReportedRoas.toFixed(2)}×</p>
+            <p className="mt-1 font-body text-sm text-brand-ivory/70">
               Naive break-even (ignoring RTO &amp; cancellations) would say {economics.naiveBreakEvenRoas.toFixed(2)}×
               — {economics.breakEvenReportedRoas > economics.naiveBreakEvenRoas ? "lower than" : "near"} reality.
             </p>
 
-            <div className="mt-4 space-y-1.5 border-t border-brand-ivory/15 pt-4 font-body text-sm">
+            <div className="mt-4 space-y-1.5 border-t border-brand-ivory/15 pt-4 font-body text-base">
               <div className="flex justify-between text-brand-ivory/85">
                 <span>Revenue per order</span>
                 <span>{formatPKR(economics.revenue)}</span>
@@ -256,18 +256,18 @@ export function UnitEconomicsCalculator() {
       </div>
 
       <section className="rounded-xl border border-brand-umber/10 bg-brand-ivory p-5">
-        <h2 className="font-display text-lg font-semibold text-brand-umber-dark">
+        <h2 className="font-display text-xl font-semibold text-brand-umber-dark">
           Does the plan survive worse RTO than expected?
         </h2>
-        <p className="mt-1 font-body text-xs text-brand-charcoal/60">
+        <p className="mt-1 font-body text-sm text-brand-charcoal/60">
           Your real RTO rate isn&apos;t known yet. Check break-even at 10%, 20%, and 30% — only proceed if it still
           works at 20%.
         </p>
 
         <div className="mt-4 overflow-x-auto">
-          <table className="w-full text-left font-body text-sm">
+          <table className="w-full text-left font-body text-base">
             <thead>
-              <tr className="border-b border-brand-umber/15 text-xs text-brand-charcoal/60">
+              <tr className="border-b border-brand-umber/15 text-sm text-brand-charcoal/60">
                 <th className="py-2 pr-4 font-semibold">RTO rate (r)</th>
                 <th className="py-2 pr-4 font-semibold">Break-even reported ROAS</th>
                 <th className="py-2 pr-4 font-semibold">Max ad cost / placed order</th>
@@ -297,8 +297,8 @@ export function UnitEconomicsCalculator() {
       </section>
 
       <section className="rounded-xl border border-brand-umber/10 bg-brand-ivory p-5">
-        <h2 className="font-display text-lg font-semibold text-brand-umber-dark">Reconcile against real ad spend</h2>
-        <p className="mt-1 font-body text-xs text-brand-charcoal/60">
+        <h2 className="font-display text-xl font-semibold text-brand-umber-dark">Reconcile against real ad spend</h2>
+        <p className="mt-1 font-body text-sm text-brand-charcoal/60">
           Type what actually happened — from your order log and Meta/Ads Manager — to see whether this period made
           money, not just whether it looked good on the reported ROAS.
         </p>
@@ -345,10 +345,10 @@ export function UnitEconomicsCalculator() {
         </div>
 
         <div className="mt-4 rounded-md border border-brand-umber/15 bg-brand-butter-light p-4">
-          <p className="font-body text-xs font-semibold text-brand-charcoal">
+          <p className="font-body text-sm font-semibold text-brand-charcoal">
             Don&apos;t trust a published tax rate — work it out from a real statement
           </p>
-          <p className="mt-1 font-body text-xs text-brand-charcoal/60">
+          <p className="mt-1 font-body text-sm text-brand-charcoal/60">
             Published ad-payment tax rates for Pakistan range from 0.5% to 17% depending on the source. Pull one
             month&apos;s card statement with a Meta charge on it instead.
           </p>
@@ -361,15 +361,15 @@ export function UnitEconomicsCalculator() {
             />
             <NumberField label="Meta invoice amount (Rs)" prefix="Rs" value={taxHelperInvoice} onChange={setTaxHelperInvoice} />
             <div>
-              <p className="font-body text-xs text-brand-charcoal/60">Implied rate</p>
-              <p className="font-display text-xl font-semibold text-brand-umber-dark">{impliedTaxRate.toFixed(2)}%</p>
+              <p className="font-body text-sm text-brand-charcoal/60">Implied rate</p>
+              <p className="font-display text-2xl font-semibold text-brand-umber-dark">{impliedTaxRate.toFixed(2)}%</p>
             </div>
           </div>
           <button
             type="button"
             disabled={taxHelperInvoice <= 0}
             onClick={() => set("taxAndFeeRatePctOnAdPayments", Math.round(impliedTaxRate * 100) / 100)}
-            className="mt-3 rounded-full border border-brand-umber/30 px-4 py-1.5 font-body text-xs font-medium text-brand-umber-dark hover:bg-brand-sky/20 disabled:cursor-not-allowed disabled:opacity-40"
+            className="mt-3 rounded-full border border-brand-umber/30 px-4 py-1.5 font-body text-sm font-medium text-brand-umber-dark hover:bg-brand-sky/20 disabled:cursor-not-allowed disabled:opacity-40"
           >
             Use this rate above
           </button>
@@ -378,26 +378,26 @@ export function UnitEconomicsCalculator() {
         {hasRealData ? (
           <div className="mt-5 grid gap-4 border-t border-brand-umber/10 pt-5 sm:grid-cols-2 lg:grid-cols-4">
             <div>
-              <p className="font-body text-xs text-brand-charcoal/60">Reported ROAS</p>
-              <p className="font-display text-xl font-semibold text-brand-umber-dark">
+              <p className="font-body text-sm text-brand-charcoal/60">Reported ROAS</p>
+              <p className="font-display text-2xl font-semibold text-brand-umber-dark">
                 {reconciliation.reportedRoas.toFixed(2)}×
               </p>
             </div>
             <div>
-              <p className="font-body text-xs text-brand-charcoal/60">Reconciled ROAS (cash collected)</p>
-              <p className="font-display text-xl font-semibold text-brand-umber-dark">
+              <p className="font-body text-sm text-brand-charcoal/60">Reconciled ROAS (cash collected)</p>
+              <p className="font-display text-2xl font-semibold text-brand-umber-dark">
                 {reconciliation.reconciledRoas.toFixed(2)}×
               </p>
             </div>
             <div>
-              <p className="font-body text-xs text-brand-charcoal/60">Cost per delivered order</p>
-              <p className="font-display text-xl font-semibold text-brand-umber-dark">
+              <p className="font-body text-sm text-brand-charcoal/60">Cost per delivered order</p>
+              <p className="font-display text-2xl font-semibold text-brand-umber-dark">
                 {formatPKR(reconciliation.costPerDeliveredOrder)}
               </p>
             </div>
             <div>
-              <p className="font-body text-xs text-brand-charcoal/60">True ad cost (incl. tax/fees)</p>
-              <p className="font-display text-xl font-semibold text-brand-umber-dark">
+              <p className="font-body text-sm text-brand-charcoal/60">True ad cost (incl. tax/fees)</p>
+              <p className="font-display text-2xl font-semibold text-brand-umber-dark">
                 {formatPKR(reconciliation.trueAdCost)}
               </p>
             </div>
@@ -408,16 +408,16 @@ export function UnitEconomicsCalculator() {
                 isProfitable ? "bg-brand-success/10" : "bg-brand-error/10",
               )}
             >
-              <span className={clsx("font-body text-sm font-semibold", isProfitable ? "text-brand-success" : "text-brand-error")}>
+              <span className={clsx("font-body text-base font-semibold", isProfitable ? "text-brand-success" : "text-brand-error")}>
                 {isProfitable ? "Profitable after ads" : "Losing money after ads"}
               </span>
-              <span className={clsx("font-display text-lg font-semibold", isProfitable ? "text-brand-success" : "text-brand-error")}>
+              <span className={clsx("font-display text-xl font-semibold", isProfitable ? "text-brand-success" : "text-brand-error")}>
                 {formatPKR(reconciliation.contributionAfterAds)}
               </span>
             </div>
           </div>
         ) : (
-          <p className="mt-4 border-t border-brand-umber/10 pt-4 font-body text-xs text-brand-charcoal/50">
+          <p className="mt-4 border-t border-brand-umber/10 pt-4 font-body text-sm text-brand-charcoal/50">
             Fill in ad spend and placed orders to see reported vs. reconciled ROAS and whether this period actually
             made money.
           </p>

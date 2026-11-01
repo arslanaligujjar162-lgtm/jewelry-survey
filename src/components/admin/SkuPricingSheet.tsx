@@ -55,10 +55,10 @@ function NumberField({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block font-body text-xs font-semibold text-brand-charcoal">{label}</span>
+      <span className="mb-1 block font-body text-sm font-semibold text-brand-charcoal">{label}</span>
       <span className="flex items-center overflow-hidden rounded-md border border-brand-umber/20 bg-white">
         {prefix && (
-          <span className="border-r border-brand-umber/20 px-2 py-1.5 font-body text-xs text-brand-charcoal/60">
+          <span className="border-r border-brand-umber/20 px-2 py-1.5 font-body text-sm text-brand-charcoal/60">
             {prefix}
           </span>
         )}
@@ -68,10 +68,10 @@ function NumberField({
           step={step}
           value={Number.isFinite(value) ? value : 0}
           onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
-          className="min-w-0 flex-1 bg-transparent px-2 py-1.5 font-body text-sm text-brand-charcoal outline-none focus-visible:ring-2 focus-visible:ring-brand-sky"
+          className="min-w-0 flex-1 bg-transparent px-2 py-1.5 font-body text-base text-brand-charcoal outline-none focus-visible:ring-2 focus-visible:ring-brand-sky"
         />
         {suffix && (
-          <span className="border-l border-brand-umber/20 px-2 py-1.5 font-body text-xs text-brand-charcoal/60">
+          <span className="border-l border-brand-umber/20 px-2 py-1.5 font-body text-sm text-brand-charcoal/60">
             {suffix}
           </span>
         )}
@@ -138,10 +138,10 @@ export function SkuPricingSheet({ catalogProducts }: { catalogProducts: CatalogP
   return (
     <div className="space-y-4">
       <details className="rounded-xl border border-brand-umber/10 bg-brand-ivory p-5">
-        <summary className="cursor-pointer font-display text-base font-semibold text-brand-umber-dark">
+        <summary className="cursor-pointer font-display text-lg font-semibold text-brand-umber-dark">
           Assumptions used below ({knownCount}/{rows.length} products have a recorded sourcing cost)
         </summary>
-        <p className="mt-2 font-body text-xs text-brand-charcoal/60">
+        <p className="mt-2 font-body text-sm text-brand-charcoal/60">
           Applied to every product below. Adjust to match what you&apos;d actually set up the batch with — these are
           separate from the single-product calculator above.
         </p>
@@ -180,11 +180,12 @@ export function SkuPricingSheet({ catalogProducts }: { catalogProducts: CatalogP
             onChange={(v) => set("courierFee", v)}
           />
         </div>
-        <label className="mt-4 flex items-center gap-2 font-body text-xs font-semibold text-brand-charcoal">
+        <label className="mt-4 flex items-center gap-2 font-body text-sm font-semibold text-brand-charcoal">
           <input
             type="checkbox"
             checked={assumptions.rtoEnabled}
             onChange={(e) => set("rtoEnabled", e.target.checked)}
+            className="h-4 w-4 accent-brand-umber"
           />
           Account for RTO orders
         </label>
@@ -201,7 +202,7 @@ export function SkuPricingSheet({ catalogProducts }: { catalogProducts: CatalogP
       </details>
 
       <div className="overflow-x-auto rounded-xl border border-brand-umber/10 bg-brand-ivory">
-        <table className="w-full text-left font-body text-sm">
+        <table className="w-full text-left font-body text-base">
           <thead className="bg-brand-sky/10">
             <tr>
               <th className="px-4 py-3 font-semibold text-brand-umber-dark">Product</th>
@@ -225,7 +226,7 @@ export function SkuPricingSheet({ catalogProducts }: { catalogProducts: CatalogP
                       <div className="min-w-0">
                         <p className="truncate font-medium text-brand-charcoal">{product.name}</p>
                         {!costKnown && (
-                          <p className="font-body text-[11px] font-medium text-brand-brass">No sourcing cost saved</p>
+                          <p className="font-body text-[13px] font-medium text-brand-brass">No sourcing cost saved</p>
                         )}
                       </div>
                     </div>
@@ -243,7 +244,7 @@ export function SkuPricingSheet({ catalogProducts }: { catalogProducts: CatalogP
                       </td>
                     </>
                   ) : (
-                    <td colSpan={4} className="px-4 py-3 font-body text-xs text-brand-charcoal/50">
+                    <td colSpan={4} className="px-4 py-3 font-body text-sm text-brand-charcoal/50">
                       Cost unknown — enter it in the calculator below to see a real margin here.
                     </td>
                   )}
