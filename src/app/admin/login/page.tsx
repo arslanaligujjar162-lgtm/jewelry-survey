@@ -33,17 +33,17 @@ export default function AdminLoginPage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-brand-sky/10 px-4 py-16">
       <Wordmark />
-      <h1 className="mt-6 font-display text-2xl font-semibold text-brand-umber-dark">Admin sign in</h1>
+      <h1 className="mt-6 font-display text-3xl font-semibold text-brand-umber-dark">Admin sign in</h1>
 
       {!configured ? (
-        <p className="mt-6 max-w-sm text-center font-body text-sm text-brand-error">
+        <p className="mt-6 max-w-sm text-center font-body text-base text-brand-error">
           Supabase isn&apos;t configured yet. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to your
           environment, run the migrations, and create an admin user in Supabase Auth to use this dashboard.
         </p>
       ) : (
         <form onSubmit={handleSubmit} className="mt-6 w-full max-w-sm space-y-4 rounded-xl bg-brand-ivory p-6 shadow-sm">
           <div>
-            <label htmlFor="email" className="block font-body text-sm font-medium text-brand-charcoal">
+            <label htmlFor="email" className="block font-body text-base font-medium text-brand-charcoal">
               Email
             </label>
             <input
@@ -57,7 +57,7 @@ export default function AdminLoginPage() {
             />
           </div>
           <div>
-            <label htmlFor="password" className="block font-body text-sm font-medium text-brand-charcoal">
+            <label htmlFor="password" className="block font-body text-base font-medium text-brand-charcoal">
               Password
             </label>
             <input
@@ -71,14 +71,14 @@ export default function AdminLoginPage() {
             />
           </div>
           {error && (
-            <p role="alert" className="font-body text-sm text-brand-error">
+            <p role="alert" className="font-body text-base text-brand-error">
               {error}
             </p>
           )}
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-full bg-brand-umber py-2.5 font-body text-sm font-semibold text-brand-ivory disabled:opacity-50"
+            className="w-full rounded-full bg-brand-umber py-2.5 font-body text-base font-semibold text-brand-ivory disabled:opacity-50"
           >
             {loading ? "Signing in…" : "Sign in"}
           </button>

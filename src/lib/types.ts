@@ -108,6 +108,32 @@ export interface ReturnRequest {
   updated_at: string;
 }
 
+export type AdOrderLogSource = "website" | "whatsapp" | "instagram_dm" | "other";
+
+/** placed -> cancelled (before dispatch) | shipped -> delivered | rto (refused/returned). */
+export type AdOrderLogStatus = "placed" | "cancelled" | "shipped" | "delivered" | "rto";
+
+/**
+ * One row per order, logged by hand regardless of whether it came through
+ * the website checkout or a WhatsApp/Instagram DM — the measurement tool
+ * the Meta Ads Phase 1 brief calls the most important one a COD seller owns.
+ */
+export interface AdOrderLogEntry {
+  id: string;
+  order_date: string;
+  source: AdOrderLogSource;
+  ad_name: string | null;
+  product_name: string;
+  revenue: number;
+  status: AdOrderLogStatus;
+  cash_collected: number | null;
+  dispatched_at: string | null;
+  resolved_at: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface CartLine {
   product_id: string;
   sku: string;

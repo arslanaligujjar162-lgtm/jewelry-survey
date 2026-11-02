@@ -40,8 +40,8 @@ export function PostExPanel({
   }
 
   return (
-    <section className="rounded-xl border border-brand-umber/10 bg-brand-ivory p-5 font-body text-sm">
-      <h2 className="font-body text-sm font-semibold uppercase tracking-wide text-brand-umber-dark">PostEx delivery</h2>
+    <section className="rounded-xl border border-brand-umber/10 bg-brand-ivory p-5 font-body text-base">
+      <h2 className="font-body text-base font-semibold uppercase tracking-wide text-brand-umber-dark">PostEx delivery</h2>
 
       {!trackingNumber ? (
         <button
@@ -67,7 +67,7 @@ export function PostExPanel({
               type="button"
               onClick={() => run(() => refreshPostExStatusAction(orderId))}
               disabled={isPending}
-              className="rounded-full border border-brand-umber/30 px-3 py-1.5 text-xs font-semibold text-brand-umber-dark transition hover:bg-brand-sky/10 disabled:opacity-50"
+              className="rounded-full border border-brand-umber/30 px-3 py-1.5 text-sm font-semibold text-brand-umber-dark transition hover:bg-brand-sky/10 disabled:opacity-50"
             >
               Refresh status
             </button>
@@ -75,7 +75,7 @@ export function PostExPanel({
               type="button"
               onClick={checkPayment}
               disabled={isPending}
-              className="rounded-full border border-brand-umber/30 px-3 py-1.5 text-xs font-semibold text-brand-umber-dark transition hover:bg-brand-sky/10 disabled:opacity-50"
+              className="rounded-full border border-brand-umber/30 px-3 py-1.5 text-sm font-semibold text-brand-umber-dark transition hover:bg-brand-sky/10 disabled:opacity-50"
             >
               Check COD payout
             </button>
@@ -83,17 +83,17 @@ export function PostExPanel({
               type="button"
               onClick={() => run(() => cancelPostExBookingAction(orderId))}
               disabled={isPending}
-              className="rounded-full border border-brand-error/40 px-3 py-1.5 text-xs font-semibold text-brand-error transition hover:bg-brand-error/10 disabled:opacity-50"
+              className="rounded-full border border-brand-error/40 px-3 py-1.5 text-sm font-semibold text-brand-error transition hover:bg-brand-error/10 disabled:opacity-50"
             >
               Cancel booking
             </button>
           </div>
-          {paymentInfo && <p className="pt-1 text-xs text-brand-charcoal/70">COD payout: {paymentInfo}</p>}
+          {paymentInfo && <p className="pt-1 text-sm text-brand-charcoal/70">COD payout: {paymentInfo}</p>}
         </div>
       )}
 
       {error && (
-        <p role="alert" className="mt-3 font-body text-xs text-brand-error">
+        <p role="alert" className="mt-3 font-body text-sm text-brand-error">
           {error}
         </p>
       )}

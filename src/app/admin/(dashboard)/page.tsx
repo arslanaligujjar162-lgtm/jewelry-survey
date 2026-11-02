@@ -18,7 +18,7 @@ export default async function AdminOverviewPage() {
 
   return (
     <div>
-      <h1 className="font-display text-2xl font-semibold text-brand-umber-dark">Overview</h1>
+      <h1 className="font-display text-3xl font-semibold text-brand-umber-dark">Overview</h1>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Pending orders" value={pendingOrders} href="/admin/orders?status=pending" />
@@ -29,12 +29,12 @@ export default async function AdminOverviewPage() {
 
       {lowStockProducts.length > 0 && (
         <div className="mt-8">
-          <h2 className="font-body text-sm font-semibold uppercase tracking-wide text-brand-umber-dark">
+          <h2 className="font-body text-base font-semibold uppercase tracking-wide text-brand-umber-dark">
             Low stock
           </h2>
           <ul className="mt-3 divide-y divide-brand-umber/10 rounded-lg border border-brand-umber/10 bg-brand-ivory">
             {lowStockProducts.map((p) => (
-              <li key={p.id} className="flex justify-between px-4 py-3 font-body text-sm">
+              <li key={p.id} className="flex justify-between px-4 py-3 font-body text-base">
                 <Link href={`/admin/products/${p.id}`} className="text-brand-charcoal hover:text-brand-umber">
                   {p.name} ({p.sku})
                 </Link>
@@ -51,8 +51,8 @@ export default async function AdminOverviewPage() {
 function StatCard({ label, value, href }: { label: string; value: number; href: string }) {
   return (
     <Link href={href} className="rounded-xl border border-brand-umber/10 bg-brand-ivory p-5 transition hover:border-brand-umber/30">
-      <p className="font-body text-sm text-brand-charcoal/70">{label}</p>
-      <p className="mt-1 font-display text-3xl font-semibold text-brand-umber-dark">{value}</p>
+      <p className="font-body text-base text-brand-charcoal/70">{label}</p>
+      <p className="mt-1 font-display text-4xl font-semibold text-brand-umber-dark">{value}</p>
     </Link>
   );
 }

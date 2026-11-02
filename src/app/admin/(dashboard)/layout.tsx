@@ -11,6 +11,8 @@ export const dynamic = "force-dynamic";
 
 const NAV = [
   { href: "/admin", label: "Overview" },
+  { href: "/admin/pricing", label: "Pricing" },
+  { href: "/admin/order-log", label: "Order log" },
   { href: "/admin/orders", label: "Orders" },
   { href: "/admin/products", label: "Products" },
   { href: "/admin/returns", label: "Returns" },
@@ -22,8 +24,8 @@ export default async function AdminDashboardLayout({ children }: { children: Rea
     return (
       <div className="flex min-h-screen items-center justify-center bg-brand-sky/10 px-4">
         <div className="max-w-sm rounded-xl bg-brand-ivory p-6 text-center shadow-sm">
-          <h1 className="font-display text-xl font-semibold text-brand-umber-dark">Admin dashboard not configured</h1>
-          <p className="mt-3 font-body text-sm text-brand-charcoal/70">
+          <h1 className="font-display text-2xl font-semibold text-brand-umber-dark">Admin dashboard not configured</h1>
+          <p className="mt-3 font-body text-base text-brand-charcoal/70">
             Add your Supabase credentials to the environment, run the migrations in{" "}
             <code>supabase/migrations</code>, and create an admin user in Supabase Auth to use this dashboard.
           </p>
@@ -44,7 +46,7 @@ export default async function AdminDashboardLayout({ children }: { children: Rea
       <header className="border-b border-brand-umber/10 bg-brand-ivory">
         <div className="container-page flex h-16 items-center justify-between">
           <Wordmark />
-          <nav className="hidden gap-6 font-body text-sm sm:flex" aria-label="Admin">
+          <nav className="hidden gap-6 font-body text-base sm:flex" aria-label="Admin">
             {NAV.map((link) => (
               <Link key={link.href} href={link.href} className="text-brand-charcoal hover:text-brand-umber">
                 {link.label}
@@ -52,11 +54,11 @@ export default async function AdminDashboardLayout({ children }: { children: Rea
             ))}
           </nav>
           <div className="flex items-center gap-4">
-            <span className="hidden font-body text-xs text-brand-charcoal/60 sm:inline">{user.email}</span>
+            <span className="hidden font-body text-sm text-brand-charcoal/60 sm:inline">{user.email}</span>
             <SignOutButton />
           </div>
         </div>
-        <nav className="container-page flex gap-4 overflow-x-auto pb-3 font-body text-sm sm:hidden" aria-label="Admin">
+        <nav className="container-page flex gap-4 overflow-x-auto pb-3 font-body text-base sm:hidden" aria-label="Admin">
           {NAV.map((link) => (
             <Link key={link.href} href={link.href} className="whitespace-nowrap text-brand-charcoal hover:text-brand-umber">
               {link.label}

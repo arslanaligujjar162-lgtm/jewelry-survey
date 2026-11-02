@@ -25,7 +25,7 @@ export function StatusUpdateForm({
         defaultValue={currentStatus}
         onChange={() => formRef.current?.requestSubmit()}
         disabled={isPending}
-        className="rounded-lg border border-brand-umber/20 bg-brand-ivory px-2.5 py-1.5 font-body text-xs capitalize text-brand-charcoal disabled:opacity-50"
+        className="rounded-lg border border-brand-umber/20 bg-brand-ivory px-2.5 py-1.5 font-body text-sm capitalize text-brand-charcoal disabled:opacity-50"
       >
         {options.map((status) => (
           <option key={status} value={status} className="capitalize">
@@ -33,7 +33,7 @@ export function StatusUpdateForm({
           </option>
         ))}
       </select>
-      {isPending && <span className="font-body text-xs text-brand-charcoal/50">Saving…</span>}
+      {isPending && <span className="font-body text-sm text-brand-charcoal/50">Saving…</span>}
     </form>
   );
 }
