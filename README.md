@@ -43,6 +43,7 @@ app degrades gracefully (see **Status** above) when Supabase, analytics, or the 
 | `RESEND_API_KEY`, `ORDER_ALERT_EMAIL`, `ORDER_ALERT_FROM` | New-order email alerts to the owner via Resend — omit to skip |
 | `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM_NUMBER` | Optional SMS phone verification at checkout. Unset: COD orders go through without a code and are confirmed on WhatsApp |
 | `POSTEX_API_TOKEN` | PostEx courier integration (`src/lib/postex.ts`) — booking, tracking and COD payout status from Admin → Orders. Unset: the "Book with PostEx" panel shows a config error instead |
+| `POSTEX_PICKUP_ADDRESS_CODE` | The registered warehouse's address code (Merchant Portal → Setting → Pickup/Return Address Logs). PostEx rejects every booking without this — see "Book with PostEx" errors if it's missing or wrong |
 
 ## Supabase setup
 
