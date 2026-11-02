@@ -100,6 +100,26 @@ export async function getPostExPaymentStatus(
   }
 }
 
+/** Fetches the printable shipping label (Airway Bill) PDF for up to 10 tracking
+ * numbers at once — PostEx's own limit. Returns the raw PDF bytes on success. */
+export async function getPostExAirwayBill(trackingNumbers: string[]): Promise<PostExResult<{ pdf: ArrayBuffer }>> {
+  if (!postExConfigured()) return { success: false, error: "PostEx is not configured." };
+  if (trackingNumbers.length === 0) return { success: false, error: "No tracking numbers given." };
+  if (trackingNumbers.length > 10) return { success: false, error: "PostEx generates a PDF for at most 10 tracking numbers at once." };
+
+  try {
+    const qs = trackingNumbers.map(encodeURIComponent).join(",");
+    const res = await fetch(`${BASE_URL}/v1/get-invoice?trackingNumbers=${qs}`, {
+      headers: postExHeaders(),
+    });
+    if (!res.ok) return { success: false, error: `PostEx returned HTTP ${res.status}` };
+    return { success: true, pdf: await res.arrayBuffer() };
+  } catch (err) {
+    reportError(err, { context: "postex-airway-bill", tracking_numbers: trackingNumbers.join(",") });
+    return { success: false, error: "Could not reach PostEx. Try again." };
+  }
+}
+
 /** Cancels a booked shipment. PostEx returns the result as a plain HTTP status
  * here (200/404), not a statusCode field in the body. */
 export async function cancelPostExOrder(trackingNumber: string): Promise<{ success: boolean; error?: string }> {

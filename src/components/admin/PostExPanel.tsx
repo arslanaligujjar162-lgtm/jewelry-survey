@@ -63,6 +63,14 @@ export function PostExPanel({
             <span className="font-medium text-brand-charcoal">{status ?? "Booked"}</span>
           </div>
           <div className="flex flex-wrap gap-2 pt-2">
+            <a
+              href={`/admin/postex-airway-bill/${encodeURIComponent(trackingNumber)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full border border-brand-umber/30 px-3 py-1.5 text-sm font-semibold text-brand-umber-dark transition hover:bg-brand-sky/10"
+            >
+              Download Airway Bill
+            </a>
             <button
               type="button"
               onClick={() => run(() => refreshPostExStatusAction(orderId))}

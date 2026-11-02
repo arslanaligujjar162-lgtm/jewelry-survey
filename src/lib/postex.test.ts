@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { bookPostExOrder, trackPostExOrder, getPostExPaymentStatus, cancelPostExOrder } from "./postex";
+import { bookPostExOrder, trackPostExOrder, getPostExPaymentStatus, cancelPostExOrder, getPostExAirwayBill } from "./postex";
 import type { Order } from "./types";
 
 const order: Order = {
@@ -46,6 +46,10 @@ afterEach(() => {
 
 function jsonResponse(status: number, body: unknown) {
   return { ok: status >= 200 && status < 300, status, json: async () => body };
+}
+
+function pdfResponse(status: number, bytes: ArrayBuffer) {
+  return { ok: status >= 200 && status < 300, status, arrayBuffer: async () => bytes };
 }
 
 describe("postExConfigured gate", () => {
@@ -146,5 +150,38 @@ describe("cancelPostExOrder", () => {
     (fetch as ReturnType<typeof vi.fn>).mockResolvedValue(jsonResponse(404, {}));
     const result = await cancelPostExOrder("CX-001");
     expect(result).toEqual({ success: false, error: "Order not found on PostEx." });
+  });
+});
+
+describe("getPostExAirwayBill", () => {
+  it("returns the PDF bytes for a single tracking number", async () => {
+    const bytes = new TextEncoder().encode("%PDF-fake").buffer;
+    (fetch as ReturnType<typeof vi.fn>).mockResolvedValue(pdfResponse(200, bytes));
+
+    const result = await getPostExAirwayBill(["CX-001"]);
+    expect(result).toEqual({ success: true, pdf: bytes });
+
+    const [url] = (fetch as ReturnType<typeof vi.fn>).mock.calls[0];
+    expect(url).toContain("/v1/get-invoice?trackingNumbers=CX-001");
+  });
+
+  it("joins multiple tracking numbers with a comma", async () => {
+    (fetch as ReturnType<typeof vi.fn>).mockResolvedValue(pdfResponse(200, new ArrayBuffer(0)));
+    await getPostExAirwayBill(["CX-001", "CX-002"]);
+    const [url] = (fetch as ReturnType<typeof vi.fn>).mock.calls[0];
+    expect(url).toContain("trackingNumbers=CX-001,CX-002");
+  });
+
+  it("refuses more than PostEx's 10-tracking-number limit without calling the API", async () => {
+    const many = Array.from({ length: 11 }, (_, i) => `CX-${i}`);
+    const result = await getPostExAirwayBill(many);
+    expect(result.success).toBe(false);
+    expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it("fails closed when PostEx responds with an error status", async () => {
+    (fetch as ReturnType<typeof vi.fn>).mockResolvedValue(pdfResponse(404, new ArrayBuffer(0)));
+    const result = await getPostExAirwayBill(["CX-001"]);
+    expect(result).toEqual({ success: false, error: "PostEx returned HTTP 404" });
   });
 });
