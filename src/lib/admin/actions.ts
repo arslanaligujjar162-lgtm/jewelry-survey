@@ -63,13 +63,13 @@ export async function deleteOrderAction(orderId: string) {
 }
 
 /** Books the order as a COD shipment with PostEx and stores the tracking number. */
-export async function bookPostExOrderAction(orderId: string): Promise<{ error?: string }> {
+export async function bookPostExOrderAction(orderId: string, codAmountOverride?: number): Promise<{ error?: string }> {
   await requireAdmin();
   const admin = createAdminClient();
   const { data: order } = await admin.from("orders").select("*").eq("id", orderId).single();
   if (!order) return { error: "Order not found." };
 
-  const result = await bookPostExOrder(order as Order);
+  const result = await bookPostExOrder(order as Order, codAmountOverride);
   if (!result.success) return { error: result.error };
 
   const { error } = await admin

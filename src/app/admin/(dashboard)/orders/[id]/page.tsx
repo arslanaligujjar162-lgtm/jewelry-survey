@@ -88,7 +88,12 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
             </p>
           </section>
 
-          <PostExPanel orderId={order.id} trackingNumber={order.postex_tracking_number} status={order.postex_status} />
+          <PostExPanel
+            orderId={order.id}
+            trackingNumber={order.postex_tracking_number}
+            status={order.postex_status}
+            defaultCodAmount={order.total}
+          />
         </div>
 
         <section className="h-fit rounded-xl border border-brand-umber/10 bg-brand-ivory p-5 font-body text-base">
