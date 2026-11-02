@@ -46,6 +46,9 @@ export async function bookPostExOrder(order: Order): Promise<PostExResult<{ trac
         orderDetail: itemSummary(order),
         orderRefNumber: order.order_number,
         orderType: "Normal",
+        // PostEx rejects a booking unless at least one of these identifies which
+        // registered warehouse to collect from (Merchant Portal > Setting > Pickup/Return Address Logs).
+        pickupAddressCode: process.env.POSTEX_PICKUP_ADDRESS_CODE,
       }),
     });
     const data = await res.json();
