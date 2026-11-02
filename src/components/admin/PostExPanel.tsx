@@ -58,7 +58,7 @@ export function PostExPanel({
               onChange={(e) => setCodAmount(e.target.value)}
               className="mt-1 w-full rounded-lg border border-brand-umber/20 bg-brand-ivory px-3 py-2 font-body text-base"
             />
-            <span className="mt-1 block text-sm text-brand-charcoal/50">Defaults to the order total — edit if you've agreed a different amount with the customer.</span>
+            <span className="mt-1 block text-sm text-brand-charcoal/50">Defaults to the order total — edit if you&apos;ve agreed a different amount with the customer.</span>
           </label>
           <button
             type="button"
