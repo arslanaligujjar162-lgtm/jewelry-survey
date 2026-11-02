@@ -27,8 +27,14 @@ function deliveryAddressLine(order: Order): string {
 export type PostExResult<T> = ({ success: true } & T) | { success: false; error: string };
 
 /** Books a COD shipment with PostEx for an already-placed order. Never throws —
- * callers (an admin action) get a typed result to show a clear error from. */
-export async function bookPostExOrder(order: Order): Promise<PostExResult<{ trackingNumber: string }>> {
+ * callers (an admin action) get a typed result to show a clear error from.
+ * `codAmountOverride` lets the owner send a different amount to the courier
+ * than the order's own total (e.g. an adjustment agreed with the customer
+ * after checkout) without changing the order's stored total. */
+export async function bookPostExOrder(
+  order: Order,
+  codAmountOverride?: number
+): Promise<PostExResult<{ trackingNumber: string }>> {
   if (!postExConfigured()) return { success: false, error: "PostEx is not configured (POSTEX_API_TOKEN missing)." };
 
   try {
@@ -40,7 +46,7 @@ export async function bookPostExOrder(order: Order): Promise<PostExResult<{ trac
         customerName: order.customer_name,
         customerPhone: order.customer_phone,
         deliveryAddress: deliveryAddressLine(order),
-        invoicePayment: order.total,
+        invoicePayment: codAmountOverride ?? order.total,
         invoiceDivision: 1,
         items: totalItems(order),
         orderDetail: itemSummary(order),

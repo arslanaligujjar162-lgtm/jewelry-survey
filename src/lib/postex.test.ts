@@ -85,6 +85,17 @@ describe("bookPostExOrder", () => {
     expect(init.headers.token).toBe("test-token");
   });
 
+  it("sends a manually overridden COD amount instead of the order's own total, when given one", async () => {
+    (fetch as ReturnType<typeof vi.fn>).mockResolvedValue(
+      jsonResponse(200, { statusCode: "200", dist: { trackingNumber: "CX-001" } })
+    );
+
+    await bookPostExOrder(order, 5000);
+
+    const [, init] = (fetch as ReturnType<typeof vi.fn>).mock.calls[0];
+    expect(JSON.parse(init.body).invoicePayment).toBe(5000);
+  });
+
   it("includes the configured pickup address code, which PostEx otherwise rejects the booking without", async () => {
     process.env.POSTEX_PICKUP_ADDRESS_CODE = "001";
     (fetch as ReturnType<typeof vi.fn>).mockResolvedValue(

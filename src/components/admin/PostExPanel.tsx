@@ -12,14 +12,17 @@ export function PostExPanel({
   orderId,
   trackingNumber,
   status,
+  defaultCodAmount,
 }: {
   orderId: string;
   trackingNumber: string | null | undefined;
   status: string | null | undefined;
+  defaultCodAmount: number;
 }) {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [paymentInfo, setPaymentInfo] = useState<string | null>(null);
+  const [codAmount, setCodAmount] = useState(String(defaultCodAmount));
 
   function run(action: () => Promise<{ error?: string }>) {
     setError(null);
@@ -44,14 +47,35 @@ export function PostExPanel({
       <h2 className="font-body text-base font-semibold uppercase tracking-wide text-brand-umber-dark">PostEx delivery</h2>
 
       {!trackingNumber ? (
-        <button
-          type="button"
-          onClick={() => run(() => bookPostExOrderAction(orderId))}
-          disabled={isPending}
-          className="mt-3 flex w-full items-center justify-center rounded-full bg-brand-umber py-2.5 font-semibold text-brand-ivory transition hover:bg-brand-umber-dark disabled:opacity-50"
-        >
-          {isPending ? "Booking…" : "Book with PostEx"}
-        </button>
+        <div className="mt-3 space-y-2">
+          <label className="block">
+            <span className="text-brand-charcoal/60">COD amount to collect</span>
+            <input
+              type="number"
+              min="0"
+              step="1"
+              value={codAmount}
+              onChange={(e) => setCodAmount(e.target.value)}
+              className="mt-1 w-full rounded-lg border border-brand-umber/20 bg-brand-ivory px-3 py-2 font-body text-base"
+            />
+            <span className="mt-1 block text-sm text-brand-charcoal/50">Defaults to the order total — edit if you've agreed a different amount with the customer.</span>
+          </label>
+          <button
+            type="button"
+            onClick={() => {
+              const amount = Number(codAmount);
+              if (!Number.isFinite(amount) || amount <= 0) {
+                setError("Enter a valid COD amount.");
+                return;
+              }
+              run(() => bookPostExOrderAction(orderId, amount));
+            }}
+            disabled={isPending}
+            className="flex w-full items-center justify-center rounded-full bg-brand-umber py-2.5 font-semibold text-brand-ivory transition hover:bg-brand-umber-dark disabled:opacity-50"
+          >
+            {isPending ? "Booking…" : "Book with PostEx"}
+          </button>
+        </div>
       ) : (
         <div className="mt-3 space-y-2">
           <div className="flex justify-between">
