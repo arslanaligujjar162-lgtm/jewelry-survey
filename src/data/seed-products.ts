@@ -183,7 +183,8 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "material_spec": "316L stainless steel, PVD gold plated, cubic zirconia",
     "images": [
       "/products/starlet-ring-1.jpg",
-      "/products/starlet-ring-2.jpg"
+      "/products/starlet-ring-2.jpg",
+      "/products/starlet-ring-3.jpg"
     ],
     "stock_count": 9,
     "is_new": true,
