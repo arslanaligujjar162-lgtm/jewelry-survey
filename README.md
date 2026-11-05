@@ -44,6 +44,7 @@ app degrades gracefully (see **Status** above) when Supabase, analytics, or the 
 | `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM_NUMBER` | Optional SMS phone verification at checkout. Unset: COD orders go through without a code and are confirmed on WhatsApp |
 | `POSTEX_API_TOKEN` | PostEx courier integration (`src/lib/postex.ts`) — booking, tracking and COD payout status from Admin → Orders. Unset: the "Book with PostEx" panel shows a config error instead |
 | `POSTEX_PICKUP_ADDRESS_CODE` | The registered warehouse's address code (Merchant Portal → Setting → Pickup/Return Address Logs). PostEx rejects every booking without this — see "Book with PostEx" errors if it's missing or wrong |
+| `CRON_SECRET` | Optional but recommended — Vercel automatically sends it as a bearer token when calling the scheduled `/api/cron/postex-delivery-check` job (see `vercel.json`); set the same value here so the route rejects any other caller |
 
 ## Supabase setup
 
@@ -81,9 +82,17 @@ payment holds stock until it is cancelled by hand.
 
 ## WhatsApp order confirmations
 
-`src/lib/whatsapp.ts` builds the full context an automated confirmation message needs (name, phone, order summary,
-status) on every order, and currently just logs it (`sendWhatsAppOrderConfirmation`). Wire in the WhatsApp Cloud
-API `/messages` call there once a Business phone number and access token are available.
+`src/lib/whatsapp.ts` builds pre-filled `wa.me` links the owner taps to send manually (order confirmation,
+delivery review requests) — there's no WhatsApp Business Platform integration yet, so nothing sends itself.
+Wire in the Cloud API `/messages` call once a Business phone number and access token are available, to make
+these fully automatic.
+
+### Post-delivery review requests
+
+A daily cron job (`vercel.json` → `/api/cron/postex-delivery-check`) checks every order booked with PostEx and
+updates `postex_status`. Once an order flips to "Delivered", the admin order page shows a one-tap
+"Request a review on WhatsApp" button (`reviewRequestLink` in `src/lib/whatsapp.ts`) linking straight to each
+bought product's review section. See the env var table above for `CRON_SECRET`.
 
 ## Known placeholders (flagged for real content before launch)
 

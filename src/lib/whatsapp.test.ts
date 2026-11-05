@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from "vitest";
-import { orderSummaryText, ownerConfirmLink } from "./whatsapp";
+import { orderSummaryText, ownerConfirmLink, reviewRequestLink } from "./whatsapp";
 import { ADVANCE_ACCOUNTS } from "./advance-payment";
 import type { Order } from "./types";
 
@@ -53,6 +53,17 @@ describe("WhatsApp links", () => {
     const link = ownerConfirmLink(base);
     expect(link.startsWith("https://wa.me/923001234567?")).toBe(true);
     expect(decodedText(link)).toContain("Assalam o Alaikum Ayesha");
+  });
+
+  it("review request links to each bought product's review section", () => {
+    const link = reviewRequestLink(base, [
+      { name: "Mermaid Tear", url: "https://1720jewelry.xyz/product/mermaid-tear#reviews" },
+      { name: "Dewdrop Ring", url: "https://1720jewelry.xyz/product/dewdrop-ring#reviews" },
+    ]);
+    const text = decodedText(link);
+    expect(text).toContain("Mermaid Tear: https://1720jewelry.xyz/product/mermaid-tear#reviews");
+    expect(text).toContain("Dewdrop Ring: https://1720jewelry.xyz/product/dewdrop-ring#reviews");
+    expect(text).toContain("order 1720-ABC1234");
   });
 });
 

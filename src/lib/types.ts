@@ -84,6 +84,8 @@ export interface Order {
   postex_tracking_number?: string | null;
   /** PostEx's last-known delivery status, e.g. "Booked", "Out For Delivery". */
   postex_status?: string | null;
+  /** When the owner sent (tapped the WhatsApp link for) the post-delivery review request. */
+  review_requested_at?: string | null;
   status: OrderStatus;
   otp_verified: boolean;
   notes: string | null;

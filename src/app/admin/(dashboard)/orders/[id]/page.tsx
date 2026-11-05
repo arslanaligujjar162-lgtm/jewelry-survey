@@ -1,12 +1,13 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getOrder } from "@/lib/admin/queries";
+import { getOrder, getProductSlugsForOrder } from "@/lib/admin/queries";
 import { updateOrderStatusAction, updatePaymentStatusAction, deleteOrderAction } from "@/lib/admin/actions";
 import { StatusUpdateForm } from "@/components/admin/StatusUpdateForm";
 import { DeleteOrderButton } from "@/components/admin/DeleteOrderButton";
 import { PostExPanel } from "@/components/admin/PostExPanel";
 import { formatPKR, formatDate } from "@/lib/format";
-import { ownerConfirmLink } from "@/lib/whatsapp";
+import { ownerConfirmLink, reviewRequestLink } from "@/lib/whatsapp";
+import { SITE_URL } from "@/lib/site-url";
 import { ADVANCE_AMOUNT, advancePaymentEnabled, remainingOnDelivery } from "@/lib/advance-payment";
 import type { OrderStatus } from "@/lib/types";
 
@@ -16,6 +17,15 @@ const PAYMENT_STATUSES = ["pending", "paid", "failed"] as const;
 export default async function AdminOrderDetailPage({ params }: { params: { id: string } }) {
   const order = await getOrder(params.id);
   if (!order) notFound();
+
+  let reviewRequestHref: string | null = null;
+  if (order.postex_status === "Delivered") {
+    const slugs = await getProductSlugsForOrder(order);
+    const productLinks = order.items
+      .filter((item) => slugs[item.product_id])
+      .map((item) => ({ name: item.name, url: `${SITE_URL}/product/${slugs[item.product_id]}#reviews` }));
+    if (productLinks.length > 0) reviewRequestHref = reviewRequestLink(order, productLinks);
+  }
 
   return (
     <div>
@@ -93,6 +103,8 @@ export default async function AdminOrderDetailPage({ params }: { params: { id: s
             trackingNumber={order.postex_tracking_number}
             status={order.postex_status}
             defaultCodAmount={order.total}
+            reviewRequestHref={reviewRequestHref}
+            reviewRequestedAt={order.review_requested_at}
           />
         </div>
 

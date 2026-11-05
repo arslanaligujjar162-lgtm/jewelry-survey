@@ -1,5 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { bookPostExOrder, trackPostExOrder, getPostExPaymentStatus, cancelPostExOrder, getPostExAirwayBill } from "./postex";
+import {
+  bookPostExOrder,
+  trackPostExOrder,
+  getPostExPaymentStatus,
+  cancelPostExOrder,
+  getPostExAirwayBill,
+  bulkTrackPostExOrders,
+} from "./postex";
 import type { Order } from "./types";
 
 const order: Order = {
@@ -194,5 +201,35 @@ describe("getPostExAirwayBill", () => {
     (fetch as ReturnType<typeof vi.fn>).mockResolvedValue(pdfResponse(404, new ArrayBuffer(0)));
     const result = await getPostExAirwayBill(["CX-001"]);
     expect(result).toEqual({ success: false, error: "PostEx returned HTTP 404" });
+  });
+});
+
+describe("bulkTrackPostExOrders", () => {
+  it("returns a tracking-number -> status map for every order", async () => {
+    (fetch as ReturnType<typeof vi.fn>).mockResolvedValue(
+      jsonResponse(200, {
+        statusCode: "200",
+        dist: [
+          { trackingNumber: "CX-001", trackingResponse: { transactionStatus: "Delivered" }, message: "ok" },
+          { trackingNumber: "CX-002", trackingResponse: { transactionStatus: "Out For Delivery" }, message: "ok" },
+        ],
+      })
+    );
+
+    const result = await bulkTrackPostExOrders(["CX-001", "CX-002"]);
+    expect(result).toEqual({
+      success: true,
+      statuses: { "CX-001": "Delivered", "CX-002": "Out For Delivery" },
+    });
+
+    const [url, init] = (fetch as ReturnType<typeof vi.fn>).mock.calls[0];
+    expect(url).toContain("/v1/track-bulk-order");
+    expect(JSON.parse(init.body)).toEqual({ trackingNumber: ["CX-001", "CX-002"] });
+  });
+
+  it("short-circuits to an empty map without calling PostEx for an empty list", async () => {
+    const result = await bulkTrackPostExOrders([]);
+    expect(result).toEqual({ success: true, statuses: {} });
+    expect(fetch).not.toHaveBeenCalled();
   });
 });
