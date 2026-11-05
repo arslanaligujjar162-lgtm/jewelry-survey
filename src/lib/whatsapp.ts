@@ -50,3 +50,18 @@ export function ownerConfirmLink(order: Order): string {
     ].join("\n")
   );
 }
+
+/** Store → customer: sent once PostEx marks an order Delivered, linking straight
+ * to each bought product's review section. One tap to send, same as the other
+ * owner-initiated links here — there's no automated-send channel yet. */
+export function reviewRequestLink(order: Order, productLinks: { name: string; url: string }[]): string {
+  return waLink(
+    order.customer_phone,
+    [
+      `Assalam o Alaikum ${order.customer_name.split(" ")[0]}, this is 1720.`,
+      `We hope you're loving your order ${order.order_number}! Your feedback means a lot to us — could you spare a minute to leave a quick review?`,
+      ...productLinks.map((p) => `${p.name}: ${p.url}`),
+      `Thank you for shopping with us!`,
+    ].join("\n")
+  );
+}

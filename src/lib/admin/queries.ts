@@ -17,6 +17,18 @@ export async function getOrder(id: string): Promise<Order | null> {
   return (data as Order) ?? null;
 }
 
+/** Product slugs for an order's items, keyed by product_id — used to link a
+ * post-delivery review request straight to each product's review section. */
+export async function getProductSlugsForOrder(order: Order): Promise<Record<string, string>> {
+  const admin = createAdminClient();
+  const productIds = Array.from(new Set(order.items.map((item) => item.product_id)));
+  if (productIds.length === 0) return {};
+  const { data } = await admin.from("products").select("id, slug").in("id", productIds);
+  const slugs: Record<string, string> = {};
+  for (const row of data ?? []) slugs[row.id] = row.slug;
+  return slugs;
+}
+
 export async function listProducts(): Promise<Product[]> {
   const admin = createAdminClient();
   const { data, error } = await admin

@@ -86,6 +86,36 @@ export async function trackPostExOrder(trackingNumber: string): Promise<PostExRe
   }
 }
 
+/** Current delivery status for many tracking numbers in one call — used by the
+ * daily delivery-check cron instead of polling trackPostExOrder one at a time.
+ * PostEx's guide labels this endpoint "(GET)" but shows a JSON request body,
+ * which GET can't reliably carry — sent as POST here, the only method that
+ * actually fits a body-bearing request. */
+export async function bulkTrackPostExOrders(trackingNumbers: string[]): Promise<PostExResult<{ statuses: Record<string, string> }>> {
+  if (!postExConfigured()) return { success: false, error: "PostEx is not configured." };
+  if (trackingNumbers.length === 0) return { success: true, statuses: {} };
+
+  try {
+    const res = await fetch(`${BASE_URL}/v1/track-bulk-order`, {
+      method: "POST",
+      headers: postExHeaders(),
+      body: JSON.stringify({ trackingNumber: trackingNumbers }),
+    });
+    const data = await res.json();
+    if (!res.ok || data.statusCode !== "200") {
+      return { success: false, error: data.statusMessage ?? `PostEx returned HTTP ${res.status}` };
+    }
+    const statuses: Record<string, string> = {};
+    for (const entry of data.dist ?? []) {
+      if (entry.trackingNumber) statuses[entry.trackingNumber] = entry.trackingResponse?.transactionStatus || "";
+    }
+    return { success: true, statuses };
+  } catch (err) {
+    reportError(err, { context: "postex-bulk-track", tracking_numbers: trackingNumbers.join(",") });
+    return { success: false, error: "Could not reach PostEx. Try again." };
+  }
+}
+
 /** Whether PostEx has actually remitted the COD cash they collected for this order. */
 export async function getPostExPaymentStatus(
   trackingNumber: string

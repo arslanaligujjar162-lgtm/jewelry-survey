@@ -5,19 +5,26 @@ import {
   bookPostExOrderAction,
   cancelPostExBookingAction,
   checkPostExPaymentStatusAction,
+  markReviewRequestSentAction,
   refreshPostExStatusAction,
 } from "@/lib/admin/actions";
+import { formatDate } from "@/lib/format";
 
 export function PostExPanel({
   orderId,
   trackingNumber,
   status,
   defaultCodAmount,
+  reviewRequestHref,
+  reviewRequestedAt,
 }: {
   orderId: string;
   trackingNumber: string | null | undefined;
   status: string | null | undefined;
   defaultCodAmount: number;
+  /** Set once PostEx marks this order Delivered — null until then, or if the order has no linkable products. */
+  reviewRequestHref: string | null;
+  reviewRequestedAt: string | null | undefined;
 }) {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -121,6 +128,23 @@ export function PostExPanel({
             </button>
           </div>
           {paymentInfo && <p className="pt-1 text-sm text-brand-charcoal/70">COD payout: {paymentInfo}</p>}
+
+          {reviewRequestHref && (
+            <div className="mt-3 border-t border-brand-umber/10 pt-3">
+              <a
+                href={reviewRequestHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => markReviewRequestSentAction(orderId)}
+                className="flex w-full items-center justify-center rounded-full bg-brand-success py-2.5 font-semibold text-brand-ivory transition hover:opacity-90"
+              >
+                {reviewRequestedAt ? "Request a review again" : "Request a review on WhatsApp"}
+              </a>
+              {reviewRequestedAt && (
+                <p className="mt-1.5 text-center text-sm text-brand-charcoal/60">Last requested {formatDate(reviewRequestedAt)}</p>
+              )}
+            </div>
+          )}
         </div>
       )}
 

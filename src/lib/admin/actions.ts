@@ -131,6 +131,18 @@ export async function checkPostExPaymentStatusAction(
   return { settled: result.settled, settlementDate: result.settlementDate };
 }
 
+/** Marks the review request as sent — the owner still taps the WhatsApp link
+ * themselves (see reviewRequestLink), this just stops it being offered again. */
+export async function markReviewRequestSentAction(orderId: string): Promise<{ error?: string }> {
+  await requireAdmin();
+  const admin = createAdminClient();
+  const { error } = await admin.from("orders").update({ review_requested_at: new Date().toISOString() }).eq("id", orderId);
+  if (error) return { error: error.message };
+  revalidatePath("/admin/orders");
+  revalidatePath(`/admin/orders/${orderId}`);
+  return {};
+}
+
 export async function updateReturnStatusAction(returnId: string, formData: FormData) {
   await requireAdmin();
   const status = formData.get("status") as string;
