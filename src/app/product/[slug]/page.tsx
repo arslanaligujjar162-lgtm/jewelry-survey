@@ -132,8 +132,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </h1>
 
             <div className="mt-6 flex flex-wrap items-center gap-4">
-              <span className="inline-block rounded-sm border-2 border-brand-umber-dark bg-brand-ivory px-3 py-1.5 font-body text-lg font-bold text-brand-umber-dark shadow-retro-sm">
-                {formatPKR(product.price)}
+              <span className="inline-flex items-baseline gap-2 rounded-sm border-2 border-brand-umber-dark bg-brand-ivory px-3 py-1.5 font-body text-lg font-bold text-brand-umber-dark shadow-retro-sm">
+                <span>{formatPKR(product.price)}</span>
+                {product.compare_at_price && product.compare_at_price > product.price && (
+                  <span className="font-normal text-base text-brand-charcoal/50 line-through">
+                    {formatPKR(product.compare_at_price)}
+                  </span>
+                )}
               </span>
               <StockIndicator stock={product.stock_count} />
               <WishlistButton product={product} className="ml-auto border border-brand-umber/15" />
