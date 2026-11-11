@@ -29,7 +29,14 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
         <div className="mt-3">
           <h3 className="font-body text-sm font-medium text-brand-charcoal">{product.name}</h3>
-          <p className="mt-1 font-body text-sm font-semibold text-brand-umber-dark">{formatPKR(product.price)}</p>
+          <p className="mt-1 flex items-baseline gap-2 font-body text-sm font-semibold text-brand-umber-dark">
+            <span>{formatPKR(product.price)}</span>
+            {product.compare_at_price && product.compare_at_price > product.price && (
+              <span className="font-normal text-brand-charcoal/50 line-through">
+                {formatPKR(product.compare_at_price)}
+              </span>
+            )}
+          </p>
           <StockIndicator stock={product.stock_count} className="mt-1" />
         </div>
       </Link>

@@ -11,7 +11,10 @@ export interface PromoValidationResult {
 // promo codes can still be exercised end to end in local/demo environments.
 const FALLBACK_PROMO_CODES: Record<string, { discountPercent: number; active: boolean }> = {
   WELCOME10: { discountPercent: 10, active: true },
-  WEDDING10: { discountPercent: 10, active: true },
+  // The Wedding Season discount is now baked directly into each product's
+  // price (see seed-products.ts / the 0025 migration) and shown via
+  // compare_at_price, so the code itself is retired to avoid stacking.
+  WEDDING10: { discountPercent: 10, active: false },
 };
 
 /**
