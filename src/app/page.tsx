@@ -55,7 +55,7 @@ export default async function HomePage() {
     <>
       <div className="bg-brand-blush py-3 text-center">
         <p className="container-page font-body text-sm font-bold uppercase tracking-wide text-brand-ivory sm:text-base">
-          💍 Wedding Season Sale — up to 10% off, already applied to every price · Free delivery across Pakistan
+          💍 Wedding Season Sale — up to 10% off · Free delivery across Pakistan
         </p>
       </div>
 
@@ -89,7 +89,7 @@ export default async function HomePage() {
               </Link>
             </div>
           </div>
-          <HeroMark featured={featured} />
+          <HeroMark featured={featured} saleBadge />
         </div>
       </section>
 
