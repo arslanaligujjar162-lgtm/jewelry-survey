@@ -19,7 +19,7 @@ describe("createOrder", () => {
     const result = await order([{ slug: "black-olive-hoops", quantity: 1 }]);
     expect(result.success).toBe(true);
     expect(result.order?.otp_verified).toBe(false);
-    expect(result.order?.delivery_fee).toBe(350);
+    expect(result.order?.delivery_fee).toBe(0);
   });
 
   it("checks stock across all lines of a product, not line by line", async () => {

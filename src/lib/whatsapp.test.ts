@@ -46,6 +46,12 @@ describe("orderSummaryText", () => {
     expect(text).toContain("House 12, Street 5, Lahore, Punjab");
     expect(text).not.toContain(", ,");
   });
+
+  it("says free delivery instead of a zero amount when delivery is free", () => {
+    const text = orderSummaryText({ ...base, delivery_fee: 0 });
+    expect(text).toContain("free delivery");
+    expect(text).not.toContain("Rs. 0");
+  });
 });
 
 describe("WhatsApp links", () => {

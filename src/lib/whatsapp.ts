@@ -22,9 +22,10 @@ function addressLine(order: Order): string {
 
 /** Plain-text order summary, shared by the WhatsApp links and the email alert. */
 export function orderSummaryText(order: Order): string {
+  const deliveryNote = order.delivery_fee === 0 ? "free delivery" : `incl. ${formatPKR(order.delivery_fee)} delivery`;
   const totalLine = advancePaymentEnabled()
-    ? `Total: ${formatPKR(order.total)} — ${formatPKR(ADVANCE_AMOUNT)} advance + ${formatPKR(remainingOnDelivery(order.total))} Cash on Delivery (incl. ${formatPKR(order.delivery_fee)} delivery)`
-    : `Total: ${formatPKR(order.total)} (Cash on Delivery, incl. ${formatPKR(order.delivery_fee)} delivery)`;
+    ? `Total: ${formatPKR(order.total)} — ${formatPKR(ADVANCE_AMOUNT)} advance + ${formatPKR(remainingOnDelivery(order.total))} Cash on Delivery (${deliveryNote})`
+    : `Total: ${formatPKR(order.total)} (Cash on Delivery, ${deliveryNote})`;
   return [
     `Order ${order.order_number}`,
     itemLines(order),

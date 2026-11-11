@@ -84,7 +84,7 @@ const FAQ_SECTIONS: { category: string; items: { q: string; a: React.ReactNode }
       },
       {
         q: "Do you deliver everywhere in Pakistan?",
-        a: "Yes, Cash on Delivery ships nationwide. Delivery is Rs 350 within Punjab and Rs 400 to other provinces.",
+        a: "Yes, Cash on Delivery ships nationwide — and delivery is free across all of Pakistan.",
       },
     ],
   },

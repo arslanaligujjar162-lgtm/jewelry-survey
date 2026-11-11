@@ -1,11 +1,11 @@
 /**
- * Real delivery pricing and timelines, provided by the business.
- * Every address in Pakistan is deliverable via COD — there's no
- * unserviceable-area rejection, only a fee/timeline split:
- *   - Punjab: Rs 350. Central Punjab ships in 2-3 business days; the
- *     rest of the province (upper/Potohar and lower/southern belts)
- *     in 4-5.
- *   - Every other province/territory: Rs 400, in 5-6 business days.
+ * Real delivery timelines, provided by the business. Every address in
+ * Pakistan is deliverable via COD — there's no unserviceable-area rejection.
+ * Delivery is free nationwide (the Wedding Season Sale banner's claim);
+ * only the shipping estimate still varies by region:
+ *   - Central Punjab: 2-3 business days.
+ *   - Rest of Punjab (upper/Potohar and lower/southern belts): 4-5.
+ *   - Every other province/territory: 5-6 business days.
  */
 const CENTRAL_PUNJAB_CITIES = [
   "lahore",
@@ -32,9 +32,8 @@ export interface DeliveryInfo {
 
 export function getDeliveryInfo(province: string, city: string): DeliveryInfo {
   const isPunjab = province.trim().toLowerCase() === "punjab";
-  const fee = isPunjab ? 350 : 400;
-  if (!isPunjab) return { fee, days: "5-6 business days" };
+  if (!isPunjab) return { fee: 0, days: "5-6 business days" };
 
   const isCentral = CENTRAL_PUNJAB_CITIES.includes(city.trim().toLowerCase());
-  return { fee, days: isCentral ? "2-3 business days" : "4-5 business days" };
+  return { fee: 0, days: isCentral ? "2-3 business days" : "4-5 business days" };
 }
