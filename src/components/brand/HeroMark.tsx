@@ -8,7 +8,7 @@ import { formatPKR } from "@/lib/format";
  * with a real product photograph pinned over its corner like a print on an
  * editorial spread. Falls back to the mark alone if there's no product.
  */
-export function HeroMark({ featured }: { featured?: Product }) {
+export function HeroMark({ featured, saleBadge }: { featured?: Product; saleBadge?: string }) {
   return (
     // With a featured print, the bottom padding (a % of width, like the tile
     // and print sizes) drops the print low enough to sit under the numerals —
@@ -28,6 +28,17 @@ export function HeroMark({ featured }: { featured?: Product }) {
           priority
         />
       </div>
+
+      {saleBadge && (
+        <div
+          aria-hidden="true"
+          className="absolute right-0 top-[-4%] z-10 flex h-24 w-24 rotate-[12deg] flex-col items-center justify-center rounded-full border-2 border-brand-umber-dark bg-brand-blush text-center font-body font-bold uppercase leading-none text-brand-ivory shadow-retro sm:h-32 sm:w-32"
+        >
+          <span className="text-[10px] tracking-widest sm:text-xs">Up to</span>
+          <span className="font-display text-3xl sm:text-5xl">{saleBadge}</span>
+          <span className="text-[10px] tracking-widest sm:text-xs">Off</span>
+        </div>
+      )}
 
       {featured && (
         <Link
@@ -49,6 +60,11 @@ export function HeroMark({ featured }: { featured?: Product }) {
             <span className="ml-1.5 font-body text-xs not-italic font-semibold text-brand-charcoal/70">
               {formatPKR(featured.price)}
             </span>
+            {featured.compare_at_price && featured.compare_at_price > featured.price && (
+              <span className="ml-1.5 font-body text-xs not-italic text-brand-charcoal/50 line-through">
+                {formatPKR(featured.compare_at_price)}
+              </span>
+            )}
           </p>
         </Link>
       )}
