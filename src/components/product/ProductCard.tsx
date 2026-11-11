@@ -7,10 +7,6 @@ import { WishlistButton } from "@/components/product/WishlistButton";
 import { QuickAddButton } from "@/components/product/QuickAddButton";
 
 export function ProductCard({ product }: { product: Product }) {
-  const saving =
-    product.compare_at_price && product.compare_at_price > product.price
-      ? product.compare_at_price - product.price
-      : 0;
   return (
     // The quick-add control sits outside the Link — a button nested inside an
     // anchor is invalid markup and confuses assistive tech.
@@ -27,11 +23,6 @@ export function ProductCard({ product }: { product: Product }) {
           {product.is_new && (
             <span className="absolute left-2 top-2 rounded-full bg-brand-umber px-2.5 py-1 font-body text-[11px] font-semibold uppercase tracking-wide text-brand-ivory">
               New
-            </span>
-          )}
-          {saving > 0 && (
-            <span className="absolute bottom-2 left-2 rounded-full bg-brand-blush px-2.5 py-1 font-body text-[11px] font-bold uppercase tracking-wide text-brand-ivory">
-              Save {formatPKR(saving)}
             </span>
           )}
           <WishlistButton product={product} className="absolute right-2 top-2" />

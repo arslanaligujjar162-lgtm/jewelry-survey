@@ -17,9 +17,6 @@ export const revalidate = 60;
 // punch its bumps, not a Tailwind class.
 const BAND_IVORY = "#FDF2DC";
 const BAND_BUTTER = "#FAE3B1";
-const BAND_UMBER_DARK = "#482A24";
-
-const SALE_PERKS = ["Up to 10% off every piece", "Free delivery across Pakistan", "Cash on Delivery"] as const;
 
 export const metadata: Metadata = {
   title: "Modern-Retro Jewelry for a Taste of Your Own",
@@ -53,33 +50,18 @@ export default async function HomePage() {
   const products = await getProducts();
   const newArrivals = products.filter((p) => p.is_new).slice(0, 4);
   const featured = products.find((p) => p.slug === HERO_PRODUCT_SLUG) ?? products[0];
-  const saving = (p: Product) => (p.compare_at_price && p.compare_at_price > p.price ? p.compare_at_price - p.price : 0);
-  const weddingPicks = products
-    .filter((p) => saving(p) > 0 && p.stock_count > 0)
-    .sort((a, b) => saving(b) - saving(a))
-    .slice(0, 4);
-  const onSale = weddingPicks.length > 0;
 
   return (
     <>
-      {onSale && (
-        <Link href="/shop" className="block bg-brand-blush py-2.5 text-center transition hover:brightness-110">
-          <p className="container-page font-body text-xs font-bold uppercase tracking-wider text-brand-ivory sm:text-sm">
-            Wedding Season Sale · Up to 10% off · Free delivery across Pakistan{" "}
-            <span className="underline underline-offset-2">Shop now</span>
-          </p>
-        </Link>
-      )}
+      <div className="bg-brand-blush py-3 text-center">
+        <p className="container-page font-body text-sm font-bold uppercase tracking-wide text-brand-ivory sm:text-base">
+          💍 Wedding Season Sale — up to 10% off, already applied to every price · Free delivery across Pakistan
+        </p>
+      </div>
 
       <section className="bg-brand-ivory">
         <div className="container-page grid gap-8 py-12 sm:py-16 lg:grid-cols-2 lg:items-center lg:py-16">
           <div>
-            {onSale && (
-              <p className="mb-5 inline-flex items-center gap-2 rounded-full border-2 border-brand-umber-dark bg-brand-butter px-4 py-1.5 font-body text-xs font-bold uppercase tracking-widest text-brand-umber-dark shadow-retro-sm sm:text-sm">
-                <span className="h-2 w-2 rounded-full bg-brand-blush" aria-hidden="true" />
-                Wedding Season Sale · Up to 10% off
-              </p>
-            )}
             <p className="font-body text-base font-bold uppercase tracking-widest text-brand-umber">
               Demi-fine · Modern retro
             </p>
@@ -97,7 +79,7 @@ export default async function HomePage() {
                 href="/shop"
                 className="shadow-retro inline-flex items-center justify-center rounded-full bg-brand-umber px-9 py-4 font-body text-base font-bold text-brand-ivory transition hover:-translate-y-0.5 hover:shadow-[6px_6px_0_0_#482a24] active:translate-y-0 active:shadow-none"
               >
-                {onSale ? "Shop the Wedding Sale" : "Explore the World of 1720"}
+                Explore the World of 1720
               </Link>
               <Link
                 href="/shop?new=true"
@@ -107,62 +89,11 @@ export default async function HomePage() {
               </Link>
             </div>
           </div>
-          <HeroMark featured={featured} saleBadge={onSale ? "10%" : undefined} />
+          <HeroMark featured={featured} saleBadge />
         </div>
       </section>
 
-      {onSale ? (
-        <>
-          <ScallopDivider fromColor={BAND_IVORY} toColor={BAND_UMBER_DARK} />
-          <section aria-label="Wedding Season Sale" className="bg-brand-umber-dark">
-            <div className="container-page py-14 sm:py-16">
-              <div className="flex flex-wrap items-end justify-between gap-6">
-                <div>
-                  <p className="font-body text-sm font-bold uppercase tracking-[0.3em] text-brand-butter">
-                    The Wedding Season Edit
-                  </p>
-                  <h2 className="mt-3 max-w-xl font-display text-4xl font-bold leading-tight text-brand-ivory sm:text-5xl">
-                    For every dholki, mehndi <span className="italic">&amp;</span> baraat.
-                  </h2>
-                  <p className="mt-3 max-w-md font-body text-base text-brand-ivory/80">
-                    Gold that lasts the whole season. Sale prices are already applied, no code needed.
-                  </p>
-                </div>
-                <Link
-                  href="/shop"
-                  className="inline-flex items-center justify-center rounded-full bg-brand-blush px-8 py-3.5 font-body text-base font-bold text-brand-ivory shadow-[4px_4px_0_0_#FAE3B1] transition hover:-translate-y-0.5"
-                >
-                  Shop all sale pieces
-                </Link>
-              </div>
-              <ul className="mt-7 flex flex-wrap gap-3">
-                {SALE_PERKS.map((perk) => (
-                  <li
-                    key={perk}
-                    className="rounded-full border border-brand-butter/50 px-4 py-1.5 font-body text-sm font-semibold text-brand-butter"
-                  >
-                    {perk}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-9 grid grid-cols-2 gap-4 lg:grid-cols-4">
-                {weddingPicks.map((product, i) => (
-                  <div
-                    key={product.id}
-                    className="animate-rise rounded-2xl bg-brand-ivory p-3"
-                    style={{ animationDelay: `${i * 70}ms` }}
-                  >
-                    <ProductCard product={product} />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-          <ScallopDivider fromColor={BAND_UMBER_DARK} toColor={BAND_BUTTER} />
-        </>
-      ) : (
-        <ScallopDivider fromColor={BAND_IVORY} toColor={BAND_BUTTER} />
-      )}
+      <ScallopDivider fromColor={BAND_IVORY} toColor={BAND_BUTTER} />
 
       <section aria-label="Why 1720" className="bg-brand-butter">
         <div className="container-page py-12">
@@ -276,7 +207,7 @@ export default async function HomePage() {
         </>
       )}
 
-      <StickyMobileCTA label={onSale ? "Shop the Wedding Sale" : "Explore the World of 1720"} href="/shop" />
+      <StickyMobileCTA label="Explore the World of 1720" href="/shop" />
       <div className="h-16 sm:hidden" aria-hidden="true" />
     </>
   );

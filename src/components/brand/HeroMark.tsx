@@ -8,15 +8,16 @@ import { formatPKR } from "@/lib/format";
  * with a real product photograph pinned over its corner like a print on an
  * editorial spread. Falls back to the mark alone if there's no product.
  */
-export function HeroMark({ featured, saleBadge }: { featured?: Product; saleBadge?: string }) {
+export function HeroMark({ featured, saleBadge = false }: { featured?: Product; saleBadge?: boolean }) {
+  const offset = Boolean(featured) || saleBadge;
   return (
     // With a featured print, the bottom padding (a % of width, like the tile
     // and print sizes) drops the print low enough to sit under the numerals —
     // it must never cover "1720" itself.
-    <div className={`relative ${featured ? "pb-[33%]" : ""}`}>
+    <div className={`relative ${offset ? "pb-[33%]" : ""}`}>
       <div
         className={`relative aspect-square overflow-hidden rounded-3xl border-2 border-brand-umber-dark/20 shadow-[0_1px_2px_rgba(72,42,36,0.15),0_20px_48px_rgba(72,42,36,0.22)] ${
-          featured ? "ml-auto w-[76%] rotate-[2deg]" : "w-full"
+          offset ? "ml-auto w-[76%] rotate-[2deg]" : "w-full"
         }`}
       >
         <Image
@@ -30,17 +31,29 @@ export function HeroMark({ featured, saleBadge }: { featured?: Product; saleBadg
       </div>
 
       {saleBadge && (
-        <div
-          aria-hidden="true"
-          className="absolute right-0 top-[-4%] z-10 flex h-24 w-24 rotate-[12deg] flex-col items-center justify-center rounded-full border-2 border-brand-umber-dark bg-brand-blush text-center font-body font-bold uppercase leading-none text-brand-ivory shadow-retro sm:h-32 sm:w-32"
+        <svg
+          viewBox="0 0 200 200"
+          role="img"
+          aria-label="Wedding Sale — up to 10% off"
+          className="absolute bottom-0 left-0 w-[48%] -rotate-[8deg] font-body drop-shadow-[0_10px_18px_rgba(72,42,36,0.3)]"
         >
-          <span className="text-[10px] tracking-widest sm:text-xs">Up to</span>
-          <span className="font-display text-3xl sm:text-5xl">{saleBadge}</span>
-          <span className="text-[10px] tracking-widest sm:text-xs">Off</span>
-        </div>
+          <circle cx="100" cy="100" r="99" fill="#CF5527" />
+          <path id="wedding-sale-ring" d="M 100,100 m -74,0 a 74,74 0 1,1 148,0 a 74,74 0 1,1 -148,0" fill="none" />
+          <text fill="#FDF2DC" fontSize="15" fontWeight="700" letterSpacing="1.5">
+            <textPath href="#wedding-sale-ring" textLength="462">
+              WEDDING SALE * WEDDING SALE * WEDDING SALE *
+            </textPath>
+          </text>
+          <text x="100" y="82" textAnchor="middle" fill="#FDF2DC" fontSize="17" fontWeight="700" letterSpacing="3">
+            UP TO
+          </text>
+          <text x="100" y="128" textAnchor="middle" fill="#FDF2DC" fontSize="50" fontWeight="800">
+            10%
+          </text>
+        </svg>
       )}
 
-      {featured && (
+      {featured && !saleBadge && (
         <Link
           href={`/product/${featured.slug}`}
           className="group absolute bottom-0 left-0 w-[48%] -rotate-[4deg] border-2 border-brand-umber-dark bg-white p-2.5 pb-3 shadow-retro transition duration-300 hover:-rotate-[2deg] hover:shadow-[6px_6px_0_0_#482a24] sm:p-3"
@@ -60,11 +73,6 @@ export function HeroMark({ featured, saleBadge }: { featured?: Product; saleBadg
             <span className="ml-1.5 font-body text-xs not-italic font-semibold text-brand-charcoal/70">
               {formatPKR(featured.price)}
             </span>
-            {featured.compare_at_price && featured.compare_at_price > featured.price && (
-              <span className="ml-1.5 font-body text-xs not-italic text-brand-charcoal/50 line-through">
-                {formatPKR(featured.compare_at_price)}
-              </span>
-            )}
           </p>
         </Link>
       )}
