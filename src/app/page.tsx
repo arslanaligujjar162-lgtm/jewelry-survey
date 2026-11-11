@@ -53,6 +53,13 @@ export default async function HomePage() {
 
   return (
     <>
+      <div className="bg-brand-blush py-3 text-center">
+        <p className="container-page font-body text-sm font-bold uppercase tracking-wide text-brand-ivory sm:text-base">
+          💍 Wedding Season Sale — 10% off with code{" "}
+          <span className="font-mono tracking-wider">WEDDING10</span> · Free delivery across Pakistan
+        </p>
+      </div>
+
       <section className="bg-brand-ivory">
         <div className="container-page grid gap-8 py-12 sm:py-16 lg:grid-cols-2 lg:items-center lg:py-16">
           <div>

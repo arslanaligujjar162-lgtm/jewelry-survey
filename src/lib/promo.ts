@@ -11,6 +11,7 @@ export interface PromoValidationResult {
 // promo codes can still be exercised end to end in local/demo environments.
 const FALLBACK_PROMO_CODES: Record<string, { discountPercent: number; active: boolean }> = {
   WELCOME10: { discountPercent: 10, active: true },
+  WEDDING10: { discountPercent: 10, active: true },
 };
 
 /**
