@@ -6,7 +6,7 @@ import { StockIndicator } from "@/components/product/StockIndicator";
 import { WishlistButton } from "@/components/product/WishlistButton";
 import { QuickAddButton } from "@/components/product/QuickAddButton";
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({ product, imageSrc }: { product: Product; imageSrc?: string }) {
   return (
     // The quick-add control sits outside the Link — a button nested inside an
     // anchor is invalid markup and confuses assistive tech.
@@ -14,7 +14,7 @@ export function ProductCard({ product }: { product: Product }) {
       <Link href={`/product/${product.slug}`} className="block">
         <div className="relative aspect-square overflow-hidden rounded-xl bg-brand-sky/10">
           <Image
-            src={product.images[0]}
+            src={imageSrc ?? product.images[0]}
             alt={`${product.name} — ${product.material_spec}`}
             fill
             sizes="(min-width: 1024px) 25vw, 50vw"

@@ -6,6 +6,7 @@ import { HeroMark } from "@/components/brand/HeroMark";
 import { CATEGORIES, COLLECTION_INTRO_BODY, COLLECTION_INTRO_HEADING, HERO_HEADLINE, HERO_SUBHEAD, TAGLINE, WHY_1720 } from "@/lib/brand";
 import { getProducts } from "@/lib/products";
 import { ProductCard } from "@/components/product/ProductCard";
+import { landingImage } from "@/lib/product-images";
 import Image from "next/image";
 import type { Product } from "@/lib/types";
 
@@ -113,26 +114,6 @@ export default async function HomePage() {
 
       <ScallopDivider fromColor={BAND_BUTTER} toColor={BAND_IVORY} />
 
-      <section aria-hidden="true" className="bg-brand-ivory">
-        <div className="container-page py-14 sm:py-20">
-          <div className="flex flex-wrap items-start justify-center gap-x-4 gap-y-10 sm:gap-x-6">
-            {MOOD_BOARD.map((item) => (
-              <div
-                key={item.src}
-                className={`w-[42%] min-w-[150px] max-w-[220px] border-2 border-brand-umber-dark bg-white p-2.5 shadow-retro-sm transition duration-300 hover:z-10 hover:rotate-0 hover:shadow-retro sm:p-3 ${item.rotate} ${item.shift}`}
-              >
-                <div className="relative aspect-[3/4] overflow-hidden">
-                  <Image src={item.src} alt="" fill sizes="220px" className="object-cover" />
-                </div>
-              </div>
-            ))}
-          </div>
-          <p className="mt-10 text-center font-display text-base italic text-brand-umber-dark sm:text-lg">
-            Some things never go out of style.
-          </p>
-        </div>
-      </section>
-
       <section className="bg-brand-ivory">
         <div className="container-page py-16">
           <h2 className="font-display text-3xl font-bold text-brand-umber-dark sm:text-4xl">
@@ -155,7 +136,7 @@ export default async function HomePage() {
                   style={{ animationDelay: `${i * 70}ms` }}
                 >
                   <Image
-                    src={cover.images[0]}
+                    src={landingImage(cover)}
                     alt=""
                     fill
                     sizes="(min-width: 640px) 25vw, 50vw"
@@ -197,7 +178,7 @@ export default async function HomePage() {
               <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
                 {newArrivals.map((product, i) => (
                   <div key={product.id} className="animate-rise" style={{ animationDelay: `${i * 70}ms` }}>
-                    <ProductCard product={product} />
+                    <ProductCard product={product} imageSrc={landingImage(product)} />
                   </div>
                 ))}
               </div>
@@ -206,6 +187,26 @@ export default async function HomePage() {
           <ScallopDivider fromColor={BAND_BUTTER} toColor={BAND_IVORY} />
         </>
       )}
+
+      <section aria-hidden="true" className="bg-brand-ivory">
+        <div className="container-page py-14 sm:py-20">
+          <div className="flex flex-wrap items-start justify-center gap-x-4 gap-y-10 sm:gap-x-6">
+            {MOOD_BOARD.map((item) => (
+              <div
+                key={item.src}
+                className={`w-[42%] min-w-[150px] max-w-[220px] border-2 border-brand-umber-dark bg-white p-2.5 shadow-retro-sm transition duration-300 hover:z-10 hover:rotate-0 hover:shadow-retro sm:p-3 ${item.rotate} ${item.shift}`}
+              >
+                <div className="relative aspect-[3/4] overflow-hidden">
+                  <Image src={item.src} alt="" fill sizes="220px" className="object-cover" />
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="mt-10 text-center font-display text-base italic text-brand-umber-dark sm:text-lg">
+            Some things never go out of style.
+          </p>
+        </div>
+      </section>
 
       <StickyMobileCTA label="Explore the World of 1720" href="/shop" />
       <div className="h-16 sm:hidden" aria-hidden="true" />
