@@ -45,11 +45,22 @@ const MOOD_BOARD = [
   { src: "/brand/mood-denim-accessories.jpg", rotate: "rotate-[5deg]", shift: "sm:mt-0" },
 ] as const;
 
+// Hand-picked for the landing page, each shown with the photo supplied for it.
+const FEATURED = [
+  { slug: "cascade-drop", image: "/products/cascade-drop-4.jpg" },
+  { slug: "eclipse-drop", image: "/products/eclipse-drop-4.jpg" },
+  { slug: "baroque-link", image: "/products/baroque-link-3.jpg" },
+  { slug: "black-olive-hoops", image: "/products/black-olive-hoops-4.jpg" },
+] as const;
+
 const categoryOf = (p: Product) => p.category?.slug ?? p.category_id;
 
 export default async function HomePage() {
   const products = await getProducts();
-  const newArrivals = products.filter((p) => p.is_new).slice(0, 4);
+  const featuredPicks = FEATURED.flatMap(({ slug, image }) => {
+    const product = products.find((p) => p.slug === slug);
+    return product ? [{ product, image }] : [];
+  });
   const featured = products.find((p) => p.slug === HERO_PRODUCT_SLUG) ?? products[0];
 
   return (
@@ -162,23 +173,23 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {newArrivals.length > 0 && (
+      {featuredPicks.length > 0 && (
         <>
           <ScallopDivider fromColor={BAND_IVORY} toColor={BAND_BUTTER} />
           <section className="bg-brand-butter">
             <div className="container-page py-16">
               <div className="flex items-end justify-between">
                 <h2 className="font-display text-2xl font-semibold text-brand-umber-dark sm:text-3xl">
-                  New arrivals
+                  Featured pieces
                 </h2>
-                <Link href="/shop?new=true" className="font-body text-sm font-semibold text-brand-umber hover:underline">
+                <Link href="/shop" className="font-body text-sm font-semibold text-brand-umber hover:underline">
                   View all
                 </Link>
               </div>
               <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-                {newArrivals.map((product, i) => (
+                {featuredPicks.map(({ product, image }, i) => (
                   <div key={product.id} className="animate-rise" style={{ animationDelay: `${i * 70}ms` }}>
-                    <ProductCard product={product} imageSrc={landingImage(product)} />
+                    <ProductCard product={product} imageSrc={image} />
                   </div>
                 ))}
               </div>
