@@ -93,7 +93,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "description": "An open hoop that tapers from a fine post to a broad, rounded base. High-polish throughout. Everyday size.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated",
-    "images": ["/products/ribbon-hoop-1.jpg", "/products/ribbon-hoop-2.jpg", "/products/ribbon-hoop-3.jpg"],
+    "images": ["/products/ribbon-hoop-1.jpg", "/products/ribbon-hoop-4.jpg", "/products/ribbon-hoop-2.jpg", "/products/ribbon-hoop-3.jpg"],
     "stock_count": 11,
     "is_new": false,
     "ring_size_range": null,
@@ -144,7 +144,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "description": "A chunky open hoop, half high-polish gold and half glossy black enamel. Post backs.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated, enamel",
-    "images": ["/products/black-olive-hoops-1.jpg", "/products/black-olive-hoops-2.jpg", "/products/black-olive-hoops-3.jpg"],
+    "images": ["/products/black-olive-hoops-1.jpg", "/products/black-olive-hoops-4.jpg", "/products/black-olive-hoops-2.jpg", "/products/black-olive-hoops-3.jpg"],
     "stock_count": 7,
     "is_new": true,
     "ring_size_range": null,
@@ -242,10 +242,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "description": "A row of emerald-green cubic zirconia set into a channel along a solid, hinged bangle.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated, cubic zirconia",
-    "images": [
-      "/products/channel-bangle-1.jpg",
-      "/products/channel-bangle-2.jpg"
-    ],
+    "images": ["/products/channel-bangle-1.jpg", "/products/channel-bangle-3.jpg", "/products/channel-bangle-2.jpg"],
     "stock_count": 6,
     "is_new": false,
     "ring_size_range": null,
@@ -262,10 +259,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "description": "A smooth, polished bangle set with multicolour stones in round and eye-shaped cuts, solid and hinged.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated, cubic zirconia",
-    "images": [
-      "/products/confetti-bangle-1.jpg",
-      "/products/confetti-bangle-2.jpg"
-    ],
+    "images": ["/products/confetti-bangle-1.jpg", "/products/confetti-bangle-3.jpg", "/products/confetti-bangle-2.jpg"],
     "stock_count": 6,
     "is_new": false,
     "ring_size_range": null,
@@ -303,10 +297,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "description": "A wide polished band scattered with multicolour stones in varied cuts and bezel settings.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated, cubic zirconia",
-    "images": [
-      "/products/og-ring-1.jpg",
-      "/products/og-ring-2.jpg"
-    ],
+    "images": ["/products/og-ring-1.jpg", "/products/og-ring-3.jpg", "/products/og-ring-2.jpg"],
     "stock_count": 10,
     "is_new": true,
     "ring_size_range": "US 6-7",
@@ -344,11 +335,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "description": "A chunky open hoop, half high-polish silver-tone steel and half glossy olive-green enamel. Post backs.",
     "plating_spec": "Bare polished 316L stainless steel",
     "material_spec": "316L stainless steel, enamel",
-    "images": [
-      "/products/green-olive-hoops-1.jpg",
-      "/products/green-olive-hoops-2.jpg",
-      "/products/green-olive-hoops-3.jpg"
-    ],
+    "images": ["/products/green-olive-hoops-1.jpg", "/products/green-olive-hoops-4.jpg", "/products/green-olive-hoops-2.jpg", "/products/green-olive-hoops-3.jpg"],
     "stock_count": 3,
     "is_new": true,
     "ring_size_range": null,
@@ -365,10 +352,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "description": "A domed teardrop stud set with a scatter of multicolour stones. Post backs.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated, cubic zirconia",
-    "images": [
-      "/products/confetti-studs-1.jpg",
-      "/products/confetti-studs-2.jpg"
-    ],
+    "images": ["/products/confetti-studs-1.jpg", "/products/confetti-studs-3.jpg", "/products/confetti-studs-2.jpg"],
     "stock_count": 11,
     "is_new": true,
     "ring_size_range": null,
@@ -427,11 +411,7 @@ export const FALLBACK_PRODUCTS: Product[] = [
     "description": "Two polished oval links drop from a high-polish stud post.",
     "plating_spec": "18k gold PVD coating over 316L stainless steel",
     "material_spec": "316L stainless steel, PVD gold plated",
-    "images": [
-      "/products/deco-link-1.jpg",
-      "/products/deco-link-2.jpg",
-      "/products/deco-link-3.jpg"
-    ],
+    "images": ["/products/deco-link-1.jpg", "/products/deco-link-4.jpg", "/products/deco-link-2.jpg", "/products/deco-link-3.jpg"],
     "stock_count": 11,
     "is_new": true,
     "ring_size_range": null,
