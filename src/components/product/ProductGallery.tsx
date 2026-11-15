@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type TouchEvent } from "react";
 import Image from "next/image";
 import type { ColourOption } from "@/lib/types";
 import { useSelectedColour } from "@/components/product/SelectedColour";
@@ -15,6 +15,7 @@ export function ProductGallery({
   colourOptions?: ColourOption[] | null;
 }) {
   const [active, setActive] = useState(0);
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
   const selection = useSelectedColour();
   const selectedColour = selection?.colour;
 
@@ -31,11 +32,33 @@ export function ProductGallery({
     if (option) selection?.setColour(option.name);
   }
 
+  function onTouchStart(e: TouchEvent) {
+    const t = e.touches[0];
+    touchStart.current = { x: t.clientX, y: t.clientY };
+  }
+
+  // A mostly-horizontal drag of 40px or more moves to the next/previous photo.
+  function onTouchEnd(e: TouchEvent) {
+    const start = touchStart.current;
+    touchStart.current = null;
+    if (!start) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - start.x;
+    const dy = t.clientY - start.y;
+    if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    const next = active + (dx < 0 ? 1 : -1);
+    if (next >= 0 && next < images.length) show(next);
+  }
+
   return (
     <div>
       {/* Every view is mounted and only the active one shown, so switching
           colour or view is instant rather than waiting on a fresh download. */}
-      <div className="relative aspect-square overflow-hidden rounded-2xl bg-brand-sky/10">
+      <div
+        className="relative aspect-square touch-pan-y overflow-hidden rounded-2xl bg-brand-sky/10"
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+      >
         {images.map((src, i) => (
           <Image
             key={src}
