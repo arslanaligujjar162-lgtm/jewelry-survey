@@ -1,5 +1,4 @@
-import type { Order, Product } from "@/lib/types";
-import { whatsappLink } from "@/lib/brand";
+import type { Order } from "@/lib/types";
 import { formatPKR } from "@/lib/format";
 import { ADVANCE_AMOUNT, advanceAccountsText, advancePaymentEnabled, remainingOnDelivery } from "@/lib/advance-payment";
 
@@ -66,35 +65,4 @@ export function reviewRequestLink(order: Order, productLinks: { name: string; ur
       `Thank you for shopping with us!`,
     ].join("\n")
   );
-}
-
-interface ProductOrderOptions {
-  /** Site origin for the product link, e.g. https://1720jewelry.xyz — omitted until known. */
-  origin?: string;
-  quantity?: number;
-  ringSize?: string | null;
-  colour?: string | null;
-}
-
-/** Customer → store: a ready-to-send "I'd like to order this" message for one product. */
-export function productOrderMessage(
-  product: Pick<Product, "name" | "slug" | "price" | "ring_size_range" | "colour_options">,
-  { origin = "", quantity = 1, ringSize, colour }: ProductOrderOptions = {},
-): string {
-  const lines = [
-    "Hi 1720! I'd like to order:",
-    `${quantity} × ${product.name} (${formatPKR(product.price)})`,
-  ];
-  if (origin) lines.push(`${origin}/product/${product.slug}`);
-  // Leave a blank for anything the piece needs but the customer hasn't picked yet.
-  if (product.ring_size_range) lines.push(`Ring size (US): ${ringSize ?? ""}`);
-  if (product.colour_options?.length) lines.push(`Colour: ${colour ?? ""}`);
-  return lines.join("\n");
-}
-
-export function productOrderLink(
-  product: Parameters<typeof productOrderMessage>[0],
-  options?: ProductOrderOptions,
-): string {
-  return whatsappLink(productOrderMessage(product, options));
 }

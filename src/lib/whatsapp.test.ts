@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from "vitest";
-import { orderSummaryText, ownerConfirmLink, reviewRequestLink, productOrderMessage, productOrderLink } from "./whatsapp";
+import { orderSummaryText, ownerConfirmLink, reviewRequestLink } from "./whatsapp";
 import { ADVANCE_ACCOUNTS } from "./advance-payment";
 import type { Order } from "./types";
 
@@ -91,27 +91,5 @@ describe("advance payment wording", () => {
     const ownerText = decodedText(ownerConfirmLink(base));
     expect(ownerText).toContain("Please send Rs. 500 advance to NayaPay: 0310-4594770 (Asim Zaheer)");
     expect(ownerText).toContain("remaining Rs. 6,250 is payable in cash on delivery");
-  });
-});
-
-describe("productOrderMessage", () => {
-  const ring = { name: "The OG Ring", slug: "og-ring", price: 2800, ring_size_range: "5-9", colour_options: null };
-  const studs = { name: "Gala Studs", slug: "gala-studs", price: 1950, ring_size_range: null, colour_options: null };
-
-  it("names the piece, price and product link", () => {
-    const text = productOrderMessage(studs, { origin: "https://1720jewelry.xyz" });
-    expect(text).toContain("1 × Gala Studs (Rs. 1,950)");
-    expect(text).toContain("https://1720jewelry.xyz/product/gala-studs");
-    expect(text).not.toContain("Ring size");
-  });
-
-  it("leaves a blank for the ring size when none is chosen, and fills it when it is", () => {
-    expect(productOrderMessage(ring)).toContain("Ring size (US): ");
-    expect(productOrderMessage(ring, { quantity: 2, ringSize: "7" })).toContain("2 × The OG Ring");
-    expect(productOrderMessage(ring, { ringSize: "7" })).toContain("Ring size (US): 7");
-  });
-
-  it("opens the store's WhatsApp number", () => {
-    expect(productOrderLink(studs).startsWith("https://wa.me/923356389333?text=")).toBe(true);
   });
 });
