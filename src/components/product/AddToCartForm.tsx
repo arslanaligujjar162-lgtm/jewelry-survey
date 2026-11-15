@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { OrderOnWhatsAppButton } from "@/components/product/OrderOnWhatsAppButton";
 import { useCart } from "@/lib/cart-context";
 import { useSelectedColour } from "@/components/product/SelectedColour";
 import type { Product } from "@/lib/types";
@@ -102,7 +103,7 @@ export function AddToCartForm({ product }: { product: Product }) {
   // logic as the buttons below; if validation blocks it (e.g. no colour chosen),
   // it scrolls the form into view so the message is actually seen.
   const stickyBar = (
-    <div className="fixed inset-x-0 bottom-0 z-30 border-t border-brand-umber/15 bg-brand-ivory p-3 shadow-[0_-2px_12px_rgba(0,0,0,0.06)] sm:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-30 flex gap-2 border-t border-brand-umber/15 bg-brand-ivory p-3 shadow-[0_-2px_12px_rgba(0,0,0,0.06)] sm:hidden">
       <button
         type="button"
         disabled={outOfStock}
@@ -110,10 +111,21 @@ export function AddToCartForm({ product }: { product: Product }) {
           if (handleAddToCart()) openDrawer();
           else document.getElementById("add-to-cart")?.scrollIntoView({ behavior: "smooth", block: "center" });
         }}
-        className="flex w-full items-center justify-center rounded-full bg-brand-umber py-3 font-body text-sm font-semibold text-brand-ivory disabled:cursor-not-allowed disabled:opacity-50"
+        className="flex min-w-0 flex-1 items-center justify-center rounded-full bg-brand-umber py-3 font-body text-sm font-semibold text-brand-ivory disabled:cursor-not-allowed disabled:opacity-50"
       >
         {outOfStock ? "Out of stock" : added ? "Added ✓" : `Add to cart — ${formatPKR(product.price * quantity)}`}
       </button>
+      {!outOfStock && (
+        <OrderOnWhatsAppButton
+          product={product}
+          quantity={quantity}
+          ringSize={ringSizes.length ? ringSize : null}
+          colour={colour}
+          className="flex shrink-0 items-center justify-center gap-2 rounded-full bg-[#25D366] px-4 py-3 font-body text-sm font-semibold text-white"
+        >
+          Order
+        </OrderOnWhatsAppButton>
+      )}
     </div>
   );
 
@@ -225,6 +237,17 @@ export function AddToCartForm({ product }: { product: Product }) {
         >
           Buy it now
         </button>
+        {!outOfStock && (
+          <OrderOnWhatsAppButton
+            product={product}
+            quantity={quantity}
+            ringSize={ringSizes.length ? ringSize : null}
+            colour={colour}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#25D366] bg-[#25D366] px-8 py-4 font-body text-base font-bold text-white shadow-retro-sm transition hover:-translate-y-0.5 hover:border-[#1DA851] hover:bg-[#1DA851] sm:w-auto"
+          >
+            Order on WhatsApp
+          </OrderOnWhatsAppButton>
+        )}
       </div>
     </div>
   );
