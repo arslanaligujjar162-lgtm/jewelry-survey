@@ -1,9 +1,13 @@
 const BADGES = [
   {
-    label: "Cash on Delivery",
+    label: "Free Shipping",
     icon: (
       <path d="M2 7h15v10H2V7zm15 3h3l2 3v4h-5v-7zM6 17a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm12 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" />
     ),
+  },
+  {
+    label: "Cash on Delivery",
+    icon: <path fillRule="evenodd" d="M2 6h20v12H2V6zm10 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />,
   },
   {
     label: "3-Day Exchange",
@@ -17,7 +21,7 @@ const BADGES = [
 
 export function TrustBadges({ className = "" }: { className?: string }) {
   return (
-    <ul className={`grid grid-cols-3 gap-3 border-y border-brand-umber/10 py-4 ${className}`}>
+    <ul className={`grid grid-cols-2 gap-x-3 gap-y-4 border-y border-brand-umber/10 py-4 sm:grid-cols-4 ${className}`}>
       {BADGES.map((badge) => (
         <li key={badge.label} className="flex flex-col items-center gap-1.5 text-center">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" className="text-brand-umber-dark" aria-hidden="true">
